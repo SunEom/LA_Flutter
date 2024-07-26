@@ -26,14 +26,17 @@ class AppColor {
 
   Color getGradeColor(String grade) {
     switch (grade) {
-      case "희귀":
+      case "고급":
         return Color.fromRGBO(44, 123, 251, 1);
 
+      case "희귀":
+        return Color.fromRGBO(0, 176, 250, 1);
+
       case "영웅":
-        return Color.fromRGBO(247, 51, 255, 1);
+        return Color.fromRGBO(206, 67, 252, 1);
 
       case "전설":
-        return Color.fromRGBO(206, 152, 0, 1);
+        return Color.fromRGBO(249, 146, 0, 1);
 
       case "유물":
         return Color.fromRGBO(250, 93, 0, 1);

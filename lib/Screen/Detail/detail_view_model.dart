@@ -30,7 +30,7 @@ class DetailViewModel extends ChangeNotifier {
   CharacterInfo? _info = null;
   CharacterInfo? get info => _info;
   bool isLoading = true;
-  DetailViewTab selectedTab = DetailViewTab.main;
+  DetailViewTab selectedTab = DetailViewTab.skill;
 
   DetailViewModel(String nickname) {
     this.nickname = nickname;
