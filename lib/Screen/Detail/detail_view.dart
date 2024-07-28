@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Components/top_bar.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/Equipment.dart';
 import 'package:sample_project/Model/Profile.dart';
+import 'package:sample_project/Model/Sibling.dart';
 import 'package:sample_project/Model/Skills.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -135,8 +136,6 @@ class SkillItem extends StatelessWidget {
               skill.rune != null
                   ? Row(
                       children: [
-                        //룬 등급
-
                         Image.network(
                           skill.rune!.icon,
                           width: 25,
@@ -193,36 +192,142 @@ class SkillItem extends StatelessWidget {
   }
 }
 
+//ArmorySibling Tab
+
+class ArmorySiblingContents extends StatelessWidget {
+  final DetailViewModel viewModel;
+  const ArmorySiblingContents({required this.viewModel});
+
+  @override
+  Widget build(BuildContext context) {
+    ScrollController controller = PrimaryScrollController.of(context);
+
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: (viewModel.armorySiblings != null &&
+                viewModel.armorySiblings!.sibling.isNotEmpty)
+            ? viewModel.armorySiblings!.serverList
+                .map((server) => Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //서버 이름
+                          Text(
+                            server,
+                            style: TextStyle(
+                                color: K.appColor.white,
+                                fontSize: 20,
+                                fontWeight: K.appFont.heavy),
+                          ),
+
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          //캐릭터 목록
+                          ...viewModel.armorySiblings!.siblingPerServer[server]!
+                              .map((sibling) => Column(
+                                    children: [
+                                      ArmorySiblingItem(
+                                        sibling: sibling,
+                                        viewModel: viewModel,
+                                        scrollController: controller,
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      )
+                                    ],
+                                  ))
+                        ],
+                      ),
+                    ))
+                .toList()
+            : [],
+      ),
+    );
+  }
+}
+
+class ArmorySiblingItem extends StatelessWidget {
+  final Sibling sibling;
+  final DetailViewModel viewModel;
+  final ScrollController scrollController;
+
+  const ArmorySiblingItem(
+      {required this.sibling,
+      required this.viewModel,
+      required this.scrollController});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+          border: Border.all(color: K.appColor.gray),
+          borderRadius: BorderRadius.circular(10)),
+      child: TextButton(
+          onPressed: () {
+            scrollController.animateTo(
+              //화면 상단으로 이동
+              0,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeInOut,
+            );
+            // 선택된 캐릭터 정보 요청
+            viewModel.fetchAnotherUserDetail(sibling.characterName);
+          },
+          style: const ButtonStyle(
+            backgroundColor: WidgetStateColor.transparent,
+            overlayColor: WidgetStateColor.transparent,
+          ),
+          child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    // 클래스 이름
+                    sibling.characterClassName,
+                    style: TextStyle(
+                        color: K.appColor.white,
+                        fontSize: 11,
+                        fontWeight: K.appFont.bold),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        // 닉네임
+                        sibling.characterName,
+                        style: TextStyle(
+                            color: K.appColor.white,
+                            fontSize: 14,
+                            fontWeight: K.appFont.heavy),
+                      ),
+                      Text(
+                        // 아이템 레벨
+                        sibling.itemAvgLevel,
+                        style: TextStyle(
+                            color: K.appColor.white,
+                            fontSize: 12,
+                            fontWeight: K.appFont.bold),
+                      )
+                    ],
+                  )
+                ],
+              ))),
+    );
+  }
+}
+
 class DetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<DetailViewModel>(context);
 
-    // 로딩 뷰
-    Widget loadingView() {
-      return Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            ),
-            SizedBox(
-              height: 50,
-            ),
-            Text(
-              "유저 정보를 가져오는 중입니다!",
-              style: TextStyle(
-                  color: K.appColor.white,
-                  fontSize: 14,
-                  fontWeight: K.appFont.bold),
-            ),
-          ],
-        ),
-      );
-    }
-
-    // 캐릭터를 찾을 수 없음
+// 캐릭터를 찾을 수 없음
     Widget characterNotFoundView() {
       return Center(
         child: Column(
@@ -257,7 +362,7 @@ class DetailView extends StatelessWidget {
       );
     }
 
-    // Main Contents
+// Main Contents
 
     Widget characterImage() {
       return viewModel.info != null &&
@@ -281,16 +386,21 @@ class DetailView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5.0),
               ),
               child: Text(title,
-                  style: TextStyle(color: K.appColor.white, fontSize: 12))),
+                  style: TextStyle(color: K.appColor.white, fontSize: 14))),
           const SizedBox(width: 10),
-          Text(
-            content,
-            style: TextStyle(
-                color: K.appColor.white,
-                fontSize: 12,
-                fontWeight: K.appFont.heavy),
-            textAlign: TextAlign.left,
-          ),
+          SizedBox(
+            width: 80,
+            child: AutoSizeText(
+              content,
+              maxLines: 1,
+              minFontSize: 5,
+              maxFontSize: 15,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: K.appColor.white, fontWeight: K.appFont.heavy),
+              textAlign: TextAlign.left,
+            ),
+          )
         ],
       );
     }
@@ -300,14 +410,20 @@ class DetailView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(
-            viewModel.info!.armoryProfile.characterName,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
+          SizedBox(
+            width: 150,
+            child: AutoSizeText(
+              viewModel.info!.armoryProfile.characterName,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              minFontSize: 14,
+              maxFontSize: 18,
+              style: TextStyle(
                 color: K.appColor.white,
                 fontWeight: K.appFont.heavy,
-                fontSize: 14),
-            textAlign: TextAlign.left,
+              ),
+              textAlign: TextAlign.left,
+            ),
           ),
           const SizedBox(height: 10),
           profileItem("서버", "${viewModel.info?.armoryProfile.serverName}"),
@@ -347,7 +463,7 @@ class DetailView extends StatelessWidget {
           ));
     }
 
-    //Tab Button
+//Tab Button
     Widget tabButton(DetailViewTab tab) {
       bool isSelectedTab = viewModel.selectedTab == tab;
 
@@ -381,7 +497,7 @@ class DetailView extends StatelessWidget {
       );
     }
 
-    //Engraving & Stats
+//Engraving & Stats
 
     Widget statItem(Stats item) {
       return Container(
@@ -525,7 +641,7 @@ class DetailView extends StatelessWidget {
           ));
     }
 
-    //Equipment
+//Equipment
 
     Widget equipmentItem(EquipType equipType) {
       Equipment? equipment =
@@ -996,7 +1112,7 @@ class DetailView extends StatelessWidget {
           ));
     }
 
-    // Card
+// Card
     Widget cardContents() {
       return Container(
           decoration: BoxDecoration(
@@ -1101,7 +1217,7 @@ class DetailView extends StatelessWidget {
               )));
     }
 
-    // 기본정보 (각인, 장비, 카드 등)
+// 기본정보 (각인, 장비, 카드 등)
     Widget mainInfoContents() {
       return Column(
         children: [
@@ -1126,6 +1242,9 @@ class DetailView extends StatelessWidget {
         case DetailViewTab.skill:
           return SkillContents(viewModel: viewModel);
 
+        case DetailViewTab.armory:
+          return ArmorySiblingContents(viewModel: viewModel);
+
         default:
           return Text(
             viewModel.selectedTab.displayName,
@@ -1137,57 +1256,85 @@ class DetailView extends StatelessWidget {
       }
     }
 
+    // 로딩 뷰
+    Widget loadingView() {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            Text(
+              "유저 정보를 가져오는 중입니다!",
+              style: TextStyle(
+                  color: K.appColor.white,
+                  fontSize: 14,
+                  fontWeight: K.appFont.bold),
+            ),
+          ],
+        ),
+      );
+    }
+
+    final ScrollController _scrollController = ScrollController();
+
     return Scaffold(
       appBar: TopBar(),
       body: viewModel.isLoading
           ? loadingView()
-          : SingleChildScrollView(
+          : PrimaryScrollController(
+              controller: _scrollController,
               child: Center(
-              child: viewModel.info != null
-                  ? Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        children: [
-                          profileContents(),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                child: viewModel.info != null
+                    ? Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: ListView(
+                          controller: _scrollController,
+                          children: [
+                            profileContents(),
+                            const SizedBox(
+                              height: 10,
+                            ),
 
-                          // 탭 버튼
-                          Container(
-                            width: double.infinity,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: DetailViewTab.defaultOrder
-                                    .map((tab) => tabButton(tab))
-                                    .toList(),
+                            // 탭 버튼
+                            SizedBox(
+                              width: double.infinity,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: DetailViewTab.defaultOrder
+                                      .map((tab) => tabButton(tab))
+                                      .toList(),
+                                ),
                               ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
+                            const SizedBox(
+                              height: 10,
+                            ),
 
-                          // 탭에 따라 변경되는 화면
-                          AnimatedSwitcher(
-                            duration: const Duration(milliseconds: 150),
-                            transitionBuilder: (widget, animation) {
-                              const curve = Curves.easeInOut;
-                              var tween = Tween<double>(begin: 0.0, end: 1.0)
-                                  .chain(CurveTween(curve: curve));
-                              var opacityAnimation = animation.drive(tween);
-                              return FadeTransition(
-                                  opacity: opacityAnimation, child: widget);
-                            },
-                            child: selectedTabView(),
-                          )
-                        ],
-                      ),
-                    )
-                  : characterNotFoundView(), // 캐릭터를 찾을 수 없음
-            )),
+                            // 탭에 따라 변경되는 화면
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 150),
+                              transitionBuilder: (widget, animation) {
+                                const curve = Curves.easeInOut;
+                                var tween = Tween<double>(begin: 0.0, end: 1.0)
+                                    .chain(CurveTween(curve: curve));
+                                var opacityAnimation = animation.drive(tween);
+                                return FadeTransition(
+                                    opacity: opacityAnimation, child: widget);
+                              },
+                              child: selectedTabView(),
+                            )
+                          ],
+                        ),
+                      )
+                    : characterNotFoundView(), // 캐릭터를 찾을 수 없음
+              )),
       backgroundColor: K.appColor.mainBackgroundColor,
     );
   }

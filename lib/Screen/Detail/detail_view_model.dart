@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sample_project/DI/DIController.dart';
 import 'package:sample_project/Model/Character.dart';
+import 'package:sample_project/Model/Sibling.dart';
 
 enum DetailViewTab {
   main,
@@ -30,7 +31,9 @@ class DetailViewModel extends ChangeNotifier {
   CharacterInfo? _info = null;
   CharacterInfo? get info => _info;
   bool isLoading = true;
-  DetailViewTab selectedTab = DetailViewTab.skill;
+  DetailViewTab selectedTab = DetailViewTab.main;
+  ArmorySiblings? _armorySiblings = null;
+  ArmorySiblings? get armorySiblings => _armorySiblings;
 
   DetailViewModel(String nickname) {
     this.nickname = nickname;
@@ -40,6 +43,19 @@ class DetailViewModel extends ChangeNotifier {
   void fetchDetail() async {
     isLoading = true;
     _info = await DIController.characterService.fetchCharacterInfo(nickname);
+    _armorySiblings =
+        await DIController.characterService.fetchSiblings(nickname);
+    isLoading = false;
+    notifyListeners();
+  }
+
+  void fetchAnotherUserDetail(String nickname) async {
+    isLoading = true;
+    this.nickname = nickname;
+    selectedTab = DetailViewTab.main;
+    _info = await DIController.characterService.fetchCharacterInfo(nickname);
+    _armorySiblings =
+        await DIController.characterService.fetchSiblings(nickname);
     isLoading = false;
     notifyListeners();
   }
