@@ -26,10 +26,10 @@ class DetailView extends StatelessWidget {
           );
 
         case DetailViewTab.skill:
-          return SkillContents(viewModel: viewModel);
+          return SkillContents();
 
         case DetailViewTab.armory:
-          return ArmorySiblingContents(viewModel: viewModel);
+          return ArmorySiblingContents();
 
         default:
           return Text(
@@ -57,9 +57,7 @@ class DetailView extends StatelessWidget {
                         child: ListView(
                           controller: _scrollController,
                           children: [
-                            ProfileContents(
-                              viewModel: viewModel,
-                            ),
+                            ProfileContents(),
                             const SizedBox(
                               height: 10,
                             ),
@@ -73,7 +71,6 @@ class DetailView extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: DetailViewTab.defaultOrder
                                       .map((tab) => TabButton(
-                                            viewModel: viewModel,
                                             tab: tab,
                                           ))
                                       .toList(),

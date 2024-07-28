@@ -1,17 +1,16 @@
 //ArmorySibling Tab
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/Sibling.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
 class ArmorySiblingContents extends StatelessWidget {
-  final DetailViewModel viewModel;
-  const ArmorySiblingContents({required this.viewModel});
-
   @override
   Widget build(BuildContext context) {
     ScrollController controller = PrimaryScrollController.of(context);
+    final viewModel = Provider.of<DetailViewModel>(context);
 
     return Container(
       width: double.infinity,
@@ -43,7 +42,6 @@ class ArmorySiblingContents extends StatelessWidget {
                                     children: [
                                       ArmorySiblingItem(
                                         sibling: sibling,
-                                        viewModel: viewModel,
                                         scrollController: controller,
                                       ),
                                       const SizedBox(
@@ -63,16 +61,15 @@ class ArmorySiblingContents extends StatelessWidget {
 
 class ArmorySiblingItem extends StatelessWidget {
   final Sibling sibling;
-  final DetailViewModel viewModel;
   final ScrollController scrollController;
 
   const ArmorySiblingItem(
-      {required this.sibling,
-      required this.viewModel,
-      required this.scrollController});
+      {required this.sibling, required this.scrollController});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(

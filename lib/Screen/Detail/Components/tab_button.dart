@@ -1,18 +1,18 @@
 //Tab Button
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
 class TabButton extends StatelessWidget {
-  final DetailViewModel viewModel;
   final DetailViewTab tab;
 
-  const TabButton({required this.viewModel, required this.tab});
-
-  bool get isSelectedTab => viewModel.selectedTab == tab;
+  const TabButton({required this.tab});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+    bool isSelectedTab = viewModel.selectedTab == tab;
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300), // 애니메이션 지속 시간 설정
       decoration: BoxDecoration(

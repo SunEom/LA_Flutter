@@ -1,6 +1,7 @@
 // Profile
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
@@ -59,11 +60,10 @@ class ProfileItem extends StatelessWidget {
 }
 
 class ProfileInfo extends StatelessWidget {
-  final DetailViewModel viewModel;
-
-  const ProfileInfo({required this.viewModel});
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -117,12 +117,10 @@ class ProfileInfo extends StatelessWidget {
 }
 
 class ProfileContents extends StatelessWidget {
-  final DetailViewModel viewModel;
-
-  const ProfileContents({required this.viewModel});
-
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+
     return Container(
         decoration: BoxDecoration(
           border: Border.all(color: K.appColor.gray, width: 2),
@@ -135,9 +133,7 @@ class ProfileContents extends StatelessWidget {
             children: [
               CharacterImage(
                   imageUrl: viewModel.info?.armoryProfile.characterImage),
-              ProfileInfo(
-                viewModel: viewModel,
-              )
+              ProfileInfo()
             ],
           ),
         ));

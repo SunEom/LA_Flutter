@@ -1,5 +1,6 @@
 // Main Tab
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/Equipment.dart';
 import 'package:sample_project/Model/Profile.dart';
@@ -13,21 +14,15 @@ class MainInfoContents extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        StatsContent(
-          viewModel: viewModel,
-        ),
+        StatsContent(),
         const SizedBox(
           height: 10,
         ),
-        EquipemntContent(
-          viewModel: viewModel,
-        ),
+        EquipmentContent(),
         const SizedBox(
           height: 10,
         ),
-        CardContents(
-          viewModel: viewModel,
-        )
+        CardContents()
       ],
     );
   }
@@ -69,12 +64,9 @@ class StatItem extends StatelessWidget {
 }
 
 class StatsContent extends StatelessWidget {
-  final DetailViewModel viewModel;
-
-  const StatsContent({required this.viewModel});
-
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
     return Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -192,15 +184,15 @@ class StatsContent extends StatelessWidget {
 
 class EquipmentItem extends StatelessWidget {
   final EquipType equipType;
-  final DetailViewModel viewModel;
 
-  const EquipmentItem({required this.equipType, required this.viewModel});
-
-  Equipment? get equipment =>
-      viewModel.info!.armoryEquipment.getEquipment(equipType);
+  const EquipmentItem({required this.equipType});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+    Equipment? equipment =
+        viewModel.info!.armoryEquipment.getEquipment(equipType);
+
     if (equipment == null) {
       return Row(
         children: [
@@ -362,15 +354,15 @@ class EquipmentItem extends StatelessWidget {
 
 class AccessoryItem extends StatelessWidget {
   final AccessoryType accessoryType;
-  final DetailViewModel viewModel;
 
-  const AccessoryItem({required this.accessoryType, required this.viewModel});
-
-  Equipment? get accessory =>
-      viewModel.info!.armoryEquipment.getAccessory(accessoryType);
+  const AccessoryItem({required this.accessoryType});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+
+    Equipment? accessory =
+        viewModel.info!.armoryEquipment.getAccessory(accessoryType);
     if (accessory == null) {
       //미착용
       return Row(
@@ -557,12 +549,10 @@ class AccessoryItem extends StatelessWidget {
   }
 }
 
-class EquipemntContent extends StatelessWidget {
-  final DetailViewModel viewModel;
-
-  const EquipemntContent({required this.viewModel});
+class EquipmentContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
     return Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -659,7 +649,6 @@ class EquipemntContent extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: 5),
                               child: EquipmentItem(
                                 equipType: type,
-                                viewModel: viewModel,
                               ),
                             ))
                         .toList(),
@@ -672,7 +661,6 @@ class EquipemntContent extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: 5),
                               child: AccessoryItem(
                                 accessoryType: type,
-                                viewModel: viewModel,
                               ),
                             ))
                         .toList(),
@@ -687,12 +675,10 @@ class EquipemntContent extends StatelessWidget {
 
 // Card
 class CardContents extends StatelessWidget {
-  final DetailViewModel viewModel;
-
-  const CardContents({required this.viewModel});
-
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+
     return Container(
         decoration: BoxDecoration(
           border: Border.all(color: K.appColor.gray, width: 2),

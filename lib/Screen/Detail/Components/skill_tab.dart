@@ -1,19 +1,20 @@
 //Skill Tab
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/Skills.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
 class SkillContents extends StatelessWidget {
-  final DetailViewModel viewModel;
-  const SkillContents({required this.viewModel});
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+
     return Column(
       children: viewModel.info!.armorySkills != null
           ? viewModel.info!.armorySkills!.skills
-              .map((skill) => SkillItem(viewModel: viewModel, skill: skill))
+              .map((skill) => SkillItem(skill: skill))
               .toList()
           : [],
     );
@@ -21,13 +22,14 @@ class SkillContents extends StatelessWidget {
 }
 
 class SkillItem extends StatelessWidget {
-  final DetailViewModel viewModel;
   final Skill skill;
 
-  const SkillItem({required this.viewModel, required this.skill});
+  const SkillItem({required this.skill});
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: Row(

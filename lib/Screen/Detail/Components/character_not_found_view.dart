@@ -19,7 +19,7 @@ class CharacterNotFoundView extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: K.appFont.heavy),
           ),
-          SizedBox(
+          const SizedBox(
             height: 50,
           ),
           Text(
