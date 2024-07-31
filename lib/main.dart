@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
-import 'package:sample_project/Screen/Home/home.dart';
+import 'package:sample_project/Screen/Home/home_view.dart';
 import 'package:sample_project/Screen/Home/home_view_model.dart';
 
 void main() async {

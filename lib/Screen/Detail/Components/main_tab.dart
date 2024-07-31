@@ -1,8 +1,10 @@
 // Main Tab
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/Equipment.dart';
+import 'package:sample_project/Model/Gem.dart';
 import 'package:sample_project/Model/Profile.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
@@ -19,6 +21,10 @@ class MainInfoContents extends StatelessWidget {
           height: 10,
         ),
         EquipmentContent(),
+        const SizedBox(
+          height: 10,
+        ),
+        CharacterGemContents(),
         const SizedBox(
           height: 10,
         ),
@@ -92,35 +98,37 @@ class StatsContent extends StatelessWidget {
               ),
               //활성화 각인 목록
               viewModel.info!.armoryEngraving != null
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ? Wrap(
                       children: viewModel.info!.armoryEngraving!.effects
-                          .map((engraving) => Stack(
-                                alignment: Alignment.bottomRight,
-                                children: [
-                                  ClipOval(
-                                    child: Image.network(
-                                      engraving.icon,
-                                      width: 35,
+                          .map((engraving) => Padding(
+                                padding: EdgeInsets.only(right: 10),
+                                child: Stack(
+                                  alignment: Alignment.bottomRight,
+                                  children: [
+                                    ClipOval(
+                                      child: Image.network(
+                                        engraving.icon,
+                                        width: 35,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    engraving.items[1],
-                                    style: TextStyle(
-                                        color: K.appColor.white,
-                                        shadows: [
-                                          const Shadow(
-                                            offset: Offset(
-                                                0.0, 0.0), // 그림자의 x, y 오프셋
-                                            blurRadius: 15.0, // 그림자의 흐림 정도
-                                            color: Color.fromARGB(
-                                                255, 0, 0, 0), // 그림자의 색상
-                                          )
-                                        ],
-                                        fontSize: 15,
-                                        fontWeight: K.appFont.heavy),
-                                  ),
-                                ],
+                                    Text(
+                                      engraving.items[1],
+                                      style: TextStyle(
+                                          color: K.appColor.white,
+                                          shadows: [
+                                            const Shadow(
+                                              offset: Offset(
+                                                  0.0, 0.0), // 그림자의 x, y 오프셋
+                                              blurRadius: 15.0, // 그림자의 흐림 정도
+                                              color: Color.fromARGB(
+                                                  255, 0, 0, 0), // 그림자의 색상
+                                            )
+                                          ],
+                                          fontSize: 15,
+                                          fontWeight: K.appFont.heavy),
+                                    ),
+                                  ],
+                                ),
                               ))
                           .toList())
                   : Text(
@@ -778,6 +786,103 @@ class CardContents extends StatelessWidget {
                           )
                         ],
                       )
+              ],
+            )));
+  }
+}
+
+// Gem
+class CharacterGemContents extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+
+    return Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          border: Border.all(color: K.appColor.gray, width: 2),
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Padding(
+            padding: EdgeInsets.all(30),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "보석",
+                  style: TextStyle(
+                      color: K.appColor.white,
+                      fontSize: 20,
+                      fontWeight: K.appFont.heavy),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Wrap(
+                  children: viewModel.info!.armoryGem.gems != null
+                      ? viewModel.info!.armoryGem.gems!
+                          .map((gem) => Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Column(
+                                  children: [
+                                    Stack(
+                                      alignment: Alignment.bottomRight,
+                                      children: [
+                                        Image.network(
+                                          gem.icon,
+                                          width: 35,
+                                        ),
+                                        Text(
+                                          "${gem.level}",
+                                          style: TextStyle(
+                                              color: K.appColor.white,
+                                              shadows: [
+                                                const Shadow(
+                                                  offset: Offset(0.0,
+                                                      0.0), // 그림자의 x, y 오프셋
+                                                  blurRadius:
+                                                      15.0, // 그림자의 흐림 정도
+                                                  color: Color.fromARGB(
+                                                      255, 0, 0, 0), // 그림자의 색상
+                                                )
+                                              ],
+                                              fontSize: 15,
+                                              fontWeight: K.appFont.heavy),
+                                        ),
+                                      ],
+                                    ),
+                                    AutoSizeText(
+                                      gem.type,
+                                      maxLines: 1,
+                                      minFontSize: 13,
+                                      maxFontSize: 16,
+                                      style: TextStyle(
+                                          color: K.appColor.white,
+                                          shadows: [
+                                            Shadow(
+                                              offset: Offset(
+                                                  0.0, 0.0), // 그림자의 x, y 오프셋
+                                              blurRadius: 15.0, // 그림자의 흐림 정도
+                                              color: Color.fromARGB(
+                                                  255, 0, 0, 0), // 그림자의 색상
+                                            )
+                                          ],
+                                          fontWeight: K.appFont.heavy),
+                                    ),
+                                  ],
+                                ),
+                              ))
+                          .toList()
+                      : [
+                          Text(
+                            "장착중인 보석이 없습니다.",
+                            style: TextStyle(
+                                color: K.appColor.white,
+                                fontSize: 12,
+                                fontWeight: K.appFont.heavy),
+                          ),
+                        ],
+                ),
               ],
             )));
   }

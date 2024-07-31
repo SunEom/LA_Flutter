@@ -5,10 +5,11 @@ class K {
   static AppColor appColor = AppColor();
   static AppFont appFont = AppFont();
   static LostArkAPI lostArkAPI = LostArkAPI();
+  static AppImage appImage = AppImage();
 }
 
 class AppData {
-  String AppName = "Something";
+  String AppName = "Arkpedia";
 }
 
 class AppColor {
@@ -16,7 +17,9 @@ class AppColor {
   Color black = Colors.black;
   Color white = Colors.white;
   Color blue = Colors.blue;
+  Color darkBlue = Colors.blue.shade800;
   Color red = Colors.red;
+  Color yellow = const Color.fromARGB(201, 255, 235, 59);
   Color advancedUpgradeColor = Color.fromRGBO(168, 234, 108, 1);
   Color elixirColor = Color.fromRGBO(216, 178, 2, 1);
   Color transcendenceColor = Color.fromRGBO(255, 155, 50, 1);
@@ -60,4 +63,11 @@ class LostArkAPI {
   String base = "https://developer-lostark.game.onstove.com/";
   String transcendenceImage =
       "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_tooltip_transcendence.png";
+}
+
+class AppImage {
+  String chaosGateIcon =
+      "https://cdn-lostark.game.onstove.com/efui_iconatlas/achieve/achieve_13_11.png";
+  String fieldBossIcon =
+      "https://cdn-lostark.game.onstove.com/efui_iconatlas/achieve/achieve_14_142.png";
 }

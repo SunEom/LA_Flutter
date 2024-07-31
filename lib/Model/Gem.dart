@@ -10,7 +10,9 @@ class ArmoryGem {
     }
 
     int sortSkillList(Gem s1, Gem s2) {
-      if (s1.level != s2.level) {
+      if (s1.orderPriority != s2.orderPriority) {
+        return s1.orderPriority.compareTo(s2.orderPriority);
+      } else if (s1.level != s2.level) {
         return s1.level > s2.level ? 0 : 1;
       } else {
         return 0;
@@ -47,6 +49,19 @@ class Gem {
       return result;
     } else {
       return "";
+    }
+  }
+
+  int get orderPriority {
+    switch (type) {
+      case "겁화" || "멸화":
+        return 0;
+
+      case "작열" || "홍염":
+        return 1;
+
+      default:
+        return 2;
     }
   }
 

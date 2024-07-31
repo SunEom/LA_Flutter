@@ -1,3 +1,5 @@
+import 'package:sprintf/sprintf.dart';
+
 class Utils {
   static List<String?> getNumbersFromString(String input) {
     // 정규 표현식을 사용하여 숫자만 추출
@@ -110,5 +112,17 @@ class Utils {
     } else {
       return [];
     }
+  }
+
+  static String getTimeData(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    return sprintf("%.2d:%.2d", [dateTime.hour, dateTime.minute]);
+  }
+
+  static bool isBeforeNow(String date) {
+    DateTime dateTime = DateTime.parse(date);
+    DateTime now = DateTime.now();
+
+    return dateTime.isBefore(now);
   }
 }
