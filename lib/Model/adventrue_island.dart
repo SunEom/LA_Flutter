@@ -1,5 +1,3 @@
-import 'package:sprintf/sprintf.dart';
-
 class AdventrueIslandCalendar {
   final List<AdventrueIsland> gameContents;
 
@@ -19,10 +17,18 @@ class AdventrueIslandCalendar {
   List<AdventrueIsland> get adventrueIslands =>
       gameContents.where((i) => i.categoryName == "모험 섬").toList();
 
-  List<AdventrueIsland> get todayAdventrueIslands => adventrueIslands
-      .where((i) =>
-          i.startTimes != null && _checkTodayAdventureIsland(i.startTimes!))
-      .toList();
+  List<AdventrueIsland> get todayAdventrueIslands {
+    List<AdventrueIsland> result = adventrueIslands
+        .where((i) =>
+            i.startTimes != null && _checkTodayAdventureIsland(i.startTimes!))
+        .toList();
+
+    result.sort((i1, i2) {
+      return i1.todayStartTime.first.compareTo(i2.todayStartTime.first);
+    });
+
+    return result;
+  }
 
   bool _checkTodayAdventureIsland(List<String> dates) {
     DateTime today = DateTime.now();
