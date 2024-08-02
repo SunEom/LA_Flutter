@@ -164,7 +164,7 @@ class AppImage {
         return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/weather_artist_m.png";
 
       default:
-        return "";
+        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/icon/favicon-192.png?v=20221109160851";
     }
   }
 }

@@ -69,7 +69,6 @@ class ArmorySiblingItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<DetailViewModel>(context);
-
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -92,38 +91,52 @@ class ArmorySiblingItem extends StatelessWidget {
           ),
           child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
                 children: [
-                  Text(
-                    // 클래스 이름
-                    sibling.characterClassName,
-                    style: TextStyle(
-                        color: K.appColor.white,
-                        fontSize: 11,
-                        fontWeight: K.appFont.bold),
+                  ClipOval(
+                    child: Image.network(
+                      K.appImage.getClassImage(sibling.characterClassName),
+                      width: 40,
+                    ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        // 닉네임
-                        sibling.characterName,
+                        // 클래스 이름
+                        sibling.characterClassName,
                         style: TextStyle(
                             color: K.appColor.white,
-                            fontSize: 14,
-                            fontWeight: K.appFont.heavy),
-                      ),
-                      Text(
-                        // 아이템 레벨
-                        sibling.itemAvgLevel,
-                        style: TextStyle(
-                            color: K.appColor.white,
-                            fontSize: 12,
+                            fontSize: 11,
                             fontWeight: K.appFont.bold),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            // 닉네임
+                            sibling.characterName,
+                            style: TextStyle(
+                                color: K.appColor.white,
+                                fontSize: 14,
+                                fontWeight: K.appFont.heavy),
+                          ),
+                          Text(
+                            // 아이템 레벨
+                            sibling.itemAvgLevel,
+                            style: TextStyle(
+                                color: K.appColor.white,
+                                fontSize: 12,
+                                fontWeight: K.appFont.bold),
+                          )
+                        ],
                       )
                     ],
-                  )
+                  ))
                 ],
               ))),
     );
