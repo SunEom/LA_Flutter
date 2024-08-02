@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
+import 'package:sample_project/Screen/Home/home_view.dart';
+import 'package:sample_project/Screen/Home/home_view_model.dart';
 
 class CharacterImage extends StatelessWidget {
   final String? imageUrl;
@@ -68,21 +70,6 @@ class ProfileInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(
-          width: 150,
-          child: AutoSizeText(
-            viewModel.info!.armoryProfile.characterName,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            minFontSize: 14,
-            maxFontSize: 18,
-            style: TextStyle(
-              color: K.appColor.white,
-              fontWeight: K.appFont.heavy,
-            ),
-            textAlign: TextAlign.left,
-          ),
-        ),
         const SizedBox(height: 10),
         ProfileItem(
             title: "서버",
@@ -127,15 +114,44 @@ class ProfileContents extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Padding(
-          padding: EdgeInsets.all(15),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CharacterImage(
-                  imageUrl: viewModel.info?.armoryProfile.characterImage),
-              ProfileInfo()
-            ],
-          ),
-        ));
+            padding: EdgeInsets.all(15),
+            child: Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        viewModel.info!.armoryProfile.characterName,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: K.appColor.white,
+                            fontWeight: K.appFont.heavy,
+                            fontSize: 18),
+                        textAlign: TextAlign.left,
+                      ),
+                      IconButton(
+                          onPressed: viewModel.favButtonTap,
+                          icon: Icon(
+                            Icons.star,
+                            size: 23,
+                            color: viewModel.isFavCharacter
+                                ? K.appColor.yellow
+                                : K.appColor.gray,
+                          ))
+                    ],
+                  ),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ProfileInfo(),
+                    CharacterImage(
+                        imageUrl: viewModel.info?.armoryProfile.characterImage),
+                  ],
+                ),
+              ],
+            )));
   }
 }

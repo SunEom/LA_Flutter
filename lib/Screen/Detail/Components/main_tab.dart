@@ -97,9 +97,10 @@ class StatsContent extends StatelessWidget {
                 height: 10,
               ),
               //활성화 각인 목록
-              viewModel.info!.armoryEngraving != null
+              viewModel.info!.armoryEngraving != null &&
+                      viewModel.info!.armoryEngraving!.effects != null
                   ? Wrap(
-                      children: viewModel.info!.armoryEngraving!.effects
+                      children: viewModel.info!.armoryEngraving!.effects!
                           .map((engraving) => Padding(
                                 padding: EdgeInsets.only(right: 10),
                                 child: Stack(

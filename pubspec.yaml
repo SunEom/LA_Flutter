@@ -44,6 +44,7 @@ dependencies:
   webview_flutter: ^4.8.0
   dotted_border: ^2.1.0
   shared_preferences: ^2.3.0
+  widget_visibility_detector: ^1.0.1
 
 dev_dependencies:
   flutter_test:

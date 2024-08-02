@@ -7,7 +7,7 @@ import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Screen/Components/loading_view.dart';
 import 'package:sample_project/Screen/Detail/Components/armory_sibling_tab.dart';
 import 'package:sample_project/Screen/Detail/Components/character_not_found_view.dart';
-import 'package:sample_project/Screen/Detail/Components/profile.dart';
+import 'package:sample_project/Screen/Detail/Components/profile_container.dart';
 import 'package:sample_project/Screen/Detail/Components/skill_tab.dart';
 import 'package:sample_project/Screen/Detail/Components/tab_button.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';

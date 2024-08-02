@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/adventrue_island.dart';
-import 'package:sample_project/Screen/Home/home_view.dart';
+
 import 'package:sample_project/Screen/Home/home_view_model.dart';
-import 'package:sample_project/Util/Util.dart';
+import 'package:sample_project/Util/datetime_util.dart';
+import 'package:sample_project/Util/reg_util.dart';
 
 class AdventureIslandContainer extends StatelessWidget {
   @override
@@ -193,9 +194,9 @@ class AdventureIslandItem extends StatelessWidget {
                     (time) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: Text(
-                        Utils.getTimeData(time),
+                        DatetimeUtil.getTimeData(time),
                         style: TextStyle(
-                            decoration: Utils.isBeforeNow(time)
+                            decoration: DatetimeUtil.isBeforeNow(time)
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
                             decorationThickness: 2,

@@ -5,11 +5,16 @@ import 'package:http/http.dart' as http;
 
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/Character.dart';
+import 'package:sample_project/Model/FavoriteCharacter.dart';
 import 'package:sample_project/Model/Sibling.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class CharacterServiceType {
   Future<CharacterInfo?> fetchCharacterInfo(String nickname);
   Future<ArmorySiblings?> fetchSiblings(String nickname);
+  Future<bool> saveFavoriteCharacter(CharacterInfo? info);
+  Future<FavoriteCharacter?> fetchFavoriteCharacter();
+  Future<void> removeFavoriteCharacter();
 }
 
 class CharacterService implements CharacterServiceType {
@@ -59,5 +64,43 @@ class CharacterService implements CharacterServiceType {
     } finally {
       client.close();
     }
+  }
+
+  @override
+  Future<bool> saveFavoriteCharacter(CharacterInfo? info) async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+
+    if (info == null) {
+      return false;
+    } else {
+      FavoriteCharacter characterInfo = FavoriteCharacter(
+          name: info.armoryProfile.characterName,
+          itemAvgLevel: info.armoryProfile.itemAvgLevel,
+          serverName: info.armoryProfile.serverName,
+          className: info.armoryProfile.characterClassName);
+
+      String jsonString = jsonEncode(characterInfo.toJson());
+      await pref.setString('favCharacter', jsonString);
+      return true;
+    }
+  }
+
+  @override
+  Future<FavoriteCharacter?> fetchFavoriteCharacter() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+
+    String? jsonString = pref.getString('favCharacter');
+    if (jsonString != null) {
+      Map<String, dynamic> json = jsonDecode(jsonString);
+      return FavoriteCharacter.fromJSON(json);
+    }
+    return null;
+  }
+
+  @override
+  Future<void> removeFavoriteCharacter() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+
+    await pref.remove("favCharacter");
   }
 }

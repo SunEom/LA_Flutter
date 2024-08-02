@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:sample_project/Extensions/Map+Extensions.dart';
-import 'package:sample_project/Util/Util.dart';
+import 'package:sample_project/Util/reg_util.dart';
 
 class ArmoryEquipment {
   final List<Equipment> equipments;
@@ -199,7 +199,7 @@ class Tooltip {
         singleTextBox?.where((e) => (e.value.contains("상급 재련"))).toList();
 
     if (li != null && li.isNotEmpty) {
-      return Utils.getNumbersFromString(li[0].value)[4];
+      return RegUtil.getNumbersFromString(li[0].value)[4];
     } else {
       return null;
     }
@@ -210,7 +210,7 @@ class Tooltip {
     String? s = null;
 
     itemPartBox?.forEach((element) {
-      List<String?> li = Utils.getCritSpeedOrSpecializationValues(
+      List<String?> li = RegUtil.getCritSpeedOrSpecializationValues(
           element.value?["Element_001"] ?? "");
 
       if (li.isNotEmpty) {
@@ -227,7 +227,7 @@ class Tooltip {
 
     itemPartBox?.forEach((element) {
       List<String?> li =
-          Utils.getStatValues(element.value?["Element_001"] ?? "");
+          RegUtil.getStatValues(element.value?["Element_001"] ?? "");
 
       if (li.isNotEmpty) {
         s = li.join(" ");
@@ -244,7 +244,7 @@ class Tooltip {
       isg.value?.values.forEach((v) {
         if (v.topStr.contains("엘릭서")) {
           v.contentStr?.values.forEach((e) {
-            option.add(Utils.getElixirSkillAndLevel(e.contentStr));
+            option.add(RegUtil.getElixirSkillAndLevel(e.contentStr));
           });
         }
       });
@@ -259,7 +259,7 @@ class Tooltip {
     indentStringGroup?.forEach((isg) {
       isg.value?.values.forEach((v) {
         if (v.topStr.contains("초월")) {
-          transcendence = Utils.getTranscendence(v.topStr);
+          transcendence = RegUtil.getTranscendence(v.topStr);
         }
       });
     });
@@ -273,7 +273,7 @@ class Tooltip {
     indentStringGroup?.forEach((isg) {
       isg.value?.values.forEach((v) {
         if (v.topStr.contains("연성 추가 효과")) {
-          option = Utils.getElixirAddtionalEffect(v.topStr);
+          option = RegUtil.getElixirAddtionalEffect(v.topStr);
         }
       });
     });
@@ -286,7 +286,7 @@ class Tooltip {
 
     itemPartBox?.forEach((e) {
       if (e.value?["Element_000"]?.contains("팔찌 효과") ?? false) {
-        result = Utils.getBraceletOption(e.value?["Element_001"] ?? "");
+        result = RegUtil.getBraceletOption(e.value?["Element_001"] ?? "");
       }
     });
 
@@ -299,7 +299,7 @@ class Tooltip {
       isg.value?.values.forEach((v) {
         if (v.topStr.contains("무작위 각인 효과")) {
           v.contentStr?.values.forEach((cs) {
-            List<String> option = Utils.getAbilityStoneOption(cs.contentStr);
+            List<String> option = RegUtil.getAbilityStoneOption(cs.contentStr);
             if (option[0] != "이동속도 감소" &&
                 option[0] != "공격력 감소" &&
                 option[0] != "공격속도 감소" &&
@@ -320,7 +320,7 @@ class Tooltip {
       isg.value?.values.forEach((v) {
         if (v.topStr.contains("무작위 각인 효과")) {
           v.contentStr?.values.forEach((cs) {
-            List<String> option = Utils.getAbilityStoneOption(cs.contentStr);
+            List<String> option = RegUtil.getAbilityStoneOption(cs.contentStr);
 
             if (option[0] == "이동속도 감소" ||
                 option[0] == "공격력 감소" ||
@@ -456,7 +456,7 @@ class ItemTitleValue {
   factory ItemTitleValue.fromJson(Map<String, dynamic> json) {
     String? itemLevelString = null;
     if (json['leftStr2'].contains("레벨")) {
-      itemLevelString = Utils.getNumbersFromString(json['leftStr2'])[1];
+      itemLevelString = RegUtil.getNumbersFromString(json['leftStr2'])[1];
     }
     return ItemTitleValue(
         quality: json['qualityValue'], itemLevel: itemLevelString);
