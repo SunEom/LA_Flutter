@@ -14,12 +14,15 @@ class EventContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "진행중인 이벤트",
-            style: TextStyle(
-                color: K.appColor.white,
-                fontSize: 19,
-                fontWeight: K.appFont.heavy),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              "진행중인 이벤트",
+              style: TextStyle(
+                  color: K.appColor.white,
+                  fontSize: 19,
+                  fontWeight: K.appFont.heavy),
+            ),
           ),
           viewModel.eventList != null
               ? CarouselSlider(

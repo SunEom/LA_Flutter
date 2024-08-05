@@ -56,7 +56,7 @@ class NoticeItem extends StatelessWidget {
         children: [
           Flexible(
             child: Text(
-              notice.title,
+              "- ${notice.title}",
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: TextStyle(

@@ -24,10 +24,7 @@ class HomeView extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: AdventureIslandContainer(),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: EventContainer(),
-          ),
+          EventContainer(),
           Padding(
             padding: const EdgeInsets.all(20),
             child: NoticeContainer(),
