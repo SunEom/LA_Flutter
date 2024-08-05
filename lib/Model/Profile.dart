@@ -16,6 +16,7 @@ class ArmoryProfile {
   final String itemMaxLevel;
   final String serverName;
   final List<Stats> stats;
+  final ArkPassive arkPassive;
 
   ArmoryProfile(
       {this.characterImage,
@@ -34,7 +35,8 @@ class ArmoryProfile {
       required this.itemAvgLevel,
       required this.itemMaxLevel,
       required this.serverName,
-      required this.stats});
+      required this.stats,
+      required this.arkPassive});
 
   factory ArmoryProfile.fromJson(Map<String, dynamic> json) {
     return ArmoryProfile(
@@ -56,7 +58,8 @@ class ArmoryProfile {
         serverName: json['ServerName'],
         stats: (json["Stats"] as List)
             .map((jsonItem) => Stats.fromJson(jsonItem))
-            .toList());
+            .toList(),
+        arkPassive: ArkPassive.fromJSON(json["ArkPassive"]));
   }
 
   Map<String, dynamic> toJson() {
@@ -159,5 +162,29 @@ enum StatsType {
       default:
         throw ArgumentError("Invalid display name: $displayName");
     }
+  }
+}
+
+class ArkPassive {
+  final bool isArkpassive;
+  final List<ArkPassiveItem> points;
+  const ArkPassive({required this.isArkpassive, required this.points});
+
+  factory ArkPassive.fromJSON(Map<String, dynamic> json) {
+    List<ArkPassiveItem> points = (json["Points"] as List)
+        .map((e) => ArkPassiveItem.fromJSON(e))
+        .toList();
+    return ArkPassive(isArkpassive: json["IsArkPassive"], points: points);
+  }
+}
+
+class ArkPassiveItem {
+  final String name;
+  final int value;
+
+  const ArkPassiveItem({required this.name, required this.value});
+
+  factory ArkPassiveItem.fromJSON(Map<String, dynamic> json) {
+    return ArkPassiveItem(name: json["Name"], value: json["Value"]);
   }
 }

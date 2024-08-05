@@ -97,48 +97,135 @@ class StatsContent extends StatelessWidget {
                 height: 10,
               ),
               //활성화 각인 목록
-              viewModel.info!.armoryEngraving != null &&
-                      viewModel.info!.armoryEngraving!.effects != null
-                  ? Wrap(
-                      children: viewModel.info!.armoryEngraving!.effects!
-                          .map((engraving) => Padding(
-                                padding: EdgeInsets.only(right: 10),
-                                child: Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    ClipOval(
-                                      child: Image.network(
-                                        engraving.icon,
-                                        width: 35,
-                                      ),
-                                    ),
-                                    Text(
-                                      engraving.items[1],
-                                      style: TextStyle(
-                                          color: K.appColor.white,
-                                          shadows: [
-                                            const Shadow(
-                                              offset: Offset(
-                                                  0.0, 0.0), // 그림자의 x, y 오프셋
-                                              blurRadius: 15.0, // 그림자의 흐림 정도
-                                              color: Color.fromARGB(
-                                                  255, 0, 0, 0), // 그림자의 색상
+
+              viewModel.info!.armoryProfile.arkPassive.isArkpassive
+                  ? Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // 아크패시브 각인 목록
+                        viewModel.info!.armoryEngraving != null &&
+                                viewModel.info!.armoryEngraving!
+                                        .arkPassiveEffects !=
+                                    null
+                            ? Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: viewModel
+                                    .info!.armoryEngraving!.arkPassiveEffects!
+                                    .map((e) => Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "- ${e.name}",
+                                              style: TextStyle(
+                                                  color: K.appColor.white,
+                                                  fontSize: 14,
+                                                  fontWeight: K.appFont.heavy),
+                                            ),
+                                            Text(
+                                              " ${e.level}",
+                                              style: TextStyle(
+                                                  color: K.appColor
+                                                      .getGradeColor(e.grade),
+                                                  fontSize: 14,
+                                                  fontWeight: K.appFont.heavy),
+                                            ),
+                                            Text(
+                                              e.abilityStoneLevel != null
+                                                  ? " +${e.abilityStoneLevel!}"
+                                                  : "",
+                                              style: TextStyle(
+                                                  color: K.appColor.blue,
+                                                  fontSize: 14,
+                                                  fontWeight: K.appFont.heavy),
                                             )
                                           ],
-                                          fontSize: 15,
-                                          fontWeight: K.appFont.heavy),
-                                    ),
-                                  ],
+                                        ))
+                                    .toList(),
+                              )
+                            : const SizedBox.shrink(),
+                        Column(
+                          // 아크패시브 포인트 정보
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                Image.network(
+                                  "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_arkpassive.png",
+                                  width: 30,
                                 ),
-                              ))
-                          .toList())
-                  : Text(
-                      "활성화된 각인이 없습니다.",
-                      style: TextStyle(
-                          color: K.appColor.white,
-                          fontSize: 12,
-                          fontWeight: K.appFont.heavy),
-                    ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "아크패시브 포인트",
+                                  style: TextStyle(
+                                      color: K.appColor.white,
+                                      fontSize: 14,
+                                      fontWeight: K.appFont.heavy),
+                                )
+                              ],
+                            ),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: viewModel
+                                    .info!.armoryProfile.arkPassive.points
+                                    .map((e) => Text(
+                                          "- ${e.name} : ${e.value}",
+                                          style: TextStyle(
+                                              color: K.appColor.white,
+                                              fontSize: 13,
+                                              fontWeight: K.appFont.heavy),
+                                        ))
+                                    .toList())
+                          ],
+                        )
+                      ],
+                    )
+                  : viewModel.info!.armoryEngraving != null &&
+                          viewModel.info!.armoryEngraving!.effects != null
+                      ? Wrap(
+                          children: viewModel.info!.armoryEngraving!.effects!
+                              .map((engraving) => Padding(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: Stack(
+                                      alignment: Alignment.bottomRight,
+                                      children: [
+                                        ClipOval(
+                                          child: Image.network(
+                                            engraving.icon,
+                                            width: 35,
+                                          ),
+                                        ),
+                                        Text(
+                                          engraving.items[1],
+                                          style: TextStyle(
+                                              color: K.appColor.white,
+                                              shadows: [
+                                                const Shadow(
+                                                  offset: Offset(0.0,
+                                                      0.0), // 그림자의 x, y 오프셋
+                                                  blurRadius:
+                                                      15.0, // 그림자의 흐림 정도
+                                                  color: Color.fromARGB(
+                                                      255, 0, 0, 0), // 그림자의 색상
+                                                )
+                                              ],
+                                              fontSize: 15,
+                                              fontWeight: K.appFont.heavy),
+                                        ),
+                                      ],
+                                    ),
+                                  ))
+                              .toList())
+                      : Text(
+                          "활성화된 각인이 없습니다.",
+                          style: TextStyle(
+                              color: K.appColor.white,
+                              fontSize: 12,
+                              fontWeight: K.appFont.heavy),
+                        ),
               const SizedBox(
                 height: 20,
               ),
@@ -249,11 +336,10 @@ class EquipmentItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       // 아이템 타입
-                      "${equipType.displayName}",
+                      equipType.displayName,
                       style: TextStyle(
                           color: K.appColor.white,
                           fontSize: 13,
@@ -266,10 +352,10 @@ class EquipmentItem extends StatelessWidget {
                       children: [
                         Text(
                           //아이템 레벨
-                          "${equipment!.tooltip.itemTitle?[0].value.itemLevel ?? ""}",
+                          equipment.tooltip.itemTitle?[0].value.itemLevel ?? "",
                           style: TextStyle(
                               color: K.appColor.white,
-                              fontSize: 12,
+                              fontSize: 14,
                               fontWeight: K.appFont.bold),
                         ),
                         const SizedBox(
@@ -277,16 +363,18 @@ class EquipmentItem extends StatelessWidget {
                         ),
                         Text(
                           // 상급재련
-                          "${equipment!.tooltip.advancedUpgrade != null ? "(+${equipment!.tooltip.advancedUpgrade})" : ""}",
+                          equipment!.tooltip.advancedUpgrade != null
+                              ? "(+${equipment.tooltip.advancedUpgrade})"
+                              : "",
                           style: TextStyle(
                             color: K.appColor.advancedUpgradeColor,
-                            fontSize: 11,
+                            fontSize: 12,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
-                        equipment!.tooltip.transcendence != null
+                        equipment.tooltip.transcendence != null
                             ?
                             // 초월
                             Row(
@@ -306,7 +394,7 @@ class EquipmentItem extends StatelessWidget {
                                   )
                                 ],
                               )
-                            : SizedBox.shrink()
+                            : const SizedBox.shrink()
                       ],
                     )
                   ],
@@ -314,39 +402,37 @@ class EquipmentItem extends StatelessWidget {
                 Row(
                   // 엘릭서
                   children: [
-                    ...equipment!.tooltip.elixir
-                        .map(
-                          (e) => Row(
-                            children: [
-                              Text(
-                                e[0] ?? "",
-                                style: TextStyle(
-                                    color: K.appColor.white,
-                                    fontSize: 12,
-                                    fontWeight: K.appFont.heavy),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                e[1] ?? "",
-                                style: TextStyle(
-                                    color: K.appColor.elixirColor,
-                                    fontSize: 13,
-                                    fontWeight: K.appFont.heavy),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              )
-                            ],
+                    ...equipment.tooltip.elixir.map(
+                      (e) => Row(
+                        children: [
+                          Text(
+                            e[0] ?? "",
+                            style: TextStyle(
+                                color: K.appColor.white,
+                                fontSize: 12,
+                                fontWeight: K.appFont.heavy),
                           ),
-                        )
-                        .toList()
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            e[1] ?? "",
+                            style: TextStyle(
+                                color: K.appColor.elixirColor,
+                                fontSize: 13,
+                                fontWeight: K.appFont.heavy),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          )
+                        ],
+                      ),
+                    )
                   ],
                 ),
                 Text(
                   // 아이템 이름
-                  "${equipment!.name}",
+                  equipment.name,
                   style: TextStyle(
                       color: K.appColor.getGradeColor(equipment!.grade),
                       fontSize: 13,
@@ -372,6 +458,7 @@ class AccessoryItem extends StatelessWidget {
 
     Equipment? accessory =
         viewModel.info!.armoryEquipment.getAccessory(accessoryType);
+
     if (accessory == null) {
       //미착용
       return Row(
@@ -467,63 +554,35 @@ class AccessoryItem extends StatelessWidget {
                           fontSize: 12,
                           fontWeight: K.appFont.heavy),
                     ),
-                    //어빌리티 스톤 옵션
-                    Row(
-                      children: [
-                        accessoryType == AccessoryType.abilityStone &&
-                                accessory!
-                                    .tooltip.buffAbilityStoneOption.isNotEmpty
-                            ? Row(
-                                // 증가 능력
-                                children: accessory!
-                                    .tooltip.buffAbilityStoneOption!
-                                    .map(
-                                      (option) => Row(
-                                        children: [
-                                          Text(
-                                            option[1],
-                                            style: TextStyle(
-                                                color: K.appColor.blue,
-                                                fontSize: 12,
-                                                fontWeight: K.appFont.heavy),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                        ],
-                                      ),
-                                    )
-                                    .toList())
-                            : SizedBox.shrink(),
-                        accessoryType == AccessoryType.abilityStone &&
-                                accessory!
-                                    .tooltip.debuffAbilityStoneOption.isNotEmpty
-                            ? Row(
-                                // 감소 능력
-                                children: accessory!
-                                    .tooltip.debuffAbilityStoneOption!
-                                    .map(
-                                      (option) => Row(
-                                        children: [
-                                          Text(
-                                            option[1],
-                                            style: TextStyle(
-                                                color: K.appColor.red,
-                                                fontSize: 12,
-                                                fontWeight: K.appFont.heavy),
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                    .toList())
-                            : SizedBox.shrink(),
-                      ],
-                    ),
+                    //아크패시브 수치
+                    accessory.tooltip.arkPassivePoint != null
+                        ? Text(
+                            "${accessory.tooltip.arkPassivePoint!.name} +${accessory.tooltip.arkPassivePoint!.value}",
+                            style: TextStyle(
+                                color: K.appColor.white,
+                                fontSize: 12,
+                                fontWeight: K.appFont.heavy),
+                          )
+                        : const SizedBox.shrink(),
                   ],
                 ),
+
+                // 장신구 연마 옵션 (4티어)
+                accessory!.tooltip.accessoryGrindingEffect != null
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: accessory!.tooltip.accessoryGrindingEffect!
+                            .map((effect) => Text(
+                                  "- ${effect.option} ",
+                                  style: TextStyle(
+                                      color: effect.grade.gradeColor,
+                                      fontSize: 13,
+                                      fontWeight: K.appFont.heavy),
+                                ))
+                            .toList(),
+                      )
+                    : const SizedBox.shrink(),
+
                 //팔찌 옵션
                 accessoryType == AccessoryType.bracelet &&
                         accessory!.tooltip.braceletOption != null
@@ -531,7 +590,7 @@ class AccessoryItem extends StatelessWidget {
                         children: [
                           ...accessory!.tooltip.braceletOption!
                               .map((option) => Text(
-                                    "${option} ",
+                                    "$option ",
                                     style: TextStyle(
                                         color: K.appColor.braceletOptionColor,
                                         fontSize: 13,
@@ -539,13 +598,87 @@ class AccessoryItem extends StatelessWidget {
                                   ))
                         ],
                       )
-                    : SizedBox.shrink(),
+                    : const SizedBox.shrink(),
 
+                //어빌리티 스톤 옵션
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    accessoryType == AccessoryType.abilityStone &&
+                            accessory.tooltip.buffAbilityStoneOption.isNotEmpty
+                        ? Row(
+                            // 증가 능력
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: accessory.tooltip.buffAbilityStoneOption
+                                .map(
+                                  (option) => Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        option[0],
+                                        style: TextStyle(
+                                            color: K.appColor.white,
+                                            fontSize: 12,
+                                            fontWeight: K.appFont.heavy),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        option[1],
+                                        style: TextStyle(
+                                            color: K.appColor.blue,
+                                            fontSize: 13,
+                                            fontWeight: K.appFont.heavy),
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                .toList())
+                        : const SizedBox.shrink(),
+                    accessoryType == AccessoryType.abilityStone &&
+                            accessory
+                                .tooltip.debuffAbilityStoneOption.isNotEmpty
+                        ? Row(
+                            // 감소 능력
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: accessory.tooltip.debuffAbilityStoneOption
+                                .map(
+                                  (option) => Row(
+                                    children: [
+                                      Text(
+                                        option[0],
+                                        style: TextStyle(
+                                            color: K.appColor.white,
+                                            fontSize: 12,
+                                            fontWeight: K.appFont.heavy),
+                                      ),
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
+                                        option[1],
+                                        style: TextStyle(
+                                            color: K.appColor.red,
+                                            fontSize: 13,
+                                            fontWeight: K.appFont.heavy),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                                .toList())
+                        : const SizedBox.shrink(),
+                  ],
+                ),
                 Text(
                   //악세사리 이름
-                  "${accessory!.name}",
+                  accessory.name,
                   style: TextStyle(
-                      color: K.appColor.getGradeColor(accessory!.grade),
+                      color: K.appColor.getGradeColor(accessory.grade),
                       fontSize: 13,
                       fontWeight: K.appFont.heavy),
                 ),

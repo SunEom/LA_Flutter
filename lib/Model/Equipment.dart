@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:sample_project/Extensions/Map+Extensions.dart';
+import 'package:sample_project/Model/Profile.dart';
 import 'package:sample_project/Util/reg_util.dart';
 
 class ArmoryEquipment {
@@ -237,6 +238,7 @@ class Tooltip {
     return s;
   }
 
+  //엘릭서 부여 옵션
   List<List<String?>> get elixir {
     List<List<String?>> option = [];
 
@@ -253,20 +255,7 @@ class Tooltip {
     return option;
   }
 
-  List<String>? get transcendence {
-    List<String>? transcendence = null;
-
-    indentStringGroup?.forEach((isg) {
-      isg.value?.values.forEach((v) {
-        if (v.topStr.contains("초월")) {
-          transcendence = RegUtil.getTranscendence(v.topStr);
-        }
-      });
-    });
-
-    return transcendence;
-  }
-
+  //엘릭서 연성 추가 효과
   String get elixirAddtionalEffect {
     String option = "추가 효과 없음";
 
@@ -281,6 +270,22 @@ class Tooltip {
     return option;
   }
 
+  //초월 정보
+  List<String>? get transcendence {
+    List<String>? transcendence = null;
+
+    indentStringGroup?.forEach((isg) {
+      isg.value?.values.forEach((v) {
+        if (v.topStr.contains("초월")) {
+          transcendence = RegUtil.getTranscendence(v.topStr);
+        }
+      });
+    });
+
+    return transcendence;
+  }
+
+  //팔찌 옵션
   List<String>? get braceletOption {
     List<String>? result = null;
 
@@ -293,6 +298,7 @@ class Tooltip {
     return result;
   }
 
+  // 어빌리티스톤 추가 효과
   List<List<String>> get buffAbilityStoneOption {
     List<List<String>> result = [];
     indentStringGroup?.forEach((isg) {
@@ -314,6 +320,7 @@ class Tooltip {
     return result;
   }
 
+  // 어빌리티스톤 감소 효과
   List<List<String>> get debuffAbilityStoneOption {
     List<List<String>> result = [];
     indentStringGroup?.forEach((isg) {
@@ -334,6 +341,44 @@ class Tooltip {
     });
 
     return result;
+  }
+
+  // 아크패시브 포인트 효과
+  ArkPassiveItem? get arkPassivePoint {
+    if (itemPartBox == null) {
+      return null;
+    }
+
+    for (ItemPartBox ipb in itemPartBox!) {
+      if (ipb.value != null &&
+          ipb.value!["Element_000"] != null &&
+          ipb.value!["Element_000"]!.contains("아크 패시브 포인트 효과")) {
+        String arkPassvieData = ipb.value!["Element_001"]!;
+        List<String> li = arkPassvieData.split(" ");
+        return ArkPassiveItem(name: li[0], value: int.parse(li[1]));
+      }
+    }
+
+    return null;
+  }
+
+  // 악세사리 연마 효과
+  List<AccessoryGrindingEffectOption>? get accessoryGrindingEffect {
+    if (itemPartBox == null) {
+      return null;
+    }
+
+    for (ItemPartBox ipb in itemPartBox!) {
+      if (ipb.value != null &&
+          ipb.value!["Element_000"] != null &&
+          ipb.value!["Element_000"]!.contains("연마 효과")) {
+        return RegUtil.getAccessoryGrindingEffect(ipb.value!["Element_001"]!)
+            .map((e) => AccessoryGrindingEffectOption(optionStr: e))
+            .toList();
+      }
+    }
+
+    return null;
   }
 
   Tooltip(
@@ -615,3 +660,521 @@ class ContentStr {
     };
   }
 }
+
+class AccessoryGrindingEffectOption {
+  final String optionStr;
+
+  String get option {
+    int idx = optionStr.lastIndexOf(" ");
+    String option = optionStr.substring(0, idx);
+
+    if (option == "무기 공격력" || option == "공격력") {
+      if (optionStr[optionStr.length - 1] == "%") {
+        option += " %";
+      }
+    }
+    return option;
+  }
+
+  String get value {
+    int idx = optionStr.lastIndexOf(" ");
+    return optionStr.substring(idx + 2);
+  }
+
+  const AccessoryGrindingEffectOption({required this.optionStr});
+
+  OptionGrade get grade {
+    switch (option) {
+      case "추가 피해":
+        if (value == "2.60%") {
+          return OptionGrade.high;
+        } else if (value == "1.60%") {
+          return OptionGrade.mid;
+        } else if (value == "0.60%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "적에게 주는 피해":
+        if (value == "2.00%") {
+          return OptionGrade.high;
+        } else if (value == "1.20%") {
+          return OptionGrade.mid;
+        } else if (value == "0.55%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "공격력":
+        if (value == "390") {
+          return OptionGrade.high;
+        } else if (value == "195") {
+          return OptionGrade.mid;
+        } else if (value == "80") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "공격력 %":
+        if (value == "1.55%") {
+          return OptionGrade.high;
+        } else if (value == "0.95%") {
+          return OptionGrade.mid;
+        } else if (value == "0.40%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "무기 공격력":
+        if (value == "960" || value == "3.00%") {
+          return OptionGrade.high;
+        } else if (value == "480" || value == "1.80%") {
+          return OptionGrade.mid;
+        } else if (value == "195" || value == "0.80%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "무기 공격력 %":
+        if (value == "3.00%") {
+          return OptionGrade.high;
+        } else if (value == "1.80%") {
+          return OptionGrade.mid;
+        } else if (value == "0.80%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "치명타 적중률":
+        if (value == "1.55%") {
+          return OptionGrade.high;
+        } else if (value == "0.95%") {
+          return OptionGrade.mid;
+        } else if (value == "0.40%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "치명타 피해":
+        if (value == "4.00%") {
+          return OptionGrade.high;
+        } else if (value == "2.40%") {
+          return OptionGrade.mid;
+        } else if (value == "1.10%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "세레나데, 신앙, 조화 게이지 획득량":
+        if (value == "6.00%") {
+          return OptionGrade.high;
+        } else if (value == "3.60%") {
+          return OptionGrade.mid;
+        } else if (value == "1.60%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "낙인력":
+        if (value == "8.00%") {
+          return OptionGrade.high;
+        } else if (value == "4.80%") {
+          return OptionGrade.mid;
+        } else if (value == "2.15%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "전투 중 생명력 회복량":
+        if (value == "50") {
+          return OptionGrade.high;
+        } else if (value == "25") {
+          return OptionGrade.mid;
+        } else if (value == "10") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "상태이상 공격 지속시간":
+        if (value == "1.00%") {
+          return OptionGrade.high;
+        } else if (value == "0.50%") {
+          return OptionGrade.mid;
+        } else if (value == "0.20%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "최대 마나":
+        if (value == "30") {
+          return OptionGrade.high;
+        } else if (value == "15") {
+          return OptionGrade.mid;
+        } else if (value == "6") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "최대 생명력":
+        if (value == "6500") {
+          return OptionGrade.high;
+        } else if (value == "3250") {
+          return OptionGrade.mid;
+        } else if (value == "1300") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "아군 피해량 강화 효과":
+        if (value == "7.50%") {
+          return OptionGrade.high;
+        } else if (value == "4.50%") {
+          return OptionGrade.mid;
+        } else if (value == "2.00%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "아군 공격력 강화 효과":
+        if (value == "5.00%") {
+          return OptionGrade.high;
+        } else if (value == "3.00%") {
+          return OptionGrade.mid;
+        } else if (value == "1.35%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "파티원 보호막 효과":
+        if (value == "3.50%") {
+          return OptionGrade.high;
+        } else if (value == "2.10%") {
+          return OptionGrade.mid;
+        } else if (value == "0.95%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+      case "파티원 회복 효과":
+        if (value == "3.50%") {
+          return OptionGrade.high;
+        } else if (value == "2.10%") {
+          return OptionGrade.mid;
+        } else if (value == "0.95%") {
+          return OptionGrade.low;
+        } else {
+          return OptionGrade.none;
+        }
+
+      default:
+        return OptionGrade.none;
+    }
+  }
+}
+
+enum OptionGrade {
+  high,
+  mid,
+  low,
+  none;
+
+  Color get gradeColor {
+    Color highGradeColor = Color.fromRGBO(255, 170, 6, 1);
+    Color midGradeColor = Color.fromRGBO(216, 44, 255, 1);
+    Color lowGradeColor = Color.fromRGBO(5, 226, 255, 1);
+    Color noneGradeColor = Colors.white;
+    switch (this) {
+      case OptionGrade.high:
+        return highGradeColor;
+      case OptionGrade.mid:
+        return midGradeColor;
+      case OptionGrade.low:
+        return lowGradeColor;
+      case OptionGrade.none:
+        return noneGradeColor;
+    }
+  }
+}
+
+// "{
+//   "Element_000": {
+//     "type": "NameTagBox",
+//     "value": "<P ALIGN='CENTER'><FONT COLOR='#E3C7A1'>마주한 종언의 반지</FONT></P>"
+//   },
+//   "Element_001": {
+//     "type": "ItemTitle",
+//     "value": {
+//       "bEquip": 0,
+//       "leftStr0": "<FONT SIZE='12'><FONT COLOR='#E3C7A1'>고대 반지</FONT></FONT>",
+//       "leftStr1": "<FONT SIZE='14'>품질</FONT>",
+//       "leftStr2": "<FONT SIZE='14'>아이템 티어 4</FONT>",
+//       "qualityValue": 83,
+//       "rightStr0": "<FONT SIZE='12'><FONT COLOR='#FFD200'>장착중</FONT></FONT>",
+//       "slotData": {
+//         "advBookIcon": 0,
+//         "battleItemTypeIcon": 0,
+//         "cardIcon": false,
+//         "friendship": 0,
+//         "iconGrade": 6,
+//         "iconPath": "https://cdn-lostark.game.onstove.com/efui_iconatlas/acc/acc_21.png",
+//         "imagePath": "",
+//         "islandIcon": 0,
+//         "petBorder": 0,
+//         "rtString": "",
+//         "seal": false,
+//         "temporary": 0,
+//         "town": 0,
+//         "trash": 0
+//       }
+//     }
+//   },
+//   "Element_002": {
+//     "type": "SingleTextBox",
+//     "value": "<FONT SIZE='12'>캐릭터 귀속됨<BR>거래 <FONT COLOR='#FFD200'>2</FONT>회 가능<BR><FONT COLOR='#C24B46'>거래 제한 아이템 레벨</FONT> 1680</FONT>"
+//   },
+//   "Element_003": {
+//     "type": "MultiTextBox",
+//     "value": "|거래가능"
+//   },
+//   "Element_004": {
+//     "type": "ItemPartBox",
+//     "value": {
+//       "Element_000": "<FONT COLOR='#A9D0F5'>기본 효과</FONT>",
+//       "Element_001": "힘 +12801<BR><FONT COLOR='#686660'>민첩 +12801</FONT><BR><FONT COLOR='#686660'>지능 +12801</FONT><BR>체력 +2152"
+//     }
+//   },
+//   "Element_005": {
+//     "type": "ItemPartBox",
+//     "value": {
+//       "Element_000": "<FONT COLOR='#A9D0F5'>연마 효과</FONT>",
+//       "Element_001": "<img src='emoticon_sign_greenDot' width='0' height='0' vspace='-3'></img>무기 공격력 +960<BR><img src='emoticon_sign_greenDot' width='0' height='0' vspace='-3'></img>치명타 적중률 +0.95%<BR><img src='emoticon_sign_greenDot' width='0' height='0' vspace='-3'></img>최대 생명력 +3250"
+//     }
+//   },
+//   "Element_006": {
+//     "type": "ItemPartBox",
+//     "value": {
+//       "Element_000": "<FONT COLOR='#A9D0F5'>아크 패시브 포인트 효과</FONT>",
+//       "Element_001": "깨달음 +12"
+//     }
+//   },
+//   "Element_007": {
+//     "type": "IndentStringGroup",
+//     "value": null
+//   },
+//   "Element_008": {
+//     "type": "SingleTextBox",
+//     "value": "<Font color='#5FD3F1'>[필드보스] 쿠르잔 북부 - 세베크 아툰</font>"
+//   }
+// }"
+
+
+// "{
+//   "Element_000": {
+//     "type": "NameTagBox",
+//     "value": "<P ALIGN='CENTER'><FONT COLOR='#E3C7A1'>+20 화려한 환각의 미소 견갑</FONT></P>"
+//   },
+//   "Element_001": {
+//     "type": "ItemTitle",
+//     "value": {
+//       "bEquip": 0,
+//       "leftStr0": "<FONT SIZE='12'><FONT COLOR='#E3C7A1'>고대 어깨 방어구</FONT></FONT>",
+//       "leftStr1": "<FONT SIZE='14'>품질</FONT>",
+//       "leftStr2": "<FONT SIZE='14'>아이템 레벨 1710 (티어 4)</FONT>",
+//       "qualityValue": 100,
+//       "rightStr0": "<FONT SIZE='12'><FONT COLOR='#FFD200'>장착중</FONT></FONT>",
+//       "slotData": {
+//         "advBookIcon": 0,
+//         "battleItemTypeIcon": 0,
+//         "cardIcon": false,
+//         "friendship": 0,
+//         "iconGrade": 6,
+//         "iconPath": "https://cdn-lostark.game.onstove.com/efui_iconatlas/bm_item/bm_item_01_176.png",
+//         "imagePath": "",
+//         "islandIcon": 0,
+//         "petBorder": 0,
+//         "rtString": "",
+//         "seal": false,
+//         "temporary": 0,
+//         "town": 0,
+//         "trash": 0
+//       }
+//     }
+//   },
+//   "Element_002": {
+//     "type": "SingleTextBox",
+//     "value": "<FONT SIZE='12'>배틀마스터 전용</FONT>"
+//   },
+//   "Element_003": {
+//     "type": "SingleTextBox",
+//     "value": "<FONT SIZE='12'>캐릭터 귀속됨</FONT>"
+//   },
+//   "Element_004": {
+//     "type": "MultiTextBox",
+//     "value": "|<font color='#C24B46'>거래 불가</font>"
+//   },
+//   "Element_005": {
+//     "type": "SingleTextBox",
+//     "value": "<FONT SIZE='14'><FONT COLOR='#A8EA6C'>[상급 재련]</FONT> <FONT COLOR='#FFD200'>20</FONT>단계</FONT>"
+//   },
+//   "Element_006": {
+//     "type": "ItemPartBox",
+//     "value": {
+//       "Element_000": "<FONT COLOR='#A9D0F5'>기본 효과</FONT>",
+//       "Element_001": "물리 방어력 +8062<BR>마법 방어력 +7256<BR>힘 +65813<BR>체력 +6164"
+//     }
+//   },
+//   "Element_007": {
+//     "type": "ItemPartBox",
+//     "value": {
+//       "Element_000": "<FONT COLOR='#A9D0F5'>추가 효과</FONT>",
+//       "Element_001": "생명 활성력 +1400"
+//     }
+//   },
+//   "Element_008": {
+//     "type": "ItemPartBox",
+//     "value": {
+//       "Element_000": "<FONT COLOR='#A9D0F5'>아크 패시브 포인트 효과</FONT>",
+//       "Element_001": "진화 +20"
+//     }
+//   },
+//   "Element_009": {
+//     "type": "Progress",
+//     "value": {
+//       "forceValue": " ",
+//       "maximum": 72000,
+//       "minimum": 0,
+//       "title": "<FONT SIZE='12'><FONT COLOR='#A9D0F5'>현재 단계 재련 경험치</FONT></FONT>",
+//       "value": 0,
+//       "valueType": 1
+//     }
+//   },
+//   "Element_010": {
+//     "type": "IndentStringGroup",
+//     "value": {
+//       "Element_000": {
+//         "contentStr": {
+//           "Element_000": {
+//             "bPoint": false,
+//             "contentStr": "힘 +5880"
+//           },
+//           "Element_001": {
+//             "bPoint": false,
+//             "contentStr": "<FONT COLOR='#FFD200'>모든 장비에 적용된 총 <img src='emoticon_Transcendence_Grade' width='18' height='18' vspace ='-4'></img>126개</FONT>"
+//           },
+//           "Element_002": {
+//             "bPoint": false,
+//             "contentStr": "<img src='emoticon_Transcendence_Grade' width='18' height='18' vspace ='-4'></img><font color='#ffffff'>5</font> - <font color='#ffffff'>무기 공격력이 <FONT COLOR='#99ff99'>1200</FONT> 증가하며, 아군 공격력 강화 효과가 <FONT COLOR='#99ff99'>1%</FONT> 증가합니다.</font>"
+//           },
+//           "Element_003": {
+//             "bPoint": false,
+//             "contentStr": "<img src='emoticon_Transcendence_Grade' width='18' height='18' vspace ='-4'></img><font color='#ffffff'>10</font> - <font color='#ffffff'>마법 방어력이 <FONT COLOR='#99ff99'>1800</FONT> 증가합니다.</font>"
+//           },
+//           "Element_004": {
+//             "bPoint": false,
+//             "contentStr": "<img src='emoticon_Transcendence_Grade' width='18' height='18' vspace ='-4'></img><font color='#ffffff'>15</font> - <font color='#ffffff'>무기 공격력이 <FONT COLOR='#99ff99'>1200</FONT> 추가로 증가하며, 아군 공격력 강화 효과가 <FONT COLOR='#99ff99'>1%</FONT> 추가로 증가합니다.</font>"
+//           },
+//           "Element_005": {
+//             "bPoint": false,
+//             "contentStr": "<img src='emoticon_Transcendence_Grade' width='18' height='18' vspace ='-4'></img><font color='#ffffff'>20</font> - <font color='#ffffff'>무기 공격력이 <FONT COLOR='#99ff99'>1200</FONT> 추가로 증가하며, 아군 공격력 강화 효과가 <FONT COLOR='#99ff99'>1%</FONT> 추가로 증가합니다.</font>"
+//           }
+//         },
+//         "topStr": "<FONT SIZE='12' COLOR='#A9D0F5'>슬롯 효과</FONT><BR><FONT COLOR='#FF9632'>[초월]</FONT> <FONT COLOR='#FFD200'>7</FONT>단계 <img src='emoticon_Transcendence_Grade' width='18' height='18' vspace ='-4'></img>21"
+//       }
+//     }
+//   },
+//   "Element_011": {
+//     "type": "IndentStringGroup",
+//     "value": {
+//       "Element_000": {
+//         "contentStr": {
+//           "Element_000": {
+//             "bPoint": true,
+//             "contentStr": "<FONT color='#FFD200'>[공용]</FONT> 공격력 <FONT color='#FFD200'>Lv.5</FONT><br>공격력 +767"
+//           },
+//           "Element_001": {
+//             "bPoint": true,
+//             "contentStr": "<FONT color='#FFD200'>[어깨]</FONT> 보스 피해 <FONT color='#FFD200'>Lv.5</FONT><br>보스 등급 이상 몬스터에게 주는 피해 +2.4%"
+//           }
+//         },
+//         "topStr": "<FONT COLOR='#FFE65A'>[엘릭서]</FONT><br><font color='#91fe02'><FONT size='12'>지혜의 엘릭서</FONT></font>"
+//       }
+//     }
+//   },
+//   "Element_012": {
+//     "type": "SingleTextBox",
+//     "value": "<FONT SIZE='12'><FONT COLOR='#C24B46'>분해불가</FONT>, <FONT COLOR='#C24B46'>품질 업그레이드 불가</FONT></FONT>"
+//   },
+//   "Element_013": {
+//     "type": "SingleTextBox",
+//     "value": "<Font color='#5FD3F1'>[세트 업그레이드] 대도시 - 세트 장비 관리</font>"
+//   },
+//   "Element_014": {
+//     "type": "ShowMeTheMoney",
+//     "value": "<FONT SIZE='12'><FONT COLOR='#FFFFFF'>내구도 <FONT COLOR='#FFFFFF'>61 / 62</FONT></FONT></FONT>|"
+//   }
+// }"
+
+
+// "{
+//   "Element_000": {
+//     "type": "NameTagBox",
+//     "value": "<P ALIGN='CENTER'><FONT COLOR='#FA5D00'>비장한 각오의 반지</FONT></P>"
+//   },
+//   "Element_001": {
+//     "type": "ItemTitle",
+//     "value": {
+//       "bEquip": 0,
+//       "leftStr0": "<FONT SIZE='12'><FONT COLOR='#FA5D00'>유물 반지</FONT></FONT>",
+//       "leftStr1": "<FONT SIZE='14'>품질</FONT>",
+//       "leftStr2": "<FONT SIZE='14'>아이템 티어 4</FONT>",
+//       "qualityValue": 82,
+//       "rightStr0": "<FONT SIZE='12'><FONT COLOR='#FFD200'>장착중</FONT></FONT>",
+//       "slotData": {
+//         "advBookIcon": 0,
+//         "battleItemTypeIcon": 0,
+//         "cardIcon": false,
+//         "friendship": 0,
+//         "iconGrade": 5,
+//         "iconPath": "https://cdn-lostark.game.onstove.com/efui_iconatlas/acc/acc_25.png",
+//         "imagePath": "",
+//         "islandIcon": 0,
+//         "petBorder": 0,
+//         "rtString": "",
+//         "seal": false,
+//         "temporary": 0,
+//         "town": 0,
+//         "trash": 0
+//       }
+//     }
+//   },
+//   "Element_002": {
+//     "type": "SingleTextBox",
+//     "value": "<FONT SIZE='12'>캐릭터 귀속됨<BR>거래 <FONT COLOR='#FFD200'>3</FONT>회 가능<BR><FONT COLOR='#C24B46'>거래 제한 아이템 레벨</FONT> 1640</FONT>"
+//   },
+//   "Element_003": {
+//     "type": "MultiTextBox",
+//     "value": "|거래가능"
+//   },
+//   "Element_004": {
+//     "type": "ItemPartBox",
+//     "value": {
+//       "Element_000": "<FONT COLOR='#A9D0F5'>기본 효과</FONT>",
+//       "Element_001": "힘 +10201<BR><FONT COLOR='#686660'>민첩 +10201</FONT><BR><FONT COLOR='#686660'>지능 +10201</FONT><BR>체력 +1986"
+//     }
+//   },
+//   "Element_005": {
+//     "type": "ItemPartBox",
+//     "value": {
+//       "Element_000": "<FONT COLOR='#A9D0F5'>아크 패시브 포인트 효과</FONT>",
+//       "Element_001": "깨달음 +3"
+//     }
+//   },
+//   "Element_006": {
+//     "type": "IndentStringGroup",
+//     "value": null
+//   },
+//   "Element_007": {
+//     "type": "SingleTextBox",
+//     "value": "<Font color='#5FD3F1'>[쿠르잔 전선] </font><BR><Font color='#5FD3F1'>[가디언 토벌] 아게오로스</font><BR><Font color='#5FD3F1'>[필드보스] 쿠르잔 북부 - 세베크 아툰</font>"
+//   }
+// }"

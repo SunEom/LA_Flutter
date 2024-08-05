@@ -76,10 +76,8 @@ class RegUtil {
 
   static List<String> getBraceletOption(String input) {
     RegExp exp = RegExp(r"\[<FONT COLOR=\'\'>(.*?)<\/FONT>\]");
-    String text =
-        '''<img src='emoticon_tooltip_bracelet_locked' vspace='-5'></img> 치명 +97<BR><img src='emoticon_tooltip_bracelet_changeable' width='20' height='20' vspace='-6'></img>[<FONT COLOR=''>결투</FONT>] 헤드어택으로 주는 피해가 <FONT COLOR='#99ff99'>4%</FONT> 증가한다. <FONT COLOR='#969696'>(60레벨 초과 몬스터에게는 효과 감소)</FONT><BR><img src='emoticon_tooltip_bracelet_changeable' width='20' height='20' vspace='-6'></img>[<FONT COLOR=''>열정</FONT>] 자신의 생명력이 40% 이상일 경우 적에게 공격 적중 시 3초 동안 '열정' 효과를 획득한다.<BR>'냉정' 효과를 보유 중 일 때 '열정' 효과가 1% 추가 증가한다.<BR>열정 : 몬스터에게 주는 피해가 <FONT COLOR='#99ff99'>4%</FONT> 증가한다. <FONT COLOR='#969696'>(60레벨 초과 몬스터에게는 효과 감소)</FONT><BR><img src='emoticon_tooltip_bracelet_changeable' width='20' height='20' vspace='-6'></img>[<FONT COLOR=''>속공</FONT>] 몬스터에게 피격 시 <FONT COLOR='#99ff99'>10%</FONT> 확률로 8초 동안 '속공' 효과를 획득한다. <BR>속공: 무기 공격력이 <FONT COLOR='#99ff99'>1000</FONT>, 공격속도가 <FONT COLOR='#99ff99'>2%</FONT>, 이동속도가 <FONT COLOR='#99ff99'>2%</FONT> 상승한다. <FONT COLOR='#969696'>(60레벨 초과 몬스터에게는 효과 감소)</FONT>''';
 
-    Iterable<Match> matches = exp.allMatches(text);
+    Iterable<Match> matches = exp.allMatches(input);
 
     return matches.map((match) => match.group(1)!).toList();
   }
@@ -110,5 +108,16 @@ class RegUtil {
     } else {
       return [];
     }
+  }
+
+  static List<String> getAccessoryGrindingEffect(String input) {
+    // 정규표현식 패턴
+    RegExp regExp =
+        RegExp(r"[\uAC00-\uD7A3A-Za-z0-9 ,]+ \+[0-9]+(\.[0-9]+)?%?");
+
+    // 패턴에 맞는 모든 부분을 찾기
+    Iterable<RegExpMatch> matches = regExp.allMatches(input);
+
+    return matches.map((m) => m.group(0)!).toList();
   }
 }

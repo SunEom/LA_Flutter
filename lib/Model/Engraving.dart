@@ -2,8 +2,9 @@ import 'package:sample_project/Util/reg_util.dart';
 
 class ArmoryEngraving {
   final List<Effect>? effects;
+  final List<ArkPassiveEffect>? arkPassiveEffects;
 
-  ArmoryEngraving({required this.effects});
+  ArmoryEngraving({this.effects, this.arkPassiveEffects});
 
   factory ArmoryEngraving.fromJson(Map<String, dynamic> json) {
     return ArmoryEngraving(
@@ -11,6 +12,11 @@ class ArmoryEngraving {
             ? null
             : (json["Effects"] as List)
                 .map((jsonItem) => Effect.fromJson(jsonItem))
+                .toList(),
+        arkPassiveEffects: json["ArkPassiveEffects"] == null
+            ? null
+            : (json["ArkPassiveEffects"] as List)
+                .map((jsonItem) => ArkPassiveEffect.fromJson(jsonItem))
                 .toList());
   }
 }
@@ -30,5 +36,35 @@ class Effect {
 
   Map<String, dynamic> toJson() {
     return {'icon': icon, 'name': name};
+  }
+}
+
+class ArkPassiveEffect {
+  final int? abilityStoneLevel;
+  final String grade;
+  final int level;
+  final String name;
+
+  ArkPassiveEffect(
+      {this.abilityStoneLevel,
+      required this.grade,
+      required this.level,
+      required this.name});
+
+  factory ArkPassiveEffect.fromJson(Map<String, dynamic> json) {
+    return ArkPassiveEffect(
+        abilityStoneLevel: json["AbilityStoneLevel"],
+        grade: json["Grade"],
+        level: json["Level"],
+        name: json["Name"]);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'AbilityStoneLevel': abilityStoneLevel,
+      "Grade": grade,
+      "Level": level,
+      'Name': name
+    };
   }
 }
