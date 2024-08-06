@@ -233,6 +233,13 @@ class FavoriteCharacterContainer extends StatelessWidget {
                             K.appImage.getClassImage(
                                 viewModel.favoriteCharacter!.className),
                             width: 40,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Icon(
+                                Icons.error,
+                                color: K.appColor.gray,
+                                size: 35,
+                              );
+                            },
                           ),
                           const SizedBox(
                             width: 15,

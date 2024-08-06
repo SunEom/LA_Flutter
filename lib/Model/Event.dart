@@ -23,4 +23,15 @@ class Event {
         endDate: json["EndDate"],
         rewardDate: json["RewardDate"]);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "Title": title,
+      "Thumbnail": thumbnail,
+      "Link": link,
+      "StartDate": startDate,
+      "EndDate": endDate,
+      "RewardDate": rewardDate
+    };
+  }
 }

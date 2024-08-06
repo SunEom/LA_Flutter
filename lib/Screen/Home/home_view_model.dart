@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:result_dart/result_dart.dart';
 import 'package:sample_project/DI/DIController.dart';
 import 'package:sample_project/Model/Event.dart';
 import 'package:sample_project/Model/FavoriteCharacter.dart';
@@ -33,29 +34,58 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void _fetchAdventureIslandSchedule() async {
-    _adventrueIslandCalendar =
-        await DIController.gameContentsService.fetchAdventrueIslandSchedule();
+    Result<AdventrueIslandCalendar, Exception> result = await DIController
+        .services.gameContentsService
+        .fetchAdventrueIslandSchedule();
+    result.fold((calendar) {
+      _adventrueIslandCalendar = calendar;
+    }, (err) {
+      //에러처리
+    });
     notifyListeners();
   }
 
   void _fetchEventList() async {
-    _eventList = await DIController.newsService.fetchEventList();
+    Result<List<Event>, Exception> result =
+        await DIController.services.newsService.fetchEventList();
+
+    result.fold((list) {
+      _eventList = list;
+    }, (err) {
+      //에러처리
+    });
+
     notifyListeners();
   }
 
   void _fetchNoticeList() async {
-    _noticeList = await DIController.newsService.fetchNoticeList();
+    Result<List<Notice>, Exception> result =
+        await DIController.services.newsService.fetchNoticeList();
+
+    result.fold((list) {
+      _noticeList = list;
+    }, (err) {
+      //에러처리
+    });
+
     notifyListeners();
   }
 
   void fetchFavoriteCharacter() async {
-    _favoriteCharacter =
-        await DIController.characterService.fetchFavoriteCharacter();
+    Result<FavoriteCharacter, Exception> result =
+        await DIController.services.characterService.fetchFavoriteCharacter();
+
+    result.fold((character) {
+      _favoriteCharacter = character;
+    }, (err) {
+      _favoriteCharacter = null;
+    });
+
     notifyListeners();
   }
 
   void removeFavButtonTap() async {
-    await DIController.characterService.removeFavoriteCharacter();
+    await DIController.services.characterService.removeFavoriteCharacter();
     _favoriteCharacter = null;
     notifyListeners();
   }

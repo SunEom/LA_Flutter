@@ -34,20 +34,36 @@ class EventContainer extends StatelessWidget {
                     return Builder(
                       builder: (BuildContext context) {
                         return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      WebView(url: event.link),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              child: Image.network(
-                                event.thumbnail,
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WebView(url: event.link),
                               ),
-                            ));
+                            );
+                          },
+                          child: Image.network(
+                            event.thumbnail,
+                            errorBuilder: (context, error, stackTrace) =>
+                                Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.warning,
+                                  color: K.appColor.gray,
+                                  size: 35,
+                                ),
+                                Text(
+                                  "이미지를 가져오는 도중 에러가 발생했습니다.",
+                                  style: TextStyle(
+                                      color: K.appColor.white,
+                                      fontSize: 15,
+                                      fontWeight: K.appFont.heavy),
+                                )
+                              ],
+                            ),
+                          ),
+                        );
                       },
                     );
                   }).toList(),

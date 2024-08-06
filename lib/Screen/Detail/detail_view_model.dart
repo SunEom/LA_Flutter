@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:result_dart/result_dart.dart';
 import 'package:sample_project/DI/DIController.dart';
 import 'package:sample_project/Model/Character.dart';
 import 'package:sample_project/Model/FavoriteCharacter.dart';
@@ -29,14 +30,14 @@ enum DetailViewTab {
 
 class DetailViewModel extends ChangeNotifier {
   late String nickname;
-  CharacterInfo? _info = null;
+  CharacterInfo? _info;
   CharacterInfo? get info => _info;
   bool isLoading = true;
   DetailViewTab selectedTab = DetailViewTab.main;
-  ArmorySiblings? _armorySiblings = null;
+  ArmorySiblings? _armorySiblings;
   ArmorySiblings? get armorySiblings => _armorySiblings;
 
-  FavoriteCharacter? _favoriteCharacter = null;
+  FavoriteCharacter? _favoriteCharacter;
   FavoriteCharacter? get favoriteCharacter => _favoriteCharacter;
 
   bool get isFavCharacter {
@@ -47,50 +48,66 @@ class DetailViewModel extends ChangeNotifier {
     return favoriteCharacter!.name == info!.armoryProfile.characterName;
   }
 
-  DetailViewModel(String nickname) {
-    this.nickname = nickname;
+  DetailViewModel(this.nickname) {
     fetchDetail();
     _fetchFavoriteCharacter();
   }
 
   void fetchDetail() async {
     isLoading = true;
-    _info = await DIController.characterService.fetchCharacterInfo(nickname);
-    _armorySiblings =
-        await DIController.characterService.fetchSiblings(nickname);
+
+    Result<CharacterInfo, Exception> fetchCharacterInfoResult =
+        await DIController.services.characterService
+            .fetchCharacterInfo(nickname);
+    fetchCharacterInfoResult.fold((info) {
+      _info = info;
+    }, (err) {
+      //에러처리
+    });
+
+    Result<ArmorySiblings, Exception> fetchSiblingsResult =
+        await DIController.services.characterService.fetchSiblings(nickname);
+
+    fetchSiblingsResult.fold((siblings) {
+      _armorySiblings = siblings;
+    }, (err) {
+      //에러처리
+    });
+
     isLoading = false;
     notifyListeners();
   }
 
   void fetchAnotherUserDetail(String nickname) async {
-    isLoading = true;
     this.nickname = nickname;
-    selectedTab = DetailViewTab.main;
-    _info = await DIController.characterService.fetchCharacterInfo(nickname);
-    _armorySiblings =
-        await DIController.characterService.fetchSiblings(nickname);
-    isLoading = false;
+    changeTab(DetailViewTab.main);
+    fetchDetail();
     notifyListeners();
   }
 
   void changeTab(DetailViewTab tab) {
-    this.selectedTab = tab;
+    selectedTab = tab;
     notifyListeners();
   }
 
   void favButtonTap() async {
     if (isFavCharacter) {
       // 이미 즐겨찾기에 등록된 캐릭터인 경우 -> 삭제
-      await DIController.characterService.removeFavoriteCharacter();
+      await DIController.services.characterService.removeFavoriteCharacter();
     } else {
-      await DIController.characterService.saveFavoriteCharacter(info);
+      await DIController.services.characterService.saveFavoriteCharacter(info);
     }
     _fetchFavoriteCharacter(); // 즐겨찾기 변경 후 정보 갱신
   }
 
   void _fetchFavoriteCharacter() async {
-    _favoriteCharacter =
-        await DIController.characterService.fetchFavoriteCharacter();
+    Result<FavoriteCharacter, Exception> result =
+        await DIController.services.characterService.fetchFavoriteCharacter();
+    result.fold((character) {
+      _favoriteCharacter = character;
+    }, (err) {
+      _favoriteCharacter = null;
+    });
     notifyListeners();
   }
 }

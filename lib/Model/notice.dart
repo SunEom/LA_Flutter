@@ -25,4 +25,8 @@ class Notice {
         link: json["Link"],
         type: json["Type"]);
   }
+
+  Map<String, dynamic> toJson() {
+    return {"Title": title, "Date": date, "Link": link, "Type": type};
+  }
 }
