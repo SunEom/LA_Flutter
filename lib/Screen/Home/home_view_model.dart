@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:sample_project/DI/DIController.dart';
-import 'package:sample_project/Model/Event.dart';
-import 'package:sample_project/Model/FavoriteCharacter.dart';
+import 'package:sample_project/DI/di_controller.dart';
+import 'package:sample_project/Model/event.dart';
+import 'package:sample_project/Model/favorite_character.dart';
 import 'package:sample_project/Model/adventrue_island.dart';
 import 'package:sample_project/Model/notice.dart';
 
 class HomeViewModel extends ChangeNotifier {
   String _nickname = "";
   String get nickname => _nickname;
+
+  bool _adventrueIslandCalendarLoading = false;
+  bool get adventrueIslandCalendarLoading => _adventrueIslandCalendarLoading;
   AdventrueIslandCalendar? _adventrueIslandCalendar;
   AdventrueIslandCalendar? get adventrueIslandCalendar =>
       _adventrueIslandCalendar;
@@ -19,10 +22,19 @@ class HomeViewModel extends ChangeNotifier {
   List<Notice>? _noticeList;
   List<Notice>? get noticeList => _noticeList;
 
+  bool _favoriteCharacterLoading = false;
+  bool get favoriteCharacterLoading => _favoriteCharacterLoading;
   FavoriteCharacter? _favoriteCharacter;
   FavoriteCharacter? get favoriteCharacter => _favoriteCharacter;
 
   HomeViewModel() {
+    _fetchAdventureIslandSchedule();
+    _fetchEventList();
+    _fetchNoticeList();
+    fetchFavoriteCharacter();
+  }
+
+  Future<void> reloadData() async {
     _fetchAdventureIslandSchedule();
     _fetchEventList();
     _fetchNoticeList();
@@ -34,6 +46,7 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void _fetchAdventureIslandSchedule() async {
+    _adventrueIslandCalendarLoading = true;
     Result<AdventrueIslandCalendar, Exception> result = await DIController
         .services.gameContentsService
         .fetchAdventrueIslandSchedule();
@@ -42,6 +55,7 @@ class HomeViewModel extends ChangeNotifier {
     }, (err) {
       //에러처리
     });
+    _adventrueIslandCalendarLoading = false;
     notifyListeners();
   }
 
@@ -72,6 +86,7 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void fetchFavoriteCharacter() async {
+    _favoriteCharacterLoading = true;
     Result<FavoriteCharacter, Exception> result =
         await DIController.services.characterService.fetchFavoriteCharacter();
 
@@ -81,6 +96,7 @@ class HomeViewModel extends ChangeNotifier {
       _favoriteCharacter = null;
     });
 
+    _favoriteCharacterLoading = false;
     notifyListeners();
   }
 

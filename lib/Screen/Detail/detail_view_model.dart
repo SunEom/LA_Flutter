@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:sample_project/DI/DIController.dart';
-import 'package:sample_project/Model/Character.dart';
-import 'package:sample_project/Model/FavoriteCharacter.dart';
-import 'package:sample_project/Model/Sibling.dart';
+import 'package:sample_project/DI/di_controller.dart';
+import 'package:sample_project/Model/character.dart';
+import 'package:sample_project/Model/favorite_character.dart';
+import 'package:sample_project/Model/sibling.dart';
 
 enum DetailViewTab {
   main,

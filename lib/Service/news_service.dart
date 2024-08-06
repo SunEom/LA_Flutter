@@ -1,6 +1,6 @@
 import 'package:result_dart/result_dart.dart';
 
-import 'package:sample_project/Model/Event.dart';
+import 'package:sample_project/Model/event.dart';
 import 'package:sample_project/Model/notice.dart';
 import 'package:sample_project/Repository/news_repository.dart';
 import 'package:sample_project/Util/network_util.dart';

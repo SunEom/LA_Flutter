@@ -1,7 +1,7 @@
 import 'package:result_dart/result_dart.dart';
-import 'package:sample_project/Model/Character.dart';
-import 'package:sample_project/Model/FavoriteCharacter.dart';
-import 'package:sample_project/Model/Sibling.dart';
+import 'package:sample_project/Model/character.dart';
+import 'package:sample_project/Model/favorite_character.dart';
+import 'package:sample_project/Model/sibling.dart';
 import 'package:sample_project/Repository/character_repository.dart';
 import 'package:sample_project/Util/network_util.dart';
 

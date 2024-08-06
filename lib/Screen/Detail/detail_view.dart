@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Components/top_bar.dart';
-import 'package:sample_project/Constant/Constant.dart';
+import 'package:sample_project/Constant/constant.dart';
 import 'package:sample_project/Screen/Components/loading_view.dart';
 import 'package:sample_project/Screen/Detail/Components/armory_sibling_tab.dart';
 import 'package:sample_project/Screen/Detail/Components/character_not_found_view.dart';
@@ -47,7 +47,9 @@ class DetailView extends StatelessWidget {
     return Scaffold(
       appBar: TopBar(),
       body: viewModel.isLoading
-          ? LoadingView()
+          ? LoadingView(
+              title: "유저 정보를 가져오는 중입니다!",
+            )
           : PrimaryScrollController(
               controller: _scrollController,
               child: Center(

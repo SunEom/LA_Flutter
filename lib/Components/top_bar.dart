@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:sample_project/Constant/Constant.dart';
+import 'package:sample_project/Constant/constant.dart';
 
 AppBar TopBar() {
   return AppBar(

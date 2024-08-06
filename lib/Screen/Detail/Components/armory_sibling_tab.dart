@@ -2,8 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sample_project/Constant/Constant.dart';
-import 'package:sample_project/Model/Sibling.dart';
+import 'package:sample_project/Constant/constant.dart';
+import 'package:sample_project/Model/sibling.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
 class ArmorySiblingContents extends StatelessWidget {

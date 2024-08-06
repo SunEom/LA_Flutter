@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:result_dart/result_dart.dart';
-import 'package:sample_project/Constant/Constant.dart';
-import 'package:sample_project/Model/Event.dart';
+import 'package:sample_project/Constant/constant.dart';
+import 'package:sample_project/Model/event.dart';
 import 'package:sample_project/Model/notice.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';

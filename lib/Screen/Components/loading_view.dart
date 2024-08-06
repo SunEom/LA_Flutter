@@ -1,8 +1,12 @@
 // 로딩 뷰
 import 'package:flutter/material.dart';
-import 'package:sample_project/Constant/Constant.dart';
+import 'package:sample_project/Constant/constant.dart';
 
 class LoadingView extends StatelessWidget {
+  final String title;
+
+  const LoadingView({required this.title});
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -10,13 +14,13 @@ class LoadingView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+            valueColor: AlwaysStoppedAnimation<Color>(K.appColor.white),
           ),
-          SizedBox(
-            height: 50,
+          const SizedBox(
+            height: 30,
           ),
           Text(
-            "유저 정보를 가져오는 중입니다!",
+            title,
             style: TextStyle(
                 color: K.appColor.white,
                 fontSize: 14,

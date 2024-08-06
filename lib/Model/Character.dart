@@ -1,4 +1,4 @@
-import 'package:sample_project/Model/Card.dart';
+import 'package:sample_project/Model/card.dart';
 import 'package:sample_project/Model/Engraving.dart';
 import 'package:sample_project/Model/Equipment.dart';
 import 'package:sample_project/Model/Gem.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sample_project/Constant/Constant.dart';
+import 'package:sample_project/Constant/constant.dart';
 import 'package:sample_project/Model/notice.dart';
 import 'package:sample_project/Screen/Home/home_view_model.dart';
 import 'package:sample_project/Screen/Web/web_view.dart';
