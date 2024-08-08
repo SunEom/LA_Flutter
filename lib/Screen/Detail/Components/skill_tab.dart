@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/Skills.dart';
+import 'package:sample_project/Screen/Components/network_image.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
 class SkillContents extends StatelessWidget {
@@ -39,8 +40,8 @@ class SkillItem extends StatelessWidget {
             width: 70,
             child: Column(
               children: [
-                Image.network(
-                  skill.icon,
+                NImage(
+                  url: skill.icon,
                   width: 40,
                 ),
                 const SizedBox(
@@ -78,8 +79,8 @@ class SkillItem extends StatelessWidget {
                               //트라이포드 이미지 및 슬롯 번호
                               Stack(
                                 children: [
-                                  Image.network(
-                                    t.icon,
+                                  NImage(
+                                    url: t.icon,
                                     width: 40,
                                   ),
                                   Text(
@@ -131,8 +132,8 @@ class SkillItem extends StatelessWidget {
               skill.rune != null
                   ? Row(
                       children: [
-                        Image.network(
-                          skill.rune!.icon,
+                        NImage(
+                          url: skill.rune!.icon,
                           width: 25,
                         ),
 
@@ -159,8 +160,8 @@ class SkillItem extends StatelessWidget {
                           .where((gem) => gem.tooltip.contains(skill.name))
                           .map((gem) => Row(
                                 children: [
-                                  Image.network(
-                                    gem.icon,
+                                  NImage(
+                                    url: gem.icon,
                                     width: 25,
                                   ),
 

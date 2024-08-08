@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/constant.dart';
 import 'package:sample_project/Model/alert_data.dart';
 import 'package:sample_project/Screen/Components/loading_view.dart';
+import 'package:sample_project/Screen/Components/network_image.dart';
 import 'package:sample_project/Screen/Detail/detail_view.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 import 'package:sample_project/Screen/Home/home_view_model.dart';
@@ -235,17 +236,10 @@ class FavoriteCharacterContainer extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Image.network(
-                              K.appImage.getClassImage(
+                            NImage(
+                              url: K.appImage.getClassImage(
                                   viewModel.favoriteCharacter!.className),
                               width: 40,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Icon(
-                                  Icons.error,
-                                  color: K.appColor.gray,
-                                  size: 35,
-                                );
-                              },
                             ),
                             const SizedBox(
                               width: 15,

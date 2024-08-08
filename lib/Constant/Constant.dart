@@ -74,6 +74,9 @@ class AppImage {
   String fieldBossIcon =
       "https://cdn-lostark.game.onstove.com/efui_iconatlas/achieve/achieve_14_142.png";
 
+  String arkPassiveIcon =
+      "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_arkpassive.png";
+
   String getClassImage(String className) {
     switch (className) {
       //슈샤이어

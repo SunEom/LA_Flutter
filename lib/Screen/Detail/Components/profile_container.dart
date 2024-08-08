@@ -3,9 +3,8 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
+import 'package:sample_project/Screen/Components/network_image.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
-import 'package:sample_project/Screen/Home/home_view.dart';
-import 'package:sample_project/Screen/Home/home_view_model.dart';
 
 class CharacterImage extends StatelessWidget {
   final String? imageUrl;
@@ -15,7 +14,10 @@ class CharacterImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return imageUrl != null
-        ? Image.network(imageUrl!, width: 150)
+        ? NImage(
+            url: imageUrl!,
+            width: 150,
+          )
         : const SizedBox(
             width: 150,
             child: Text('Image not available'),

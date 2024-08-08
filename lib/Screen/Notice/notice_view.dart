@@ -4,7 +4,7 @@ import 'package:sample_project/Components/top_bar.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/notice.dart';
 import 'package:sample_project/Screen/Components/loading_view.dart';
-import 'package:sample_project/Screen/Notice/Components/new_badge.dart';
+import 'package:sample_project/Screen/Components/new_badge.dart';
 import 'package:sample_project/Screen/Notice/notice_view_model.dart';
 import 'package:sample_project/Screen/Web/web_view.dart';
 import 'package:sprintf/sprintf.dart';

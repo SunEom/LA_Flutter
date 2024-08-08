@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/constant.dart';
 import 'package:sample_project/Model/sibling.dart';
+import 'package:sample_project/Screen/Components/network_image.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
 class ArmorySiblingContents extends StatelessWidget {
@@ -20,7 +21,7 @@ class ArmorySiblingContents extends StatelessWidget {
                 viewModel.armorySiblings!.sibling.isNotEmpty)
             ? viewModel.armorySiblings!.serverList
                 .map((server) => Padding(
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -94,8 +95,8 @@ class ArmorySiblingItem extends StatelessWidget {
               child: Row(
                 children: [
                   ClipOval(
-                    child: Image.network(
-                      K.appImage.getClassImage(sibling.characterClassName),
+                    child: NImage(
+                      url: K.appImage.getClassImage(sibling.characterClassName),
                       width: 40,
                     ),
                   ),

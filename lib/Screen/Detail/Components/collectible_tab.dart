@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/collectible.dart';
+import 'package:sample_project/Screen/Components/network_image.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 import 'package:sprintf/sprintf.dart';
 
@@ -30,13 +31,9 @@ class CollectibleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Image.network(
-          collectible.icon,
+        NImage(
+          url: collectible.icon,
           width: 60,
-          errorBuilder: (context, error, stackTrace) => const Icon(
-            Icons.error,
-            size: 60,
-          ),
         ),
         const SizedBox(
           width: 20,

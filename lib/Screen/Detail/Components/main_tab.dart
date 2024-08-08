@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/Equipment.dart';
-import 'package:sample_project/Model/Gem.dart';
 import 'package:sample_project/Model/Profile.dart';
+import 'package:sample_project/Screen/Components/network_image.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
 class MainInfoContents extends StatelessWidget {
@@ -148,8 +148,8 @@ class StatsContent extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Image.network(
-                                  "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_arkpassive.png",
+                                NImage(
+                                  url: K.appImage.arkPassiveIcon,
                                   width: 30,
                                 ),
                                 const SizedBox(
@@ -185,13 +185,13 @@ class StatsContent extends StatelessWidget {
                       ? Wrap(
                           children: viewModel.info!.armoryEngraving!.effects!
                               .map((engraving) => Padding(
-                                    padding: EdgeInsets.only(right: 10),
+                                    padding: const EdgeInsets.only(right: 10),
                                     child: Stack(
                                       alignment: Alignment.bottomRight,
                                       children: [
                                         ClipOval(
-                                          child: Image.network(
-                                            engraving.icon,
+                                          child: NImage(
+                                            url: engraving.icon,
                                             width: 35,
                                           ),
                                         ),
@@ -200,13 +200,13 @@ class StatsContent extends StatelessWidget {
                                           style: TextStyle(
                                               color: K.appColor.white,
                                               shadows: [
-                                                const Shadow(
-                                                  offset: Offset(0.0,
+                                                Shadow(
+                                                  offset: const Offset(0.0,
                                                       0.0), // 그림자의 x, y 오프셋
                                                   blurRadius:
                                                       15.0, // 그림자의 흐림 정도
-                                                  color: Color.fromARGB(
-                                                      255, 0, 0, 0), // 그림자의 색상
+                                                  color: K.appColor
+                                                      .black, // 그림자의 색상
                                                 )
                                               ],
                                               fontSize: 15,
@@ -303,7 +303,7 @@ class EquipmentItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${equipType.displayName}",
+                equipType.displayName,
                 style: TextStyle(color: K.appColor.white, fontSize: 13),
               ),
               Text(
@@ -315,16 +315,15 @@ class EquipmentItem extends StatelessWidget {
         ],
       );
     } else {
-      return Container(
+      return SizedBox(
         width: 280,
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image.network(
+            NImage(
               // 아이템 이미지
-              equipment!.icon,
+              url: equipment.icon,
               width: 50,
-              height: 50,
             ),
             const SizedBox(
               width: 20,
@@ -360,7 +359,7 @@ class EquipmentItem extends StatelessWidget {
                         ),
                         Text(
                           // 상급재련
-                          equipment!.tooltip.advancedUpgrade != null
+                          equipment.tooltip.advancedUpgrade != null
                               ? "(+${equipment.tooltip.advancedUpgrade})"
                               : "",
                           style: TextStyle(
@@ -376,14 +375,14 @@ class EquipmentItem extends StatelessWidget {
                             // 초월
                             Row(
                                 children: [
-                                  Container(
+                                  SizedBox(
                                       width: 20,
                                       height: 20,
-                                      child: Image.network(
-                                          K.lostArkAPI.transcendenceImage,
+                                      child: NImage(
+                                          url: K.lostArkAPI.transcendenceImage,
                                           width: 20)),
                                   Text(
-                                    "${equipment!.tooltip.transcendence?[0]}단계 총 ${equipment!.tooltip.transcendence?[1]}",
+                                    "${equipment.tooltip.transcendence?[0]}단계 총 ${equipment.tooltip.transcendence?[1]}",
                                     style: TextStyle(
                                         color: K.appColor.transcendenceColor,
                                         fontSize: 12,
@@ -431,7 +430,7 @@ class EquipmentItem extends StatelessWidget {
                   // 아이템 이름
                   equipment.name,
                   style: TextStyle(
-                      color: K.appColor.getGradeColor(equipment!.grade),
+                      color: K.appColor.getGradeColor(equipment.grade),
                       fontSize: 13,
                       fontWeight: K.appFont.heavy),
                 ),
@@ -474,7 +473,7 @@ class AccessoryItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "${accessoryType.displayName}",
+                accessoryType.displayName,
                 style: TextStyle(color: K.appColor.white, fontSize: 13),
               ),
               Text(
@@ -491,11 +490,10 @@ class AccessoryItem extends StatelessWidget {
         width: 280,
         child: Row(
           children: [
-            Image.network(
+            NImage(
               // 악세사리 이미지
-              accessory!.icon,
+              url: accessory.icon,
               width: 50,
-              height: 50,
             ),
             const SizedBox(
               width: 20,
@@ -508,7 +506,7 @@ class AccessoryItem extends StatelessWidget {
                   children: [
                     Text(
                       //악세사리 타입
-                      "${accessoryType.displayName}",
+                      accessoryType.displayName,
                       style: TextStyle(
                           color: K.appColor.white,
                           fontSize: 13,
@@ -523,15 +521,16 @@ class AccessoryItem extends StatelessWidget {
                             //품질
                             borderRadius: BorderRadius.circular(5),
                             child: Container(
-                                color: accessory!.tooltip.itemTitle?[0].value
+                                color: accessory.tooltip.itemTitle?[0].value
                                         .getQualityColor() ??
                                     Colors.transparent,
                                 child: Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 5),
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
                                   child: accessoryType == AccessoryType.bracelet
                                       ? null
                                       : Text(
-                                          "${accessory!.tooltip.itemTitle?[0].value.quality ?? ""}",
+                                          "${accessory.tooltip.itemTitle?[0].value.quality ?? ""}",
                                           style: TextStyle(
                                               color: K.appColor.white,
                                               fontSize: 12,
@@ -545,7 +544,7 @@ class AccessoryItem extends StatelessWidget {
                     ),
                     Text(
                       //악세사리 스텟
-                      "${accessory!.tooltip.stats ?? ""}",
+                      accessory.tooltip.stats ?? "",
                       style: TextStyle(
                           color: K.appColor.white,
                           fontSize: 12,
@@ -568,7 +567,7 @@ class AccessoryItem extends StatelessWidget {
                 accessory!.tooltip.accessoryGrindingEffect != null
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: accessory!.tooltip.accessoryGrindingEffect!
+                        children: accessory.tooltip.accessoryGrindingEffect!
                             .map((effect) => Text(
                                   "- ${effect.option} ",
                                   style: TextStyle(
@@ -582,10 +581,10 @@ class AccessoryItem extends StatelessWidget {
 
                 //팔찌 옵션
                 accessoryType == AccessoryType.bracelet &&
-                        accessory!.tooltip.braceletOption != null
+                        accessory.tooltip.braceletOption != null
                     ? Row(
                         children: [
-                          ...accessory!.tooltip.braceletOption!
+                          ...accessory.tooltip.braceletOption!
                               .map((option) => Text(
                                     "$option ",
                                     style: TextStyle(
@@ -824,7 +823,7 @@ class CardContents extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Padding(
-            padding: EdgeInsets.all(30),
+            padding: const EdgeInsets.all(30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -846,8 +845,8 @@ class CardContents extends StatelessWidget {
                           .map((card) => Stack(
                                 alignment: Alignment.bottomRight,
                                 children: [
-                                  Image.network(
-                                    card.icon,
+                                  NImage(
+                                    url: card.icon,
                                     width: 35,
                                   ),
                                   Text(
@@ -856,11 +855,10 @@ class CardContents extends StatelessWidget {
                                         color: K.appColor.white,
                                         shadows: [
                                           Shadow(
-                                            offset: Offset(
+                                            offset: const Offset(
                                                 0.0, 0.0), // 그림자의 x, y 오프셋
                                             blurRadius: 15.0, // 그림자의 흐림 정도
-                                            color: Color.fromARGB(
-                                                255, 0, 0, 0), // 그림자의 색상
+                                            color: K.appColor.black, // 그림자의 색상
                                           )
                                         ],
                                         fontSize: 18,
@@ -888,7 +886,7 @@ class CardContents extends StatelessWidget {
                               (effect) => Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 10,
                                   ),
                                   Text(
@@ -905,7 +903,7 @@ class CardContents extends StatelessWidget {
                       )
                     : Column(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Text(
@@ -935,7 +933,7 @@ class CharacterGemContents extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Padding(
-            padding: EdgeInsets.all(30),
+            padding: const EdgeInsets.all(30),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -959,8 +957,8 @@ class CharacterGemContents extends StatelessWidget {
                                     Stack(
                                       alignment: Alignment.bottomRight,
                                       children: [
-                                        Image.network(
-                                          gem.icon,
+                                        NImage(
+                                          url: gem.icon,
                                           width: 35,
                                         ),
                                         Text(
@@ -968,13 +966,13 @@ class CharacterGemContents extends StatelessWidget {
                                           style: TextStyle(
                                               color: K.appColor.white,
                                               shadows: [
-                                                const Shadow(
-                                                  offset: Offset(0.0,
+                                                Shadow(
+                                                  offset: const Offset(0.0,
                                                       0.0), // 그림자의 x, y 오프셋
                                                   blurRadius:
                                                       15.0, // 그림자의 흐림 정도
-                                                  color: Color.fromARGB(
-                                                      255, 0, 0, 0), // 그림자의 색상
+                                                  color: K.appColor
+                                                      .black, // 그림자의 색상
                                                 )
                                               ],
                                               fontSize: 15,
@@ -991,11 +989,11 @@ class CharacterGemContents extends StatelessWidget {
                                           color: K.appColor.white,
                                           shadows: [
                                             Shadow(
-                                              offset: Offset(
+                                              offset: const Offset(
                                                   0.0, 0.0), // 그림자의 x, y 오프셋
                                               blurRadius: 15.0, // 그림자의 흐림 정도
-                                              color: Color.fromARGB(
-                                                  255, 0, 0, 0), // 그림자의 색상
+                                              color:
+                                                  K.appColor.black, // 그림자의 색상
                                             )
                                           ],
                                           fontWeight: K.appFont.heavy),

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/adventrue_island.dart';
 import 'package:sample_project/Screen/Components/loading_view.dart';
+import 'package:sample_project/Screen/Components/network_image.dart';
 
 import 'package:sample_project/Screen/Home/home_view_model.dart';
 import 'package:sample_project/Util/datetime_util.dart';
@@ -68,8 +69,8 @@ class AdventureIslandContainer extends StatelessWidget {
                         Row(
                           // 카오스 게이트
                           children: [
-                            Image.network(
-                              K.appImage.chaosGateIcon,
+                            NImage(
+                              url: K.appImage.chaosGateIcon,
                               width: 25,
                             ),
                             const SizedBox(
@@ -103,8 +104,8 @@ class AdventureIslandContainer extends StatelessWidget {
                         Row(
                           // 카오스 게이트
                           children: [
-                            Image.network(
-                              K.appImage.fieldBossIcon,
+                            NImage(
+                              url: K.appImage.fieldBossIcon,
                               width: 25,
                             ),
                             const SizedBox(
@@ -161,8 +162,8 @@ class AdventureIslandItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Image.network(
-          adventrueIsland.contentsIcon,
+        NImage(
+          url: adventrueIsland.contentsIcon,
           width: 45,
         ),
         const SizedBox(
@@ -183,8 +184,8 @@ class AdventureIslandItem extends StatelessWidget {
                 const SizedBox(
                   width: 10,
                 ),
-                Image.network(
-                  adventrueIsland.mainRewardType.icon,
+                NImage(
+                  url: adventrueIsland.mainRewardType.icon,
                   width: 20,
                 )
               ],
