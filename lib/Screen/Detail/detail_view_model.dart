@@ -8,10 +8,16 @@ import 'package:sample_project/Model/sibling.dart';
 enum DetailViewTab {
   main,
   skill,
-  armory;
+  armory,
+  collectibles;
 
   static List<DetailViewTab> get defaultOrder {
-    return [DetailViewTab.main, DetailViewTab.skill, DetailViewTab.armory];
+    return [
+      DetailViewTab.main,
+      DetailViewTab.skill,
+      DetailViewTab.armory,
+      DetailViewTab.collectibles
+    ];
   }
 
   String get displayName {
@@ -24,6 +30,9 @@ enum DetailViewTab {
 
       case DetailViewTab.armory:
         return "원정대";
+
+      case DetailViewTab.collectibles:
+        return "내실";
     }
   }
 }
@@ -49,6 +58,11 @@ class DetailViewModel extends ChangeNotifier {
   }
 
   DetailViewModel(this.nickname) {
+    fetchDetail();
+    _fetchFavoriteCharacter();
+  }
+
+  Future<void> reloadData() async {
     fetchDetail();
     _fetchFavoriteCharacter();
   }

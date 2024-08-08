@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/constant.dart';
 import 'package:sample_project/Model/notice.dart';
 import 'package:sample_project/Screen/Home/home_view_model.dart';
+import 'package:sample_project/Screen/Notice/Components/new_badge.dart';
+import 'package:sample_project/Screen/Notice/notice_view.dart';
+import 'package:sample_project/Screen/Notice/notice_view_model.dart';
 import 'package:sample_project/Screen/Web/web_view.dart';
 
 class NoticeContainer extends StatelessWidget {
@@ -13,14 +16,38 @@ class NoticeContainer extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "공지사항",
-          style: TextStyle(
-              color: K.appColor.white,
-              fontSize: 19,
-              fontWeight: K.appFont.heavy),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              "공지사항",
+              style: TextStyle(
+                  color: K.appColor.white,
+                  fontSize: 19,
+                  fontWeight: K.appFont.heavy),
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ChangeNotifierProvider.value(
+                              value: NoticeViewModel(),
+                              child: NoticeView(),
+                            )));
+              },
+              child: Text(
+                "더보기",
+                style: TextStyle(
+                    color: K.appColor.white,
+                    fontSize: 14,
+                    fontWeight: K.appFont.heavy),
+              ),
+            )
+          ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         viewModel.noticeList != null
@@ -66,22 +93,13 @@ class NoticeItem extends StatelessWidget {
             ),
           ),
           if (notice.isNew) // Notice가 새로운 경우에만 Container를 표시
-            Container(
-              width: 16,
-              height: 16,
-              margin: EdgeInsets.only(left: 4), // 왼쪽 간격을 조정
-              decoration: BoxDecoration(
-                  color: K.appColor.red,
-                  borderRadius: BorderRadius.circular(10)),
-              child: Center(
-                child: Text(
-                  "N",
-                  style: TextStyle(
-                      color: K.appColor.white,
-                      fontSize: 12,
-                      fontWeight: K.appFont.heavy),
+            Row(
+              children: [
+                const SizedBox(
+                  width: 5,
                 ),
-              ),
+                NewBadge()
+              ],
             ),
         ],
       ),

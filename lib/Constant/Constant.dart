@@ -21,6 +21,7 @@ class AppColor {
   Color blue = Colors.blue;
   Color darkBlue = Colors.blue.shade800;
   Color red = Colors.red;
+  Color green = Colors.green;
   Color yellow = Color.fromARGB(226, 255, 235, 59);
   Color advancedUpgradeColor = Color.fromRGBO(168, 234, 108, 1);
   Color elixirColor = Color.fromRGBO(216, 178, 2, 1);

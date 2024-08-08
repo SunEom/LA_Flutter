@@ -9,9 +9,6 @@ import 'package:sample_project/Model/Profile.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
 class MainInfoContents extends StatelessWidget {
-  final DetailViewModel viewModel;
-
-  const MainInfoContents({required this.viewModel});
   @override
   Widget build(BuildContext context) {
     return Column(
