@@ -101,6 +101,9 @@ class AdventureIslandContainer extends StatelessWidget {
                                   )
                           ],
                         ),
+                        const SizedBox(
+                          height: 40,
+                        ),
                         Row(
                           // 카오스 게이트
                           children: [

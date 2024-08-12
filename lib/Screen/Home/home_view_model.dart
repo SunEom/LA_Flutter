@@ -24,8 +24,12 @@ class HomeViewModel extends ChangeNotifier {
 
   bool _favoriteCharacterLoading = false;
   bool get favoriteCharacterLoading => _favoriteCharacterLoading;
+
   FavoriteCharacter? _favoriteCharacter;
   FavoriteCharacter? get favoriteCharacter => _favoriteCharacter;
+
+  String? _alertData;
+  String? get alertData => _alertData;
 
   HomeViewModel() {
     _fetchAdventureIslandSchedule();
@@ -53,7 +57,7 @@ class HomeViewModel extends ChangeNotifier {
     result.fold((calendar) {
       _adventrueIslandCalendar = calendar;
     }, (err) {
-      //에러처리
+      _alertData = err.toString();
     });
     _adventrueIslandCalendarLoading = false;
     notifyListeners();
@@ -66,7 +70,7 @@ class HomeViewModel extends ChangeNotifier {
     result.fold((list) {
       _eventList = list;
     }, (err) {
-      //에러처리
+      _alertData = err.toString();
     });
 
     notifyListeners();
@@ -79,7 +83,7 @@ class HomeViewModel extends ChangeNotifier {
     result.fold((list) {
       _noticeList = list;
     }, (err) {
-      //에러처리
+      _alertData = err.toString();
     });
 
     notifyListeners();
@@ -104,5 +108,9 @@ class HomeViewModel extends ChangeNotifier {
     await DIController.services.characterService.removeFavoriteCharacter();
     _favoriteCharacter = null;
     notifyListeners();
+  }
+
+  void resetAlertData() {
+    _alertData = null;
   }
 }

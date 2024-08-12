@@ -30,6 +30,9 @@ class NoticeViewModel extends ChangeNotifier {
   String _filter = "전체";
   String get filter => _filter;
 
+  String? _alertData;
+  String? get alertData => _alertData;
+
   NoticeViewModel() {
     fetchNoticeList();
   }
@@ -44,7 +47,7 @@ class NoticeViewModel extends ChangeNotifier {
     result.fold((list) {
       _noticeList = list.where(noticeFilter).toList();
     }, (err) {
-      //에러처리
+      _alertData = err.toString();
     });
 
     _isLoading = false;
@@ -87,5 +90,9 @@ class NoticeViewModel extends ChangeNotifier {
     // <<
     _page = 1;
     notifyListeners();
+  }
+
+  void resetAlertData() {
+    _alertData = null;
   }
 }

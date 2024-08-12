@@ -14,6 +14,17 @@ class NoticeView extends StatelessWidget {
   Widget build(BuildContext context) {
     NoticeViewModel viewModel = Provider.of<NoticeViewModel>(context);
 
+    if (viewModel.alertData != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(viewModel.alertData!),
+          ),
+        );
+        viewModel.resetAlertData();
+      });
+    }
+
     return Scaffold(
       appBar: TopBar(title: "공지사항"),
       body: viewModel.isLoading
@@ -24,7 +35,7 @@ class NoticeView extends StatelessWidget {
             )
           : SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(30),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
                     Row(

@@ -49,6 +49,9 @@ class DetailViewModel extends ChangeNotifier {
   FavoriteCharacter? _favoriteCharacter;
   FavoriteCharacter? get favoriteCharacter => _favoriteCharacter;
 
+  String? _alertData;
+  String? get alertData => _alertData;
+
   bool get isFavCharacter {
     if (_info == null || _favoriteCharacter == null) {
       return false;
@@ -76,7 +79,7 @@ class DetailViewModel extends ChangeNotifier {
     fetchCharacterInfoResult.fold((info) {
       _info = info;
     }, (err) {
-      //에러처리
+      _alertData = err.toString();
     });
 
     Result<ArmorySiblings, Exception> fetchSiblingsResult =
@@ -85,7 +88,7 @@ class DetailViewModel extends ChangeNotifier {
     fetchSiblingsResult.fold((siblings) {
       _armorySiblings = siblings;
     }, (err) {
-      //에러처리
+      _alertData = err.toString();
     });
 
     isLoading = false;
@@ -123,5 +126,9 @@ class DetailViewModel extends ChangeNotifier {
       _favoriteCharacter = null;
     });
     notifyListeners();
+  }
+
+  void resetAlertData() {
+    _alertData = null;
   }
 }

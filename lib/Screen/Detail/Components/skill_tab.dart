@@ -129,57 +129,54 @@ class SkillItem extends StatelessWidget {
           Column(
             children: [
               // 룬 정보
-              skill.rune != null
-                  ? Row(
-                      children: [
-                        NImage(
-                          url: skill.rune!.icon,
-                          width: 25,
-                        ),
+              if (skill.rune != null)
+                Row(
+                  children: [
+                    NImage(
+                      url: skill.rune!.icon,
+                      width: 25,
+                    ),
 
-                        // 룬 이름
-                        AutoSizeText(
-                          skill.rune!.name,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
-                          minFontSize: 11,
-                          maxFontSize: 15,
-                          style: TextStyle(
-                              color:
-                                  K.appColor.getGradeColor(skill.rune!.grade),
-                              fontWeight: K.appFont.superHeavy),
-                        ),
-                      ],
-                    )
-                  : const SizedBox.shrink(),
+                    // 룬 이름
+                    AutoSizeText(
+                      skill.rune!.name,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      minFontSize: 11,
+                      maxFontSize: 15,
+                      style: TextStyle(
+                          color: K.appColor.getGradeColor(skill.rune!.grade),
+                          fontWeight: K.appFont.superHeavy),
+                    ),
+                  ],
+                ),
 
               //보석 정보
-              viewModel.info!.armoryGem.gems != null
-                  ? Column(
-                      children: viewModel.info!.armoryGem.gems!
-                          .where((gem) => gem.tooltip.contains(skill.name))
-                          .map((gem) => Row(
-                                children: [
-                                  NImage(
-                                    url: gem.icon,
-                                    width: 25,
-                                  ),
+              if (viewModel.info!.armoryGem.gems != null)
+                Column(
+                    children: viewModel.info!.armoryGem.gems!
+                        .where((gem) => gem.tooltip.contains(skill.name))
+                        .map((gem) => Row(
+                              children: [
+                                NImage(
+                                  url: gem.icon,
+                                  width: 25,
+                                ),
 
-                                  // 보석 타입 (멸, 홍, 겁, 작)
-                                  AutoSizeText(
-                                    gem.type,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    minFontSize: 11,
-                                    maxFontSize: 15,
-                                    style: TextStyle(
-                                        color: K.appColor.white,
-                                        fontWeight: K.appFont.superHeavy),
-                                  ),
-                                ],
-                              ))
-                          .toList())
-                  : const SizedBox.shrink()
+                                // 보석 타입 (멸, 홍, 겁, 작)
+                                AutoSizeText(
+                                  gem.type,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  minFontSize: 11,
+                                  maxFontSize: 15,
+                                  style: TextStyle(
+                                      color: K.appColor.white,
+                                      fontWeight: K.appFont.superHeavy),
+                                ),
+                              ],
+                            ))
+                        .toList())
             ],
           )
         ],

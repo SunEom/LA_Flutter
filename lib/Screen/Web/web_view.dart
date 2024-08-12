@@ -6,7 +6,7 @@ class WebView extends StatelessWidget {
   final String url;
   late var controller = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setBackgroundColor(Color.fromARGB(0, 0, 0, 0))
+    ..setBackgroundColor(K.appColor.mainBackgroundColor)
     ..loadRequest(Uri.parse(url));
 
   WebView({required this.url});

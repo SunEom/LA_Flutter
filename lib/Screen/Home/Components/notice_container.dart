@@ -50,15 +50,14 @@ class NoticeContainer extends StatelessWidget {
         const SizedBox(
           height: 5,
         ),
-        viewModel.noticeList != null
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: viewModel.noticeList!
-                    .sublist(0, 5)
-                    .map((notice) => NoticeItem(notice: notice))
-                    .toList(),
-              )
-            : const SizedBox.shrink()
+        if (viewModel.noticeList != null)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: viewModel.noticeList!
+                .sublist(0, 5)
+                .map((notice) => NoticeItem(notice: notice))
+                .toList(),
+          )
       ],
     );
   }

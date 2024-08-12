@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/constant.dart';
+import 'package:sample_project/Screen/Components/network_image.dart';
 import 'package:sample_project/Screen/Home/home_view_model.dart';
 import 'package:sample_project/Screen/Web/web_view.dart';
 
@@ -9,68 +10,44 @@ class EventContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeViewModel viewModel = Provider.of<HomeViewModel>(context);
-    return Container(
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              "진행중인 이벤트",
-              style: TextStyle(
-                  color: K.appColor.white,
-                  fontSize: 19,
-                  fontWeight: K.appFont.heavy),
-            ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            "진행중인 이벤트",
+            style: TextStyle(
+                color: K.appColor.white,
+                fontSize: 19,
+                fontWeight: K.appFont.heavy),
           ),
-          viewModel.eventList != null
-              ? CarouselSlider(
-                  options: CarouselOptions(
-                      autoPlay: true,
-                      enlargeCenterPage: true,
-                      enlargeFactor: 0.3),
-                  items: viewModel.eventList?.map((event) {
-                    return Builder(
-                      builder: (BuildContext context) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => WebView(url: event.link),
-                              ),
-                            );
-                          },
-                          child: Image.network(
-                            event.thumbnail,
-                            errorBuilder: (context, error, stackTrace) =>
-                                Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.warning,
-                                  color: K.appColor.gray,
-                                  size: 35,
-                                ),
-                                Text(
-                                  "이미지를 가져오는 도중 에러가 발생했습니다.",
-                                  style: TextStyle(
-                                      color: K.appColor.white,
-                                      fontSize: 15,
-                                      fontWeight: K.appFont.heavy),
-                                )
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }).toList(),
-                )
-              : const SizedBox.shrink()
-        ],
-      ),
+        ),
+        if (viewModel.eventList != null)
+          CarouselSlider(
+            options: CarouselOptions(
+                autoPlay: true, enlargeCenterPage: true, enlargeFactor: 0.3),
+            items: viewModel.eventList?.map((event) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WebView(url: event.link),
+                        ),
+                      );
+                    },
+                    child: NImage(
+                      url: event.thumbnail,
+                    ),
+                  );
+                },
+              );
+            }).toList(),
+          )
+      ],
     );
   }
 }

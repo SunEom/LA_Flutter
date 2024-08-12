@@ -19,6 +19,17 @@ class DetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<DetailViewModel>(context);
 
+    if (viewModel.alertData != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(viewModel.alertData!),
+          ),
+        );
+        viewModel.resetAlertData();
+      });
+    }
+
     Widget selectedTabView() {
       switch (viewModel.selectedTab) {
         case DetailViewTab.main:

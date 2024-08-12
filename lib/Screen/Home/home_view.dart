@@ -12,6 +12,18 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeViewModel viewModel = Provider.of<HomeViewModel>(context);
+
+    if (viewModel.alertData != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(viewModel.alertData!),
+          ),
+        );
+        viewModel.resetAlertData();
+      });
+    }
+
     return Scaffold(
       appBar: TopBar(),
       body: RefreshIndicator(
@@ -26,12 +38,17 @@ class HomeView extends StatelessWidget {
                 child: SearchContainer(),
               ),
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: AdventureIslandContainer(),
               ),
-              EventContainer(),
               Padding(
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.symmetric(vertical: 30),
+                child: EventContainer(),
+              ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 child: NoticeContainer(),
               )
             ],
