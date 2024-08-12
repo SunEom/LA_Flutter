@@ -49,10 +49,10 @@ class AdventrueIslandCalendar {
 
   const AdventrueIslandCalendar({required this.gameContents});
 
-  factory AdventrueIslandCalendar.fromJSON(List<dynamic> json) {
+  factory AdventrueIslandCalendar.fromJSON(List<dynamic> list) {
     return AdventrueIslandCalendar(
         gameContents:
-            (json as List).map((e) => AdventrueIsland.fromJSON(e)).toList());
+            (list as List).map((e) => AdventrueIsland.fromJSON(e)).toList());
   }
 }
 
@@ -133,6 +133,20 @@ class AdventrueIsland {
       mainRewardType: rewardType,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'CategoryName': categoryName,
+      'ContentsName': contentsName,
+      'ContentsIcon': contentsIcon,
+      'StartTimes': startTimes,
+      'Location': location,
+      'RewardItems': [
+        {"Items": rewards.map((e) => e.toJson()).toList()}
+      ],
+      'mainRewardType': mainRewardType.toString().split('.').last,
+    };
+  }
 }
 
 class RewardItem {
@@ -150,6 +164,14 @@ class RewardItem {
           ? null
           : (json["StartTimes"] as List).map((e) => e.toString()).toList(),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'Name': name,
+      'Icon': icon,
+      'StartTimes': startTimes,
+    };
   }
 }
 
@@ -171,5 +193,16 @@ enum MainRewardType {
     } else {
       return "";
     }
+  }
+
+  String toJson() {
+    return toString().split('.').last;
+  }
+
+  static MainRewardType fromJson(String json) {
+    return MainRewardType.values.firstWhere(
+      (e) => e.toString().split('.').last == json,
+      orElse: () => MainRewardType.siling,
+    );
   }
 }

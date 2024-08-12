@@ -6,6 +6,7 @@ import 'package:sample_project/Constant/constant.dart';
 import 'package:sample_project/Model/event.dart';
 import 'package:sample_project/Model/notice.dart';
 import 'package:http/http.dart' as http;
+import 'package:sample_project/Util/datetime_util.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class NewsRepository {
@@ -82,7 +83,12 @@ class NetworkNewsRepository implements NewsRepository {
     final SharedPreferences pref = await SharedPreferences.getInstance();
     List<String> jsonStringList =
         eventList.map((e) => jsonEncode(e.toJson())).toList();
-    await pref.setStringList('eventList', jsonStringList);
+
+    bool isSuccess = await pref.setStringList('eventList', jsonStringList);
+
+    if (isSuccess) {
+      await pref.setString('recentEventFetchDate', DateTime.now().toString());
+    }
   }
 }
 
@@ -99,7 +105,7 @@ class LocalNewsRepository implements NewsRepository {
 
       return Result.success(noticeList);
     } else {
-      return Result.success([]);
+      return const Result.success([]);
     }
   }
 
@@ -109,13 +115,27 @@ class LocalNewsRepository implements NewsRepository {
 
     List<String>? jsonStringList = pref.getStringList('eventList');
 
-    if (jsonStringList != null) {
-      List<Event> eventList =
-          jsonStringList.map((e) => Event.fromJSON(json.decode(e))).toList();
+    String? recentEventFetchDateString = pref.getString("recentEventFetchDate");
 
-      return Result.success(eventList);
+    if (recentEventFetchDateString == null) {
+      // 이벤트 정보를 가져온 적이 없는 경우
+      return Result.failure(Exception("이벤트 정보를 가져온 기록이 없습니다."));
     } else {
-      return Result.success([]);
+      if (DatetimeUtil.isAfterLastWednesday(
+          DateTime.parse(recentEventFetchDateString))) {
+        if (jsonStringList != null) {
+          List<Event> eventList = jsonStringList
+              .map((e) => Event.fromJSON(json.decode(e)))
+              .toList();
+
+          return Result.success(eventList);
+        } else {
+          return Result.failure(Exception("이벤트 정보를 가져올 수 없습니다."));
+        }
+      } else {
+        // 이벤트 정보를 가져온 날짜가 지난 수요일 이전인 경우
+        return Result.failure(Exception("이벤트 갱신이 필요합니다."));
+      }
     }
   }
 }

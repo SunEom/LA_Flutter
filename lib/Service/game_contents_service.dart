@@ -13,13 +13,24 @@ class GameContentsService implements GameContentsServiceType {
   GameContentsRepository networkGameContentRepository =
       NetworkGameContentRepository();
 
+  LocalGameContentRepository localGameContentRepository =
+      LocalGameContentRepository();
+
   @override
   Future<Result<AdventrueIslandCalendar, Exception>>
       fetchAdventrueIslandSchedule() async {
-    if (await NetworkUtil.isConnected()) {
-      return await networkGameContentRepository.fetchAdventrueIslandSchedule();
+    Result<AdventrueIslandCalendar, Exception> result =
+        await localGameContentRepository.fetchAdventrueIslandSchedule();
+
+    if (result.isSuccess()) {
+      return result;
     } else {
-      return Result.failure(Exception("인터넷 연결 오류"));
+      if (await NetworkUtil.isConnected()) {
+        return await networkGameContentRepository
+            .fetchAdventrueIslandSchedule();
+      } else {
+        return Result.failure(Exception("인터넷 연결 오류"));
+      }
     }
   }
 }
