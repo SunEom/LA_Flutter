@@ -60,7 +60,7 @@ class DetailView extends StatelessWidget {
     return RefreshIndicator(
         onRefresh: viewModel.reloadData,
         child: Scaffold(
-          appBar: TopBar(),
+          appBar: TopBar(title: "캐릭터 정보"),
           body: viewModel.isLoading
               ? const LoadingView(
                   title: "유저 정보를 가져오는 중입니다!",
