@@ -1,4 +1,4 @@
-package com.example.sample_project
+package com.suneom.arkpedia
 
 import io.flutter.embedding.android.FlutterActivity
 
