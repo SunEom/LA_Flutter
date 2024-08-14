@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dartz/dartz.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:sample_project/Constant/constant.dart';
@@ -10,7 +11,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract interface class CharacterRepository {
-  Future<Result<CharacterInfo, Exception>> fetchCharacterInfo(String nickname);
+  Future<Result<Option<CharacterInfo>, Exception>> fetchCharacterInfo(
+      String nickname);
   Future<Result<ArmorySiblings, Exception>> fetchSiblings(String nickname);
   Future<Result<void, Exception>> saveFavoriteCharacter(CharacterInfo? info);
   Future<Result<FavoriteCharacter, Exception>> fetchFavoriteCharacter();
@@ -19,7 +21,7 @@ abstract interface class CharacterRepository {
 
 class NetworkCharacterRepository implements CharacterRepository {
   @override
-  Future<Result<CharacterInfo, Exception>> fetchCharacterInfo(
+  Future<Result<Option<CharacterInfo>, Exception>> fetchCharacterInfo(
       String nickname) async {
     var url = Uri.parse('${K.lostArkAPI.base}armories/characters/$nickname');
     var client = http.Client();
@@ -30,10 +32,14 @@ class NetworkCharacterRepository implements CharacterRepository {
         headers: {'Authorization': 'Bearer ${dotenv.env["API_KEY"]}'},
       );
 
-      if (response.statusCode == 200 && response.body != "null") {
+      if (response.statusCode == 200) {
+        if (response.body == "null") {
+          // 성공적으로 데이터를 받았으나 해당 유저의 정보가 없는 경우
+          return const Result.success(None());
+        }
         // 성공적으로 데이터를 받음
         var characterInfo = CharacterInfo.fromJson(json.decode(response.body));
-        return Result.success(characterInfo);
+        return Result.success(Some(characterInfo));
       } else {
         // 에러 처리
         return Result.failure(Exception("HTTP 응답 오류"));
@@ -89,7 +95,8 @@ class NetworkCharacterRepository implements CharacterRepository {
 
 class LocalCharacterRepository implements CharacterRepository {
   @override
-  Future<Result<CharacterInfo, Exception>> fetchCharacterInfo(String nickname) {
+  Future<Result<Option<CharacterInfo>, Exception>> fetchCharacterInfo(
+      String nickname) {
     // TODO: implement fetchCharacterInfo
     throw UnimplementedError();
   }

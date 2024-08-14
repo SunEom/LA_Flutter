@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:sample_project/DI/di_controller.dart';
@@ -73,11 +74,11 @@ class DetailViewModel extends ChangeNotifier {
   void fetchDetail() async {
     isLoading = true;
 
-    Result<CharacterInfo, Exception> fetchCharacterInfoResult =
+    Result<Option<CharacterInfo>, Exception> fetchCharacterInfoResult =
         await DIController.services.characterService
             .fetchCharacterInfo(nickname);
     fetchCharacterInfoResult.fold((info) {
-      _info = info;
+      _info = info.toNullable();
     }, (err) {
       _alertData = err.toString();
     });

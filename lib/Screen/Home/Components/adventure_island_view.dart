@@ -7,7 +7,6 @@ import 'package:sample_project/Screen/Components/network_image.dart';
 
 import 'package:sample_project/Screen/Home/home_view_model.dart';
 import 'package:sample_project/Util/datetime_util.dart';
-import 'package:sample_project/Util/reg_util.dart';
 
 class AdventureIslandContainer extends StatelessWidget {
   @override

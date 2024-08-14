@@ -1,3 +1,4 @@
+import 'package:dartz/dartz.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:sample_project/Model/character.dart';
 import 'package:sample_project/Model/favorite_character.dart';
@@ -6,7 +7,8 @@ import 'package:sample_project/Repository/character_repository.dart';
 import 'package:sample_project/Util/network_util.dart';
 
 abstract interface class CharacterServiceType {
-  Future<Result<CharacterInfo, Exception>> fetchCharacterInfo(String nickname);
+  Future<Result<Option<CharacterInfo>, Exception>> fetchCharacterInfo(
+      String nickname);
   Future<Result<ArmorySiblings, Exception>> fetchSiblings(String nickname);
   Future<Result<void, Exception>> saveFavoriteCharacter(CharacterInfo? info);
   Future<Result<FavoriteCharacter, Exception>> fetchFavoriteCharacter();
@@ -18,7 +20,7 @@ class CharacterService implements CharacterServiceType {
   CharacterRepository localCharacterRepository = LocalCharacterRepository();
 
   @override
-  Future<Result<CharacterInfo, Exception>> fetchCharacterInfo(
+  Future<Result<Option<CharacterInfo>, Exception>> fetchCharacterInfo(
       String nickname) async {
     if (await NetworkUtil.isConnected()) {
       return networkCharacterRepository.fetchCharacterInfo(nickname);
