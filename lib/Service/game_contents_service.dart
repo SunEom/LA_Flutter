@@ -23,9 +23,11 @@ class GameContentsService implements GameContentsServiceType {
         await localGameContentRepository.fetchAdventrueIslandSchedule();
 
     if (result.isSuccess()) {
+      print("Local");
       return result;
     } else {
       if (await NetworkUtil.isConnected()) {
+        print("Network");
         return await networkGameContentRepository
             .fetchAdventrueIslandSchedule();
       } else {

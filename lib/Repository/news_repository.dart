@@ -121,7 +121,7 @@ class LocalNewsRepository implements NewsRepository {
       // 이벤트 정보를 가져온 적이 없는 경우
       return Result.failure(Exception("이벤트 정보를 가져온 기록이 없습니다."));
     } else {
-      if (DatetimeUtil.isAfterLastWednesday(
+      if (DatetimeUtil.isAfter11AM(
           DateTime.parse(recentEventFetchDateString))) {
         if (jsonStringList != null) {
           List<Event> eventList = jsonStringList

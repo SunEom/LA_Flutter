@@ -86,6 +86,10 @@ class LocalGameContentRepository implements GameContentsRepository {
           AdventrueIslandCalendar calendar =
               AdventrueIslandCalendar(gameContents: gameContents);
 
+          if (calendar.todayAdventrueIslands.isEmpty) {
+            return Result.failure(Exception("모험섬 정보를 가져올 수 없습니다."));
+          }
+
           return Result.success(calendar);
         } else {
           return Result.failure(Exception("모험섬 정보를 가져올 수 없습니다."));
