@@ -41,14 +41,14 @@ class StatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 80,
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             item.typeString,
             style: TextStyle(
                 color: K.appColor.white,
-                fontSize: 15,
+                fontSize: 16,
                 fontWeight: K.appFont.heavy),
           ),
           const SizedBox(
@@ -58,7 +58,7 @@ class StatItem extends StatelessWidget {
             item.value,
             style: TextStyle(
                 color: K.appColor.white,
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: K.appFont.heavy),
           )
         ],
@@ -72,203 +72,216 @@ class StatsContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final viewModel = Provider.of<DetailViewModel>(context);
     return Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          border: Border.all(color: K.appColor.gray, width: 2),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              //각인 정보
-              Text(
-                "각인",
-                style: TextStyle(
-                    color: K.appColor.white,
-                    fontSize: 20,
-                    fontWeight: K.appFont.heavy),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              //활성화 각인 목록
-
-              viewModel.info!.arkPassive.isArkpassive
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        // 아크패시브 각인 목록
-                        if (viewModel.info!.armoryEngraving != null &&
-                            viewModel
-                                    .info!.armoryEngraving!.arkPassiveEffects !=
-                                null)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: viewModel
-                                .info!.armoryEngraving!.arkPassiveEffects!
-                                .map((e) => Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "- ${e.name}",
-                                          style: TextStyle(
-                                              color: K.appColor.white,
-                                              fontSize: 14,
-                                              fontWeight: K.appFont.heavy),
-                                        ),
-                                        Text(
-                                          " ${e.level}",
-                                          style: TextStyle(
-                                              color: K.appColor
-                                                  .getGradeColor(e.grade),
-                                              fontSize: 14,
-                                              fontWeight: K.appFont.heavy),
-                                        ),
-                                        Text(
-                                          e.abilityStoneLevel != null
-                                              ? " +${e.abilityStoneLevel!}"
-                                              : "",
-                                          style: TextStyle(
-                                              color: K.appColor.blue,
-                                              fontSize: 14,
-                                              fontWeight: K.appFont.heavy),
-                                        )
-                                      ],
-                                    ))
-                                .toList(),
-                          ),
-                        Column(
-                          // 아크패시브 포인트 정보
-                          crossAxisAlignment: CrossAxisAlignment.center,
+      decoration: BoxDecoration(
+        border: Border.all(color: K.appColor.gray, width: 2),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  //각인 정보
+                  Text(
+                    "각인",
+                    style: TextStyle(
+                      color: K.appColor.white,
+                      fontSize: 20,
+                      fontWeight: K.appFont.heavy,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  //활성화 각인 목록
+                  viewModel.info!.arkPassive.isArkpassive
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                NImage(
-                                  url: K.appImage.arkPassiveIcon,
-                                  width: 30,
-                                ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  "아크패시브 포인트",
-                                  style: TextStyle(
-                                      color: K.appColor.white,
-                                      fontSize: 14,
-                                      fontWeight: K.appFont.heavy),
-                                )
-                              ],
-                            ),
-                            Column(
+                            // 아크패시브 각인 목록
+                            if (viewModel.info!.armoryEngraving != null &&
+                                viewModel.info!.armoryEngraving!
+                                        .arkPassiveEffects !=
+                                    null)
+                              Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: viewModel.info!.arkPassive.points
-                                    .map((e) => Text(
-                                          "- ${e.name} : ${e.value}",
-                                          style: TextStyle(
+                                children: viewModel
+                                    .info!.armoryEngraving!.arkPassiveEffects!
+                                    .map((e) => Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "- ${e.name}",
+                                              style: TextStyle(
+                                                color: K.appColor.white,
+                                                fontSize: 14,
+                                                fontWeight: K.appFont.heavy,
+                                              ),
+                                            ),
+                                            Text(
+                                              " ${e.level}",
+                                              style: TextStyle(
+                                                color: K.appColor
+                                                    .getGradeColor(e.grade),
+                                                fontSize: 14,
+                                                fontWeight: K.appFont.heavy,
+                                              ),
+                                            ),
+                                            Text(
+                                              e.abilityStoneLevel != null
+                                                  ? " +${e.abilityStoneLevel!}"
+                                                  : "",
+                                              style: TextStyle(
+                                                color: K.appColor.blue,
+                                                fontSize: 14,
+                                                fontWeight: K.appFont.heavy,
+                                              ),
+                                            )
+                                          ],
+                                        ))
+                                    .toList(),
+                              ),
+                            Column(
+                              // 아크패시브 포인트 정보
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Row(
+                                  children: [
+                                    NImage(
+                                      url: K.appImage.arkPassiveIcon,
+                                      width: 30,
+                                    ),
+                                    const SizedBox(width: 5),
+                                    Text(
+                                      "아크패시브 포인트",
+                                      style: TextStyle(
+                                        color: K.appColor.white,
+                                        fontSize: 14,
+                                        fontWeight: K.appFont.heavy,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: viewModel.info!.arkPassive.points
+                                      .map((e) => Text(
+                                            "- ${e.name} : ${e.value}",
+                                            style: TextStyle(
                                               color: K.appColor.white,
                                               fontSize: 13,
-                                              fontWeight: K.appFont.heavy),
-                                        ))
-                                    .toList())
+                                              fontWeight: K.appFont.heavy,
+                                            ),
+                                          ))
+                                      .toList(),
+                                ),
+                              ],
+                            ),
                           ],
                         )
-                      ],
-                    )
-                  : viewModel.info!.armoryEngraving != null &&
-                          viewModel.info!.armoryEngraving!.effects != null
-                      ? Wrap(
-                          children: viewModel.info!.armoryEngraving!.effects!
-                              .map((engraving) => Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Stack(
-                                      alignment: Alignment.bottomRight,
-                                      children: [
-                                        ClipOval(
-                                          child: NImage(
-                                            url: engraving.icon,
-                                            width: 35,
-                                          ),
-                                        ),
-                                        Text(
-                                          engraving.items[1],
-                                          style: TextStyle(
-                                              color: K.appColor.white,
-                                              shadows: [
-                                                Shadow(
-                                                  offset: const Offset(0.0,
-                                                      0.0), // 그림자의 x, y 오프셋
-                                                  blurRadius:
-                                                      15.0, // 그림자의 흐림 정도
-                                                  color: K.appColor
-                                                      .black, // 그림자의 색상
-                                                )
+                      : viewModel.info!.armoryEngraving != null &&
+                              viewModel.info!.armoryEngraving!.effects != null
+                          ? Column(
+                              children: viewModel
+                                  .info!.armoryEngraving!.effects!
+                                  .map((engraving) => Padding(
+                                        padding: const EdgeInsets.only(
+                                            bottom: 10, right: 10),
+                                        child: Row(
+                                          children: [
+                                            Stack(
+                                              alignment: Alignment.bottomRight,
+                                              children: [
+                                                ClipOval(
+                                                  child: NImage(
+                                                    url: engraving.icon,
+                                                    width: 25,
+                                                  ),
+                                                ),
+                                                Text(
+                                                  engraving.items[1],
+                                                  style: TextStyle(
+                                                    color: K.appColor.white,
+                                                    shadows: [
+                                                      Shadow(
+                                                        offset: const Offset(
+                                                            0.0, 0.0),
+                                                        blurRadius: 15.0,
+                                                        color: K.appColor.black,
+                                                      ),
+                                                    ],
+                                                    fontSize: 16,
+                                                    fontWeight: K.appFont.heavy,
+                                                  ),
+                                                ),
                                               ],
-                                              fontSize: 15,
-                                              fontWeight: K.appFont.heavy),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              engraving.nameWithoutLevel,
+                                              style: TextStyle(
+                                                color: K.appColor.white,
+                                                fontSize: 14,
+                                                fontWeight: K.appFont.heavy,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
-                                  ))
-                              .toList())
-                      : Text(
-                          "활성화된 각인이 없습니다.",
-                          style: TextStyle(
-                              color: K.appColor.white,
-                              fontSize: 12,
-                              fontWeight: K.appFont.heavy),
-                        ),
-              const SizedBox(
-                height: 20,
-              ),
-
-              //특성 정보
-              Text(
-                "특성",
-                style: TextStyle(
-                    color: K.appColor.white,
-                    fontSize: 20,
-                    fontWeight: K.appFont.heavy),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // 치명 특화 신속
-                children: [
-                  ...[
-                    StatsType.critical,
-                    StatsType.specialization,
-                    StatsType.speed
-                  ].map((type) {
-                    Stats item = viewModel.info!.armoryProfile.stats
-                        .where((s) => s.type == type)
-                        .first;
-                    return StatItem(item: item);
-                  })
+                                      ))
+                                  .toList(),
+                            )
+                          : Text(
+                              "활성화된 각인이 없습니다.",
+                              style: TextStyle(
+                                color: K.appColor.white,
+                                fontSize: 12,
+                                fontWeight: K.appFont.heavy,
+                              ),
+                            ),
+                  const SizedBox(height: 20),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                // 인내 숙련 제압
-                children: [
-                  ...[StatsType.endurance, StatsType.mastery, StatsType.subdue]
-                      .map((type) {
-                    Stats item = viewModel.info!.armoryProfile.stats
-                        .where((s) => s.type == type)
-                        .first;
-                    return StatItem(item: item);
-                  })
-                ],
-              )
-            ],
-          ),
-        ));
+            ),
+            Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "특성",
+                      style: TextStyle(
+                        color: K.appColor.white,
+                        fontSize: 20,
+                        fontWeight: K.appFont.heavy,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Column(
+                      children: viewModel.info!.armoryProfile.mainStats
+                          .map((stat) => StatItem(item: stat))
+                          .toList(),
+                    ),
+                    Divider(
+                      color: K.appColor.white.withAlpha(50),
+                    ),
+                    Column(
+                      children: viewModel.info!.armoryProfile.subStats
+                          .map((stat) => StatItem(item: stat))
+                          .toList(),
+                    ),
+                  ],
+                )),
+          ],
+        ),
+      ),
+    );
   }
 }
 

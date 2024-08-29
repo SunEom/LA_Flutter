@@ -24,6 +24,11 @@ class ArmoryEngraving {
 class Effect {
   final String icon;
   final String name;
+
+  String get nameWithoutLevel {
+    return name.split("Lv.").first.trim();
+  }
+
   List<String> get items {
     return RegUtil.getEngravingOptions(name);
   }

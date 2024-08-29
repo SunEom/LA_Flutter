@@ -17,6 +17,26 @@ class ArmoryProfile {
   final String serverName;
   final List<Stats> stats;
 
+  List<Stats> get mainStats {
+    return stats
+        .where((s) => [
+              StatsType.speed,
+              StatsType.critical,
+              StatsType.specialization,
+              StatsType.mastery,
+              StatsType.subdue,
+              StatsType.endurance
+            ].contains(s.type))
+        .toList();
+  }
+
+  List<Stats> get subStats {
+    return stats
+        .where((s) =>
+            [StatsType.attackPower, StatsType.maxHealth].contains(s.type))
+        .toList();
+  }
+
   ArmoryProfile({
     this.characterImage,
     required this.expeditionLevel,
@@ -38,6 +58,19 @@ class ArmoryProfile {
   });
 
   factory ArmoryProfile.fromJson(Map<String, dynamic> json) {
+    //스텟을 수치에 따라 정렬
+    List<Stats> statList = (json["Stats"] as List)
+        .map((jsonItem) => Stats.fromJson(jsonItem))
+        .toList();
+    statList.sort((a, b) {
+      if (a.orderPriority != b.orderPriority) {
+        // 치특신인숙제 -> 공격력 -> 최대생
+        return a.orderPriority.compareTo(b.orderPriority);
+      } else {
+        return int.parse(b.value).compareTo(int.parse(a.value));
+      }
+    });
+
     return ArmoryProfile(
       characterImage: json['CharacterImage'],
       expeditionLevel: json['ExpeditionLevel'],
@@ -55,9 +88,7 @@ class ArmoryProfile {
       itemAvgLevel: json['ItemAvgLevel'],
       itemMaxLevel: json['ItemMaxLevel'],
       serverName: json['ServerName'],
-      stats: (json["Stats"] as List)
-          .map((jsonItem) => Stats.fromJson(jsonItem))
-          .toList(),
+      stats: statList,
     );
   }
 
@@ -89,6 +120,16 @@ class Stats {
   final String value;
   StatsType get type {
     return StatsType.fromDisplayName(typeString);
+  }
+
+  int get orderPriority {
+    if (type == StatsType.maxHealth) {
+      return 3;
+    } else if (type == StatsType.attackPower) {
+      return 2;
+    } else {
+      return 1;
+    }
   }
 
   Stats({required this.typeString, required this.value});
