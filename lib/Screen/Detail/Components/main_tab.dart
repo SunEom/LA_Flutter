@@ -1,6 +1,7 @@
 // Main Tab
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/Constant.dart';
 import 'package:sample_project/Model/Equipment.dart';
@@ -95,7 +96,7 @@ class StatsContent extends StatelessWidget {
               ),
               //활성화 각인 목록
 
-              viewModel.info!.armoryProfile.arkPassive.isArkpassive
+              viewModel.info!.arkPassive.isArkpassive
                   ? Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,8 +166,7 @@ class StatsContent extends StatelessWidget {
                             ),
                             Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                children: viewModel
-                                    .info!.armoryProfile.arkPassive.points
+                                children: viewModel.info!.arkPassive.points
                                     .map((e) => Text(
                                           "- ${e.name} : ${e.value}",
                                           style: TextStyle(

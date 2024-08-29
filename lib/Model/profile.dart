@@ -16,50 +16,49 @@ class ArmoryProfile {
   final String itemMaxLevel;
   final String serverName;
   final List<Stats> stats;
-  final ArkPassive arkPassive;
 
-  ArmoryProfile(
-      {this.characterImage,
-      required this.expeditionLevel,
-      required this.pvpGradeName,
-      this.townLevel,
-      required this.townName,
-      this.title,
-      this.guildMemberGrade,
-      this.guildName,
-      required this.usingSkillPoint,
-      required this.totalSkillPoint,
-      required this.characterName,
-      required this.characterLevel,
-      required this.characterClassName,
-      required this.itemAvgLevel,
-      required this.itemMaxLevel,
-      required this.serverName,
-      required this.stats,
-      required this.arkPassive});
+  ArmoryProfile({
+    this.characterImage,
+    required this.expeditionLevel,
+    required this.pvpGradeName,
+    this.townLevel,
+    required this.townName,
+    this.title,
+    this.guildMemberGrade,
+    this.guildName,
+    required this.usingSkillPoint,
+    required this.totalSkillPoint,
+    required this.characterName,
+    required this.characterLevel,
+    required this.characterClassName,
+    required this.itemAvgLevel,
+    required this.itemMaxLevel,
+    required this.serverName,
+    required this.stats,
+  });
 
   factory ArmoryProfile.fromJson(Map<String, dynamic> json) {
     return ArmoryProfile(
-        characterImage: json['CharacterImage'],
-        expeditionLevel: json['ExpeditionLevel'],
-        pvpGradeName: json['PvpGradeName'],
-        townLevel: json['TownLevel'],
-        townName: json['TownName'],
-        title: json['Title'],
-        guildMemberGrade: json['GuildMemberGrade'],
-        guildName: json['GuildName'],
-        usingSkillPoint: json['UsingSkillPoint'],
-        totalSkillPoint: json['TotalSkillPoint'],
-        characterName: json['CharacterName'],
-        characterLevel: json['CharacterLevel'],
-        characterClassName: json['CharacterClassName'],
-        itemAvgLevel: json['ItemAvgLevel'],
-        itemMaxLevel: json['ItemMaxLevel'],
-        serverName: json['ServerName'],
-        stats: (json["Stats"] as List)
-            .map((jsonItem) => Stats.fromJson(jsonItem))
-            .toList(),
-        arkPassive: ArkPassive.fromJSON(json["ArkPassive"]));
+      characterImage: json['CharacterImage'],
+      expeditionLevel: json['ExpeditionLevel'],
+      pvpGradeName: json['PvpGradeName'],
+      townLevel: json['TownLevel'],
+      townName: json['TownName'],
+      title: json['Title'],
+      guildMemberGrade: json['GuildMemberGrade'],
+      guildName: json['GuildName'],
+      usingSkillPoint: json['UsingSkillPoint'],
+      totalSkillPoint: json['TotalSkillPoint'],
+      characterName: json['CharacterName'],
+      characterLevel: json['CharacterLevel'],
+      characterClassName: json['CharacterClassName'],
+      itemAvgLevel: json['ItemAvgLevel'],
+      itemMaxLevel: json['ItemMaxLevel'],
+      serverName: json['ServerName'],
+      stats: (json["Stats"] as List)
+          .map((jsonItem) => Stats.fromJson(jsonItem))
+          .toList(),
+    );
   }
 
   Map<String, dynamic> toJson() {

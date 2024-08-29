@@ -4,21 +4,26 @@ import 'package:sample_project/Constant/Constant.dart';
 class NewBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 16,
-      height: 16,
-      decoration: BoxDecoration(
-          color: K.appColor.red, borderRadius: BorderRadius.circular(10)),
-      child: Container(
-        padding: EdgeInsets.only(left: 2.5),
-        child: Text(
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Container(
+          width: 15,
+          height: 15,
+          decoration: BoxDecoration(
+            color: K.appColor.red, // 배경 색상
+            shape: BoxShape.circle, // 원형
+          ),
+        ),
+        Text(
           "N",
           style: TextStyle(
-              color: K.appColor.white,
-              fontSize: 12,
-              fontWeight: K.appFont.heavy),
+            color: K.appColor.white, // 텍스트 색상
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-      ),
+      ],
     );
   }
 }

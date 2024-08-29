@@ -15,40 +15,40 @@ class AppData {
 }
 
 class AppColor {
-  Color mainBackgroundColor = Color.fromRGBO(21, 24, 29, 1);
+  Color mainBackgroundColor = const Color.fromRGBO(21, 24, 29, 1);
   Color black = Colors.black;
   Color white = Colors.white;
   Color blue = Colors.blue;
   Color darkBlue = Colors.blue.shade800;
   Color red = Colors.red;
   Color green = Colors.green;
-  Color yellow = Color.fromARGB(226, 255, 235, 59);
-  Color advancedUpgradeColor = Color.fromRGBO(168, 234, 108, 1);
-  Color elixirColor = Color.fromRGBO(216, 178, 2, 1);
-  Color transcendenceColor = Color.fromRGBO(255, 155, 50, 1);
-  Color braceletOptionColor = Color.fromRGBO(169, 208, 245, 1);
+  Color yellow = const Color.fromARGB(226, 255, 235, 59);
+  Color advancedUpgradeColor = const Color.fromRGBO(168, 234, 108, 1);
+  Color elixirColor = const Color.fromRGBO(216, 178, 2, 1);
+  Color transcendenceColor = const Color.fromRGBO(255, 155, 50, 1);
+  Color braceletOptionColor = const Color.fromRGBO(169, 208, 245, 1);
   Color gray = Colors.white12;
   Color lightGray = Colors.white60;
 
   Color getGradeColor(String grade) {
     switch (grade) {
       case "고급":
-        return Color.fromRGBO(44, 123, 251, 1);
+        return const Color.fromRGBO(44, 123, 251, 1);
 
       case "희귀":
-        return Color.fromRGBO(0, 176, 250, 1);
+        return const Color.fromRGBO(0, 176, 250, 1);
 
       case "영웅":
-        return Color.fromRGBO(206, 67, 252, 1);
+        return const Color.fromRGBO(206, 67, 252, 1);
 
       case "전설":
-        return Color.fromRGBO(249, 146, 0, 1);
+        return const Color.fromRGBO(249, 146, 0, 1);
 
       case "유물":
-        return Color.fromRGBO(250, 93, 0, 1);
+        return const Color.fromRGBO(250, 93, 0, 1);
 
       case "고대":
-        return Color.fromRGBO(227, 199, 161, 1);
+        return const Color.fromRGBO(227, 199, 161, 1);
 
       default:
         return Colors.white60;

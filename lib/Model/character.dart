@@ -14,6 +14,7 @@ class CharacterInfo {
   final ArmorySkills? armorySkills;
   final ArmoryGem armoryGem;
   final List<Collectible> collectibles;
+  final ArkPassive arkPassive;
 
   CharacterInfo(
       {required this.armoryProfile,
@@ -22,7 +23,8 @@ class CharacterInfo {
       this.armoryCard,
       this.armorySkills,
       required this.armoryGem,
-      required this.collectibles});
+      required this.collectibles,
+      required this.arkPassive});
 
   factory CharacterInfo.fromJson(Map<String, dynamic> json) {
     return CharacterInfo(
@@ -42,7 +44,8 @@ class CharacterInfo {
         armoryGem: ArmoryGem.fromJSON(json),
         collectibles: (json["Collectibles"] as List)
             .map((e) => Collectible.fromJson(e))
-            .toList());
+            .toList(),
+        arkPassive: ArkPassive.fromJSON(json["ArkPassive"]));
   }
 
   Map<String, dynamic> toJson() {

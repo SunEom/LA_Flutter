@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:material_dialogs/dialogs.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/constant.dart';
 import 'package:sample_project/Model/notice.dart';
+import 'package:sample_project/Screen/Components/info_badge.dart';
 import 'package:sample_project/Screen/Home/home_view_model.dart';
 import 'package:sample_project/Screen/Components/new_badge.dart';
 import 'package:sample_project/Screen/Notice/notice_view.dart';
@@ -20,12 +22,32 @@ class NoticeContainer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              "공지사항",
-              style: TextStyle(
-                  color: K.appColor.white,
-                  fontSize: 19,
-                  fontWeight: K.appFont.heavy),
+            Row(
+              children: [
+                Text(
+                  "공지사항",
+                  style: TextStyle(
+                      color: K.appColor.white,
+                      fontSize: 19,
+                      fontWeight: K.appFont.heavy),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Dialogs.materialDialog(
+                      msg: '진행중인 이벤트는 하루 1회 갱신됩니다 🥲',
+                      title: "알림",
+                      color: K.appColor.mainBackgroundColor,
+                      context: context,
+                      titleStyle: TextStyle(color: K.appColor.white),
+                      msgStyle: TextStyle(color: K.appColor.white),
+                    );
+                  },
+                  child: InfoBadge(),
+                )
+              ],
             ),
             GestureDetector(
               onTap: () {
