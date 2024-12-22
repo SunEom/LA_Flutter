@@ -40,6 +40,16 @@ class CharacterService implements CharacterServiceType {
   }
 
   @override
+  Future<Result<ArmorySiblings, Exception>> fetchGuildUsers(
+      String nickname) async {
+    if (await NetworkUtil.isConnected()) {
+      return networkCharacterRepository.fetchSiblings(nickname);
+    } else {
+      return Result.failure(Exception("인터넷 연결 오류"));
+    }
+  }
+
+  @override
   Future<Result<void, Exception>> saveFavoriteCharacter(
       CharacterInfo? info) async {
     return await localCharacterRepository.saveFavoriteCharacter(info);

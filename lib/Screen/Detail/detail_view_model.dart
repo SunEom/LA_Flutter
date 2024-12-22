@@ -47,6 +47,9 @@ class DetailViewModel extends ChangeNotifier {
   ArmorySiblings? _armorySiblings;
   ArmorySiblings? get armorySiblings => _armorySiblings;
 
+  ArmorySiblings? _guildUsers;
+  ArmorySiblings? get guildUsers => _guildUsers;
+
   FavoriteCharacter? _favoriteCharacter;
   FavoriteCharacter? get favoriteCharacter => _favoriteCharacter;
 

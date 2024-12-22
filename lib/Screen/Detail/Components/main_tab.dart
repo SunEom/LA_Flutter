@@ -98,7 +98,7 @@ class StatsContent extends StatelessWidget {
                   const SizedBox(height: 10),
                   //활성화 각인 목록
                   viewModel.info!.arkPassive.isArkpassive
-                      ? Row(
+                      ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -146,26 +146,26 @@ class StatsContent extends StatelessWidget {
                                         ))
                                     .toList(),
                               ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 20),
+                              child: Divider(
+                                color: K.appColor.white.withAlpha(50),
+                              ),
+                            ),
                             Column(
                               // 아크패시브 포인트 정보
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Row(
-                                  children: [
-                                    NImage(
-                                      url: K.appImage.arkPassiveIcon,
-                                      width: 30,
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      "아크패시브 포인트",
-                                      style: TextStyle(
-                                        color: K.appColor.white,
-                                        fontSize: 14,
-                                        fontWeight: K.appFont.heavy,
-                                      ),
-                                    ),
-                                  ],
+                                Text(
+                                  "아크패시브 포인트",
+                                  style: TextStyle(
+                                    color: K.appColor.white,
+                                    fontSize: 15,
+                                    fontWeight: K.appFont.heavy,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 5,
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -354,7 +354,28 @@ class EquipmentItem extends StatelessWidget {
                           fontWeight: K.appFont.heavy),
                     ),
                     const SizedBox(
-                      width: 10,
+                      width: 5,
+                    ),
+                    ClipRRect(
+                      //품질
+                      borderRadius: BorderRadius.circular(5),
+                      child: Container(
+                          color: equipment.tooltip.itemTitle?[0].value
+                                  .getQualityColor() ??
+                              Colors.transparent,
+                          child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 5),
+                              child: Text(
+                                "${equipment.tooltip.itemTitle?[0].value.quality ?? ""}",
+                                style: TextStyle(
+                                    color: K.appColor.white,
+                                    fontSize: 12,
+                                    fontWeight: K.appFont.bold),
+                              ))),
+                    ),
+                    const SizedBox(
+                      width: 5,
                     ),
                     Row(
                       children: [
@@ -372,7 +393,7 @@ class EquipmentItem extends StatelessWidget {
                         Text(
                           // 상급재련
                           equipment.tooltip.advancedUpgrade != null
-                              ? "(+${equipment.tooltip.advancedUpgrade})"
+                              ? "(상재 +${equipment.tooltip.advancedUpgrade})"
                               : "",
                           style: TextStyle(
                             color: K.appColor.advancedUpgradeColor,
@@ -382,29 +403,28 @@ class EquipmentItem extends StatelessWidget {
                         const SizedBox(
                           width: 5,
                         ),
-                        if (equipment.tooltip.transcendence != null)
-                          // 초월
-                          Row(
-                            children: [
-                              SizedBox(
-                                  width: 20,
-                                  height: 20,
-                                  child: NImage(
-                                      url: K.lostArkAPI.transcendenceImage,
-                                      width: 20)),
-                              Text(
-                                "${equipment.tooltip.transcendence?[0]}단계 총 ${equipment.tooltip.transcendence?[1]}",
-                                style: TextStyle(
-                                    color: K.appColor.transcendenceColor,
-                                    fontSize: 12,
-                                    fontWeight: K.appFont.heavy),
-                              )
-                            ],
-                          )
                       ],
                     )
                   ],
                 ),
+                if (equipment.tooltip.transcendence != null)
+                  // 초월
+                  Row(
+                    children: [
+                      SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: NImage(
+                              url: K.lostArkAPI.transcendenceImage, width: 20)),
+                      Text(
+                        "${equipment.tooltip.transcendence?[0]}단계 총 ${equipment.tooltip.transcendence?[1]}",
+                        style: TextStyle(
+                            color: K.appColor.transcendenceColor,
+                            fontSize: 12,
+                            fontWeight: K.appFont.heavy),
+                      )
+                    ],
+                  ),
                 Row(
                   // 엘릭서
                   children: [
