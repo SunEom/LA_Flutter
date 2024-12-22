@@ -306,10 +306,11 @@ class Tooltip {
         if (v.topStr.contains("무작위 각인 효과")) {
           v.contentStr?.values.forEach((cs) {
             List<String> option = RegUtil.getAbilityStoneOption(cs.contentStr);
-            if (option[0] != "이동속도 감소" &&
-                option[0] != "공격력 감소" &&
-                option[0] != "공격속도 감소" &&
-                option[0] != "방어력 감소") {
+            if (option.isNotEmpty &&
+                (option[0] != "이동속도 감소" &&
+                    option[0] != "공격력 감소" &&
+                    option[0] != "공격속도 감소" &&
+                    option[0] != "방어력 감소")) {
               result.add(option);
             }
           });
@@ -329,10 +330,11 @@ class Tooltip {
           v.contentStr?.values.forEach((cs) {
             List<String> option = RegUtil.getAbilityStoneOption(cs.contentStr);
 
-            if (option[0] == "이동속도 감소" ||
-                option[0] == "공격력 감소" ||
-                option[0] == "공격속도 감소" ||
-                option[0] == "방어력 감소") {
+            if (option.isNotEmpty &&
+                (option[0] == "이동속도 감소" ||
+                    option[0] == "공격력 감소" ||
+                    option[0] == "공격속도 감소" ||
+                    option[0] == "방어력 감소")) {
               result.add(option);
             }
           });

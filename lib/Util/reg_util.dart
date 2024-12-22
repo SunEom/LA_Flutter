@@ -83,20 +83,16 @@ class RegUtil {
   }
 
   static List<String> getAbilityStoneOption(String input) {
-    final optionRegex =
-        RegExp(r"<FONT COLOR='#([0-9A-Fa-f]{6})'>([^<]+)</FONT>");
+    final optionRegex = RegExp(r"([가-힣\s]+)\s*<.*Lv\.(\d+)");
     final activeLevelRegex = RegExp(r'활성도 (\d+)');
 
     final optionMatch = optionRegex.firstMatch(input);
-    final optionText = optionMatch?.group(2);
-
-    final activeLevelMatch = activeLevelRegex.firstMatch(input);
-    final activeLevel = activeLevelMatch?.group(1);
-
-    if (optionText == null || activeLevel == null) {
+    final optionText = optionMatch?.group(1);
+    final levelText = optionMatch?.group(2);
+    if (optionText == null || levelText == null) {
       return [];
     } else {
-      return [optionText, activeLevel];
+      return [optionText, levelText];
     }
   }
 
