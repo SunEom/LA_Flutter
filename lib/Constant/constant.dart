@@ -167,6 +167,9 @@ class AppImage {
       case "기상술사":
         return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/weather_artist_m.png";
 
+      case "환수사":
+        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/alchemist_s.png";
+
       default:
         return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/icon/favicon-192.png?v=20221109160851";
     }
