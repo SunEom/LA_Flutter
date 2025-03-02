@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sample_project/Constant/constant.dart';
 
-AppBar TopBar({String? title}) {
+AppBar TopBar({String? title, Widget? leadingButton}) {
   return AppBar(
     surfaceTintColor: Colors.transparent,
+    leading: leadingButton,
     title: Text(
       title ?? K.appData.AppName,
       style: TextStyle(
