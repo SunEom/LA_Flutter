@@ -11,8 +11,8 @@ abstract interface class CharacterServiceType {
       String nickname);
   Future<Result<ArmorySiblings, Exception>> fetchSiblings(String nickname);
   Future<Result<void, Exception>> saveFavoriteCharacter(CharacterInfo? info);
-  Future<Result<FavoriteCharacter, Exception>> fetchFavoriteCharacter();
-  Future<Result<void, Exception>> removeFavoriteCharacter();
+  Future<Result<List<FavoriteCharacter>, Exception>> fetchFavoriteCharacter();
+  Future<Result<void, Exception>> removeFavoriteCharacter(String name);
 }
 
 class CharacterService implements CharacterServiceType {
@@ -52,16 +52,17 @@ class CharacterService implements CharacterServiceType {
   @override
   Future<Result<void, Exception>> saveFavoriteCharacter(
       CharacterInfo? info) async {
-    return await localCharacterRepository.saveFavoriteCharacter(info);
+    return await networkCharacterRepository.saveFavoriteCharacter(info);
   }
 
   @override
-  Future<Result<FavoriteCharacter, Exception>> fetchFavoriteCharacter() async {
-    return await localCharacterRepository.fetchFavoriteCharacter();
+  Future<Result<List<FavoriteCharacter>, Exception>>
+      fetchFavoriteCharacter() async {
+    return await networkCharacterRepository.fetchFavoriteCharacter();
   }
 
   @override
-  Future<Result<void, Exception>> removeFavoriteCharacter() async {
-    return await localCharacterRepository.removeFavoriteCharacter();
+  Future<Result<void, Exception>> removeFavoriteCharacter(String name) async {
+    return await networkCharacterRepository.removeFavoriteCharacter(name);
   }
 }

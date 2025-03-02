@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/constant.dart';
 import 'package:sample_project/Model/sibling.dart';
+import 'package:sample_project/Screen/Components/character_image_view.dart';
 import 'package:sample_project/Screen/Components/network_image.dart';
 import 'package:sample_project/Screen/Detail/detail_view_model.dart';
 
@@ -95,9 +96,8 @@ class ArmorySiblingItem extends StatelessWidget {
               child: Row(
                 children: [
                   ClipOval(
-                    child: NImage(
-                      url: K.appImage.getClassImage(sibling.characterClassName),
-                      width: 40,
+                    child: CharacterImageView(
+                      className: sibling.characterClassName,
                     ),
                   ),
                   const SizedBox(

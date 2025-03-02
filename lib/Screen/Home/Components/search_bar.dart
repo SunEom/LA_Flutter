@@ -1,8 +1,11 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Constant/constant.dart';
 import 'package:sample_project/Model/alert_data.dart';
+import 'package:sample_project/Model/favorite_character.dart';
+import 'package:sample_project/Screen/Components/character_image_view.dart';
 import 'package:sample_project/Screen/Components/loading_view.dart';
 import 'package:sample_project/Screen/Components/network_image.dart';
 import 'package:sample_project/Screen/Detail/detail_view.dart';
@@ -134,7 +137,8 @@ class FavoriteCharacterContainer extends StatelessWidget {
           padding: EdgeInsets.only(top: 20),
           child: LoadingView(title: "유저 정보를 가져오는 중입니다!"));
     } else {
-      return viewModel.favoriteCharacter == null
+      return viewModel.favoriteCharacter == null ||
+              viewModel.favoriteCharacter!.isEmpty
           ? DottedBorder(
               // 즐겨찾기한 캐릭터가 없는 경우
               dashPattern: const [6, 6],
@@ -178,130 +182,141 @@ class FavoriteCharacterContainer extends StatelessWidget {
                   ],
                 ),
               ))
-          : GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ChangeNotifierProvider.value(
-                              value: DetailViewModel(
-                                  viewModel.favoriteCharacter!.name),
-                              child: DetailView(),
-                            )));
-              },
-              child: Container(
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: K.appColor.gray),
-                    borderRadius: BorderRadius.circular(5.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(15, 10, 20, 10),
-                    child: Column(
-                      children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.star,
-                              color: K.appColor.yellow,
-                              size: 17,
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Expanded(
-                              child: Text(
-                                "즐겨찾기",
-                                style: TextStyle(
-                                    color: K.appColor.white,
-                                    fontSize: 14,
-                                    fontWeight: K.appFont.heavy),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                viewModel.removeFavButtonTap();
-                              },
-                              child: Icon(
-                                Icons.close,
-                                color: K.appColor.lightGray,
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Row(
-                          children: [
-                            NImage(
-                              url: K.appImage.getClassImage(
-                                  viewModel.favoriteCharacter!.className),
-                              width: 40,
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Expanded(
-                                child: Padding(
-                              padding: const EdgeInsets.only(top: 5),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          child: Text(
-                                              viewModel.favoriteCharacter!
-                                                  .serverName,
-                                              style: TextStyle(
-                                                  color: K.appColor.white,
-                                                  fontSize: 13,
-                                                  fontWeight:
-                                                      K.appFont.heavy))),
-                                      Text(
-                                          viewModel
-                                              .favoriteCharacter!.className,
-                                          style: TextStyle(
-                                              color: K.appColor.white,
-                                              fontSize: 13,
-                                              fontWeight: K.appFont.heavy)),
-                                    ],
-                                  ),
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                          child: Text(
-                                              viewModel.favoriteCharacter!.name,
-                                              style: TextStyle(
-                                                  color: K.appColor.white,
-                                                  fontSize: 17,
-                                                  fontWeight:
-                                                      K.appFont.heavy))),
-                                      Text(
-                                          viewModel
-                                              .favoriteCharacter!.itemAvgLevel
-                                              .split(".")
-                                              .first,
-                                          style: TextStyle(
-                                              color: K.appColor.white,
-                                              fontSize: 14,
-                                              fontWeight: K.appFont.heavy)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )),
-                          ],
-                        )
-                      ],
-                    ),
-                  )),
-            );
+          : CarouselSlider(
+              options: CarouselOptions(
+                  enlargeCenterPage: true,
+                  enlargeFactor: 0,
+                  height: 100,
+                  viewportFraction: 1,
+                  enableInfiniteScroll: false),
+              items: viewModel.favoriteCharacter!
+                  .map((e) => FavoriteCharacterItem(
+                      viewModel: viewModel, favoriteCharacter: e))
+                  .toList());
     }
+  }
+}
+
+class FavoriteCharacterItem extends StatelessWidget {
+  final HomeViewModel viewModel;
+  final FavoriteCharacter favoriteCharacter;
+
+  const FavoriteCharacterItem(
+      {required this.viewModel, required this.favoriteCharacter});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider.value(
+                      value: DetailViewModel(favoriteCharacter.name),
+                      child: DetailView(),
+                    )));
+      },
+      child: Container(
+          width: double.infinity,
+          height: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: K.appColor.gray),
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(15, 10, 20, 10),
+            child: Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.star,
+                      color: K.appColor.yellow,
+                      size: 17,
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Expanded(
+                      child: Text(
+                        "즐겨찾기",
+                        style: TextStyle(
+                            color: K.appColor.white,
+                            fontSize: 14,
+                            fontWeight: K.appFont.heavy),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        viewModel.removeFavButtonTap(favoriteCharacter);
+                      },
+                      child: Icon(
+                        Icons.close,
+                        color: K.appColor.lightGray,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 6,
+                ),
+                Row(
+                  children: [
+                    CharacterImageView(
+                      className: favoriteCharacter.className,
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    Expanded(
+                        child: Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                  child: Text(favoriteCharacter.serverName,
+                                      style: TextStyle(
+                                          color: K.appColor.white,
+                                          fontSize: 13,
+                                          fontWeight: K.appFont.heavy))),
+                              Text(favoriteCharacter.className,
+                                  style: TextStyle(
+                                      color: K.appColor.white,
+                                      fontSize: 13,
+                                      fontWeight: K.appFont.heavy)),
+                            ],
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                  child: Text(favoriteCharacter.name,
+                                      style: TextStyle(
+                                          color: K.appColor.white,
+                                          fontSize: 17,
+                                          fontWeight: K.appFont.heavy))),
+                              Text(
+                                  favoriteCharacter.itemAvgLevel
+                                      .split(".")
+                                      .first,
+                                  style: TextStyle(
+                                      color: K.appColor.white,
+                                      fontSize: 14,
+                                      fontWeight: K.appFont.heavy)),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )),
+                  ],
+                )
+              ],
+            ),
+          )),
+    );
   }
 }
