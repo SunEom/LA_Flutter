@@ -1,6 +1,12 @@
 import 'package:sprintf/sprintf.dart';
 
 class DatetimeUtil {
+  static String getToday() {
+    DateTime dateTime = DateTime.now();
+    return sprintf(
+        "%.4d-%.2d-%.2d", [dateTime.year, dateTime.month, dateTime.day]);
+  }
+
   static String getTimeData(String date) {
     DateTime dateTime = DateTime.parse(date);
     return sprintf("%.2d:%.2d", [dateTime.hour, dateTime.minute]);

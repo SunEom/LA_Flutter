@@ -25,8 +25,8 @@ class HomeViewModel extends ChangeNotifier {
   bool _favoriteCharacterLoading = false;
   bool get favoriteCharacterLoading => _favoriteCharacterLoading;
 
-  FavoriteCharacter? _favoriteCharacter;
-  FavoriteCharacter? get favoriteCharacter => _favoriteCharacter;
+  List<FavoriteCharacter>? _favoriteCharacter;
+  List<FavoriteCharacter>? get favoriteCharacter => _favoriteCharacter;
 
   String? _alertData;
   String? get alertData => _alertData;
@@ -91,7 +91,7 @@ class HomeViewModel extends ChangeNotifier {
 
   void fetchFavoriteCharacter() async {
     _favoriteCharacterLoading = true;
-    Result<FavoriteCharacter, Exception> result =
+    Result<List<FavoriteCharacter>, Exception> result =
         await DIController.services.characterService.fetchFavoriteCharacter();
 
     result.fold((character) {
@@ -104,8 +104,9 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeFavButtonTap() async {
-    await DIController.services.characterService.removeFavoriteCharacter();
+  void removeFavButtonTap(FavoriteCharacter info) async {
+    await DIController.services.characterService
+        .removeFavoriteCharacter(info.name);
     _favoriteCharacter = null;
     notifyListeners();
   }

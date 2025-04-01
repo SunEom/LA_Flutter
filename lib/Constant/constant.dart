@@ -1,6 +1,8 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class K {
   static AppData appData = AppData();
@@ -8,10 +10,22 @@ class K {
   static AppFont appFont = AppFont();
   static LostArkAPI lostArkAPI = LostArkAPI();
   static AppImage appImage = AppImage();
+  static AppConfig appConfig = AppConfig();
 }
 
 class AppData {
   String AppName = "Arkpedia";
+}
+
+class AppConfig {
+  String supabaseClassImage = dotenv.env['SB_CLASS_IMAGE_TABLE']!;
+  String supabaseFavoriteCharacterTable = dotenv.env['SB_FAV_CHARACTER_TABLE']!;
+  String supabaseAssignmentTable = dotenv.env['SB_ASSIGNMENT_TABLE']!;
+  String supabaseAssignmentItemTable = dotenv.env['SB_ASSIGNMENT_ITEM_TABLE']!;
+  String supabaseAssignmentCharacterTable =
+      dotenv.env['SB_ASSIGNMENT_CHARACTER_TABLE']!;
+  String supabaseMarketItemTable = dotenv.env['SB_MARKET_ITEM_TABLE']!;
+  String supabaseMarketCategoryTable = dotenv.env['SB_MARKET_CATEGORY_TABLE']!;
 }
 
 class AppColor {
@@ -29,6 +43,7 @@ class AppColor {
   Color braceletOptionColor = const Color.fromRGBO(169, 208, 245, 1);
   Color gray = Colors.white12;
   Color lightGray = Colors.white60;
+  Color deepPurple = Color.fromARGB(131, 98, 41, 255);
 
   Color getGradeColor(String grade) {
     switch (grade) {
@@ -77,98 +92,50 @@ class AppImage {
   String arkPassiveIcon =
       "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/game/ico_arkpassive.png";
 
-  String getClassImage(String className) {
-    switch (className) {
-      //슈샤이어
-      case "워로드":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/warlord_m.png";
+  final SupabaseClient supabase = Supabase.instance.client;
+  static final Map<String, String> _classImageCache = {};
 
-      case "디스트로이어":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/destroyer_m.png";
+  // 기본 이미지 URL을 상수로 정의
 
-      case "버서커":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker_m.png";
-
-      case "홀리나이트":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/holyknight_m.png";
-
-      case "슬레이어":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/berserker_female.png";
-
-      // 실린
-      case "소서리스":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/elemental_master_m.png";
-
-      case "서머너":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/summoner_m.png";
-
-      case "바드":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/bard_m.png";
-
-      case "아르카나":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/arcana_m.png";
-
-      // 아르데타인
-
-      case "데빌헌터":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/devilhunter_m.png";
-
-      case "스카우터":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/scouter_m.png";
-
-      case "호크아이":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/hawk_eye.png";
-
-      case "블래스터":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blaster_m.png";
-
-      case "건슬링어":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/gunslinger_m.png";
-
-      // 애니츠
-
-      case "창술사":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/lancemaster_m.png";
-
-      case "기공사":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soulmaster_m.png";
-
-      case "인파이터":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter_m.png";
-
-      case "배틀마스터":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/battlemaster_m.png";
-
-      case "브레이커":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/infighter_male_m.png";
-
-      case "스트라이커":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/striker_m.png";
-
-      //데런
-
-      case "소울이터":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/soul_eater.png";
-
-      case "리퍼":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/reaper_m.png";
-
-      case "블레이드":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/blade_m.png";
-
-      case "데모닉":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/demonic_m.png";
-
-      // 스페셜리스트
-
-      case "도화가":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/yinyangshi_m.png";
-
-      case "기상술사":
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/thumb/weather_artist_m.png";
-
-      default:
-        return "https://cdn-lostark.game.onstove.com/2018/obt/assets/images/common/icon/favicon-192.png?v=20221109160851";
+  Future<String> getClassImage(String className) async {
+    // 캐시 확인
+    if (_classImageCache.containsKey(className)) {
+      return _classImageCache[className]!;
     }
+
+    try {
+      final response = await supabase
+          .from('class_image')
+          .select('url')
+          .eq('class', className)
+          .limit(1);
+
+      if (response.isEmpty) {
+        // 기본 이미지 캐시 확인
+        if (_classImageCache.containsKey('기본')) {
+          return _classImageCache['기본']!;
+        }
+        final defaultUrl = await supabase
+            .from('class_image')
+            .select('url')
+            .eq('class', '기본')
+            .single();
+
+        final imageUrl = defaultUrl['url'] as String;
+        _classImageCache['기본'] = imageUrl;
+        return imageUrl;
+      } else {
+        final imageUrl = response.first['url'] as String;
+        _classImageCache[className] = imageUrl;
+        return imageUrl;
+      }
+    } catch (e) {
+      return '';
+    }
+  }
+
+  // 캐시 초기화 메서드
+  void clearClassImageCache() {
+    _classImageCache.clear();
   }
 }

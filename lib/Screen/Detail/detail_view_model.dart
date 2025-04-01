@@ -50,8 +50,8 @@ class DetailViewModel extends ChangeNotifier {
   ArmorySiblings? _guildUsers;
   ArmorySiblings? get guildUsers => _guildUsers;
 
-  FavoriteCharacter? _favoriteCharacter;
-  FavoriteCharacter? get favoriteCharacter => _favoriteCharacter;
+  List<FavoriteCharacter>? _favoriteCharacter;
+  List<FavoriteCharacter>? get favoriteCharacter => _favoriteCharacter;
 
   String? _alertData;
   String? get alertData => _alertData;
@@ -60,8 +60,8 @@ class DetailViewModel extends ChangeNotifier {
     if (_info == null || _favoriteCharacter == null) {
       return false;
     }
-
-    return favoriteCharacter!.name == info!.armoryProfile.characterName;
+    return favoriteCharacter!
+        .any((element) => element.name == info!.armoryProfile.characterName);
   }
 
   DetailViewModel(this.nickname) {
@@ -119,7 +119,8 @@ class DetailViewModel extends ChangeNotifier {
   void favButtonTap() async {
     if (isFavCharacter) {
       // 이미 즐겨찾기에 등록된 캐릭터인 경우 -> 삭제
-      await DIController.services.characterService.removeFavoriteCharacter();
+      await DIController.services.characterService
+          .removeFavoriteCharacter(info!.armoryProfile.characterName);
     } else {
       await DIController.services.characterService.saveFavoriteCharacter(info);
     }
@@ -127,10 +128,11 @@ class DetailViewModel extends ChangeNotifier {
   }
 
   void _fetchFavoriteCharacter() async {
-    Result<FavoriteCharacter, Exception> result =
+    Result<List<FavoriteCharacter>, Exception> result =
         await DIController.services.characterService.fetchFavoriteCharacter();
-    result.fold((character) {
-      _favoriteCharacter = character;
+
+    result.fold((characters) {
+      _favoriteCharacter = characters;
     }, (err) {
       _favoriteCharacter = null;
     });
