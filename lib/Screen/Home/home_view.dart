@@ -9,6 +9,8 @@ import 'package:sample_project/Screen/Home/Components/event_container.dart';
 import 'package:sample_project/Screen/Home/Components/notice_container.dart';
 import 'package:sample_project/Screen/Home/Components/search_bar.dart';
 import 'package:sample_project/Screen/Home/home_view_model.dart';
+import 'package:sample_project/Screen/MarketPrice/market_view.dart';
+import 'package:sample_project/Screen/MarketPrice/market_view_model.dart';
 
 class HomeView extends StatelessWidget {
   @override
@@ -45,7 +47,7 @@ class HomeView extends StatelessWidget {
                 Icons.task_alt,
                 color: K.appColor.white,
               ),
-              title: Text('숙제 기록장',
+              title: Text('숙제 리스트',
                   style: TextStyle(
                       color: K.appColor.white, fontWeight: FontWeight.w800)),
               onTap: () {
@@ -58,6 +60,24 @@ class HomeView extends StatelessWidget {
                             )));
               },
             ),
+            ListTile(
+              leading: Icon(
+                Icons.bar_chart,
+                color: K.appColor.white,
+              ),
+              title: Text('아이템 시세',
+                  style: TextStyle(
+                      color: K.appColor.white, fontWeight: FontWeight.w800)),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ChangeNotifierProvider.value(
+                              value: MarketViewModel(),
+                              child: MarketView(),
+                            )));
+              },
+            )
           ],
         ),
       ),

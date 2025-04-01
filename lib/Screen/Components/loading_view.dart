@@ -21,6 +21,7 @@ class LoadingView extends StatelessWidget {
           ),
           Text(
             title,
+            textAlign: TextAlign.center,
             style: TextStyle(
                 color: K.appColor.white,
                 fontSize: 14,

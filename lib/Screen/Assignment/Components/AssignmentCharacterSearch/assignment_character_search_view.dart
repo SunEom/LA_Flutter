@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sample_project/Components/top_bar.dart';
 import 'package:sample_project/Constant/constant.dart';
-import 'package:sample_project/Model/sibling.dart';
+import 'package:sample_project/Model/assignment_character.dart';
 import 'package:sample_project/Screen/Assignment/Components/AssignmentCharacterSearch/assignment_character_search_view_model.dart';
 import 'package:sample_project/Screen/Components/character_image_view.dart';
 
@@ -45,8 +45,7 @@ class AssignmentCharacterSearchView extends StatelessWidget {
                 padding:
                     const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 child: AssignmentCharacterItem(
-                  sibling: Sibling(
-                    // 검색한 캐릭터 정보
+                  character: AssignmentCharacter(
                     serverName:
                         viewModel.characterInfo!.armoryProfile.serverName,
                     characterName:
@@ -59,6 +58,7 @@ class AssignmentCharacterSearchView extends StatelessWidget {
                         viewModel.characterInfo!.armoryProfile.itemAvgLevel,
                     itemMaxLevel:
                         viewModel.characterInfo!.armoryProfile.itemMaxLevel,
+                    assignments: [],
                   ),
                 ),
               ),
@@ -94,11 +94,11 @@ class AssignmentCharacterSearchView extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    ...viewModel.siblings!.map((sibling) => Padding(
+                    ...viewModel.siblings!.map((character) => Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 5, horizontal: 10),
                           child: AssignmentCharacterItem(
-                            sibling: sibling,
+                            character: character,
                           ),
                         )),
                   ],
@@ -112,10 +112,10 @@ class AssignmentCharacterSearchView extends StatelessWidget {
 }
 
 class AssignmentCharacterItem extends StatelessWidget {
-  final Sibling sibling;
+  final AssignmentCharacter character;
 
   const AssignmentCharacterItem({
-    required this.sibling,
+    required this.character,
     super.key,
   });
 
@@ -126,7 +126,7 @@ class AssignmentCharacterItem extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         border: Border.all(
-          color: viewModel.isAssignmentCharacter(sibling)
+          color: viewModel.isAssignmentCharacter(character)
               ? K.appColor.green
               : K.appColor.gray,
         ),
@@ -134,7 +134,7 @@ class AssignmentCharacterItem extends StatelessWidget {
       ),
       child: TextButton(
         onPressed: () {
-          viewModel.onTapCharacter(sibling);
+          viewModel.onTapCharacter(character);
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
@@ -142,7 +142,7 @@ class AssignmentCharacterItem extends StatelessWidget {
             children: [
               ClipOval(
                 child: CharacterImageView(
-                  className: sibling.characterClassName,
+                  className: character.characterClassName,
                 ),
               ),
               const SizedBox(width: 10),
@@ -153,7 +153,7 @@ class AssignmentCharacterItem extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          sibling.characterClassName,
+                          character.characterClassName,
                           style: TextStyle(
                             color: K.appColor.white,
                             fontSize: 12,
@@ -162,7 +162,7 @@ class AssignmentCharacterItem extends StatelessWidget {
                         ),
                         const Spacer(),
                         Text(
-                          sibling.serverName,
+                          character.serverName,
                           style: TextStyle(
                             color: K.appColor.white,
                             fontSize: 12,
@@ -175,7 +175,7 @@ class AssignmentCharacterItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          sibling.characterName,
+                          character.characterName,
                           style: TextStyle(
                             color: K.appColor.white,
                             fontSize: 14,
@@ -183,7 +183,7 @@ class AssignmentCharacterItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          sibling.itemAvgLevel,
+                          character.itemAvgLevel,
                           style: TextStyle(
                             color: K.appColor.white,
                             fontSize: 12,

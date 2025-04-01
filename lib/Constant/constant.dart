@@ -18,7 +18,14 @@ class AppData {
 }
 
 class AppConfig {
+  String supabaseClassImage = dotenv.env['SB_CLASS_IMAGE_TABLE']!;
   String supabaseFavoriteCharacterTable = dotenv.env['SB_FAV_CHARACTER_TABLE']!;
+  String supabaseAssignmentTable = dotenv.env['SB_ASSIGNMENT_TABLE']!;
+  String supabaseAssignmentItemTable = dotenv.env['SB_ASSIGNMENT_ITEM_TABLE']!;
+  String supabaseAssignmentCharacterTable =
+      dotenv.env['SB_ASSIGNMENT_CHARACTER_TABLE']!;
+  String supabaseMarketItemTable = dotenv.env['SB_MARKET_ITEM_TABLE']!;
+  String supabaseMarketCategoryTable = dotenv.env['SB_MARKET_CATEGORY_TABLE']!;
 }
 
 class AppColor {
@@ -36,6 +43,7 @@ class AppColor {
   Color braceletOptionColor = const Color.fromRGBO(169, 208, 245, 1);
   Color gray = Colors.white12;
   Color lightGray = Colors.white60;
+  Color deepPurple = Color.fromARGB(131, 98, 41, 255);
 
   Color getGradeColor(String grade) {
     switch (grade) {

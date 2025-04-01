@@ -1,9 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:sample_project/DI/di_controller.dart';
 import 'package:sample_project/Model/character.dart';
+import 'package:sample_project/Model/assignment_character.dart';
 import 'package:sample_project/Model/sibling.dart';
 
 class AssignmentCharacterSearchViewModel extends ChangeNotifier {
@@ -12,24 +11,24 @@ class AssignmentCharacterSearchViewModel extends ChangeNotifier {
   CharacterInfo? get characterInfo => _characterInfo;
 
   // 검색한 캐릭터의 원정대 캐릭터
-  List<Sibling>? _siblings;
-  List<Sibling>? get siblings => _siblings;
+  List<AssignmentCharacter>? _siblings;
+  List<AssignmentCharacter>? get siblings => _siblings;
 
   // 검색하려는 캐릭터의 닉네임
   String _nickname = '';
   String get nickname => _nickname;
 
   // 숙제 기록중인 캐릭터
-  List<Sibling>? _assignmentCharacters;
-  List<Sibling>? get assignmentCharacters => _assignmentCharacters;
+  List<AssignmentCharacter>? _assignmentCharacters;
+  List<AssignmentCharacter>? get assignmentCharacters => _assignmentCharacters;
 
   AssignmentCharacterSearchViewModel() {
     _fetchAssignmentCharacters();
   }
 
-  bool isAssignmentCharacter(Sibling sibling) {
+  bool isAssignmentCharacter(AssignmentCharacter character) {
     return _assignmentCharacters?.any(
-            (element) => element.characterName == sibling.characterName) ??
+            (element) => element.characterName == character.characterName) ??
         false;
   }
 
@@ -45,12 +44,12 @@ class AssignmentCharacterSearchViewModel extends ChangeNotifier {
   }
 
   // 캐릭터 아이템을 눌렀을 때 동작하는 함수
-  Future<void> onTapCharacter(Sibling sibling) async {
+  Future<void> onTapCharacter(AssignmentCharacter character) async {
     // 이미 숙제 기록중인 캐릭터인 경우
-    if (isAssignmentCharacter(sibling)) {
-      await DIController.services.assignmentService.removeCharacter(sibling);
+    if (isAssignmentCharacter(character)) {
+      await DIController.services.assignmentService.removeCharacter(character);
     } else {
-      await DIController.services.assignmentService.addCharacter(sibling);
+      await DIController.services.assignmentService.addCharacter(character);
     }
 
     await _fetchAssignmentCharacters();
@@ -74,7 +73,9 @@ class AssignmentCharacterSearchViewModel extends ChangeNotifier {
         searchSiblings();
         notifyListeners();
       },
-      (failure) {},
+      (failure) {
+        print(failure);
+      },
     );
   }
 
@@ -87,6 +88,7 @@ class AssignmentCharacterSearchViewModel extends ChangeNotifier {
         // 검색한 캐릭터를 제외한 원정대 캐릭터 검색
         _siblings = armorySiblings.sibling
             .where((sibling) => sibling.characterName != nickname)
+            .map((sibling) => sibling.toAssignmentCharacter())
             .toList();
 
         notifyListeners();

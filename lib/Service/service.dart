@@ -1,6 +1,7 @@
 import 'package:sample_project/Service/assignment_service.dart';
 import 'package:sample_project/Service/character_service.dart';
 import 'package:sample_project/Service/game_contents_service.dart';
+import 'package:sample_project/Service/market_service.dart';
 import 'package:sample_project/Service/news_service.dart';
 
 abstract class ServiceType {
@@ -8,9 +9,10 @@ abstract class ServiceType {
   GameContentsServiceType gameContentsService;
   NewsServiceType newsService;
   AssignmentServiceType assignmentService;
+  MarketService marketService;
 
   ServiceType(this.characterService, this.gameContentsService, this.newsService,
-      this.assignmentService);
+      this.assignmentService, this.marketService);
 }
 
 class Service implements ServiceType {
@@ -18,4 +20,5 @@ class Service implements ServiceType {
   GameContentsServiceType gameContentsService = GameContentsService();
   NewsServiceType newsService = NewsService();
   AssignmentServiceType assignmentService = AssignmentService();
+  MarketService marketService = MarketService();
 }

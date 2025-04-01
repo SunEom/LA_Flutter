@@ -1,3 +1,6 @@
+import 'package:sample_project/Model/assignment.dart';
+import 'package:sample_project/Model/assignment_character.dart';
+
 class ArmorySiblings {
   final List<Sibling> sibling;
 
@@ -59,5 +62,17 @@ class Sibling {
         characterClassName: json['CharacterClassName'],
         itemAvgLevel: json["ItemAvgLevel"],
         itemMaxLevel: json["ItemMaxLevel"]);
+  }
+
+  AssignmentCharacter toAssignmentCharacter(
+      {List<Assignment> assignments = const []}) {
+    return AssignmentCharacter(
+        serverName: serverName,
+        characterName: characterName,
+        characterLevel: characterLevel,
+        characterClassName: characterClassName,
+        itemAvgLevel: itemAvgLevel,
+        itemMaxLevel: itemMaxLevel,
+        assignments: assignments);
   }
 }
