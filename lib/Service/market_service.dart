@@ -1,4 +1,5 @@
 import 'package:result_dart/result_dart.dart';
+import 'package:sample_project/Model/item_price.dart';
 import 'package:sample_project/Model/market_category.dart';
 import 'package:sample_project/Model/market_item.dart';
 import 'package:sample_project/Repository/market_repository.dart';
@@ -7,6 +8,8 @@ abstract interface class MarketServiceType {
   Future<Result<List<MarketCategory>, Exception>> fetchItemCategories();
   Future<Result<List<MarketItem>, Exception>> fetchItemList(
       MarketCategory category);
+  Future<Result<ItemPrice, Exception>> fetchItemRecentPriceList(
+      MarketItem item);
 }
 
 class MarketService implements MarketServiceType {
@@ -21,5 +24,11 @@ class MarketService implements MarketServiceType {
   Future<Result<List<MarketItem>, Exception>> fetchItemList(
       MarketCategory category) {
     return networkMarketRepository.fetchItemList(category);
+  }
+
+  @override
+  Future<Result<ItemPrice, Exception>> fetchItemRecentPriceList(
+      MarketItem item) {
+    return networkMarketRepository.fetchItemRecentPriceList(item);
   }
 }

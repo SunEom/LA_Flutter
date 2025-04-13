@@ -14,7 +14,7 @@ class LoadingView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(K.appColor.white),
+            valueColor: AlwaysStoppedAnimation<Color>(K.appColor.deepPurple),
           ),
           const SizedBox(
             height: 30,
@@ -25,7 +25,7 @@ class LoadingView extends StatelessWidget {
             style: TextStyle(
                 color: K.appColor.white,
                 fontSize: 14,
-                fontWeight: K.appFont.bold),
+                fontWeight: K.appFont.heavy),
           ),
         ],
       ),

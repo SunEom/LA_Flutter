@@ -1,28 +1,25 @@
-class MarketItem {
+class AuctionItem {
   int id;
   String itemName;
-  String itemId;
   int categoryCode;
   String icon;
   int order;
   String grade;
   int price;
 
-  MarketItem(
+  AuctionItem(
       {required this.id,
       required this.itemName,
-      required this.itemId,
       required this.categoryCode,
       required this.icon,
       required this.order,
       required this.grade,
       required this.price});
 
-  factory MarketItem.fromJson(Map<String, dynamic> jsonData) {
-    return MarketItem(
+  factory AuctionItem.fromJson(Map<String, dynamic> jsonData) {
+    return AuctionItem(
         id: jsonData["id"],
         itemName: jsonData["ItemName"],
-        itemId: jsonData["ItemId"],
         categoryCode: jsonData["CategoryCode"],
         icon: jsonData["Icon"],
         order: jsonData["Order"],
@@ -31,14 +28,14 @@ class MarketItem {
   }
 }
 
-class LoaAPIMarketPrice {
+class LoaAPIAuctionPrice {
   String name;
-  int recentPrice;
+  int price;
 
-  LoaAPIMarketPrice({required this.name, required this.recentPrice});
+  LoaAPIAuctionPrice({required this.name, required this.price});
 
-  factory LoaAPIMarketPrice.fromJson(Map<String, dynamic> jsonData) {
-    return LoaAPIMarketPrice(
-        name: jsonData["Name"], recentPrice: jsonData["RecentPrice"]);
+  factory LoaAPIAuctionPrice.fromJson(Map<String, dynamic> jsonData) {
+    var price = jsonData["AuctionInfo"]["BuyPrice"] ?? 0;
+    return LoaAPIAuctionPrice(name: jsonData["Name"], price: price);
   }
 }

@@ -26,6 +26,9 @@ class AppConfig {
       dotenv.env['SB_ASSIGNMENT_CHARACTER_TABLE']!;
   String supabaseMarketItemTable = dotenv.env['SB_MARKET_ITEM_TABLE']!;
   String supabaseMarketCategoryTable = dotenv.env['SB_MARKET_CATEGORY_TABLE']!;
+  String supabaseAuctionItemTable = dotenv.env['SB_AUCTION_ITEM_TABLE']!;
+  String supabaseAuctionCategoryTable =
+      dotenv.env['SB_AUCTION_CATEGORY_TABLE']!;
 }
 
 class AppColor {

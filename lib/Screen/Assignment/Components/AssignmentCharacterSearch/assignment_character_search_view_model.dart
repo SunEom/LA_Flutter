@@ -22,6 +22,9 @@ class AssignmentCharacterSearchViewModel extends ChangeNotifier {
   List<AssignmentCharacter>? _assignmentCharacters;
   List<AssignmentCharacter>? get assignmentCharacters => _assignmentCharacters;
 
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
   AssignmentCharacterSearchViewModel() {
     _fetchAssignmentCharacters();
   }
@@ -39,7 +42,6 @@ class AssignmentCharacterSearchViewModel extends ChangeNotifier {
 
     result.fold((siblings) {
       _assignmentCharacters = siblings;
-      notifyListeners();
     }, (failure) {});
   }
 
@@ -57,6 +59,8 @@ class AssignmentCharacterSearchViewModel extends ChangeNotifier {
   }
 
   void searchCharacter() async {
+    _isLoading = true;
+    notifyListeners();
     // 닉네임이 없으면 검색하지 않음
     if (nickname.isEmpty) {
       return;
@@ -71,11 +75,11 @@ class AssignmentCharacterSearchViewModel extends ChangeNotifier {
 
         // 원정대 캐릭터 검색
         searchSiblings();
+        _isLoading = false;
+
         notifyListeners();
       },
-      (failure) {
-        print(failure);
-      },
+      (failure) {},
     );
   }
 

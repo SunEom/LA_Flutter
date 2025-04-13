@@ -21,11 +21,9 @@ class AssignmentListViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    await _updateAssignmentCharacterInfo();
     await _fetchCharacterInfo();
     await fetchAsssignmentList();
-
-    print(_assignments.map((e) => e.isCompleted));
+    await _retrieveAssignmentList();
 
     _isLoading = false;
     notifyListeners();
@@ -55,12 +53,13 @@ class AssignmentListViewModel extends ChangeNotifier {
   }
 
   // 현재 캐릭터에 등록된 숙제 목록 조회
-  void _retrievehAssignmentList() async {
+  Future<void> _retrieveAssignmentList() async {
     Result<List<Assignment>, Exception> fetchAssignments = await DIController
         .services.assignmentService
         .fetchCharacterAssignments(character);
 
     fetchAssignments.fold((assignments) {
+      print(assignments);
       character.assignments = assignments;
       notifyListeners();
     }, (e) {});
@@ -76,7 +75,7 @@ class AssignmentListViewModel extends ChangeNotifier {
     }
 
     // 등록된 숙제 정보 갱신
-    _retrievehAssignmentList();
+    await _retrieveAssignmentList();
   }
 
   bool isContainCurrentAssignmentList(Assignment assignment) {
@@ -86,10 +85,5 @@ class AssignmentListViewModel extends ChangeNotifier {
       }
     }
     return false;
-  }
-
-  Future<void> _updateAssignmentCharacterInfo() async {
-    await DIController.services.assignmentService
-        .updateAssignmentCharacterInfo(characters: [character]);
   }
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:result_dart/result_dart.dart';
 import 'package:sample_project/Constant/constant.dart';
+import 'package:sample_project/Model/item_price.dart';
 import 'package:sample_project/Model/market_category.dart';
 import 'package:sample_project/Model/market_item.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -12,6 +13,8 @@ abstract class MarketRepository {
   Future<Result<List<MarketCategory>, Exception>> fetchMarketCategories();
   Future<Result<List<MarketItem>, Exception>> fetchItemList(
       MarketCategory category);
+  Future<Result<ItemPrice, Exception>> fetchItemRecentPriceList(
+      MarketItem item);
 }
 
 class NetworkMarketRepository extends MarketRepository {
@@ -79,6 +82,28 @@ class NetworkMarketRepository extends MarketRepository {
       }
 
       return Success(itemList);
+    } catch (e) {
+      return Failure(Exception(e));
+    }
+  }
+
+  @override
+  Future<Result<ItemPrice, Exception>> fetchItemRecentPriceList(
+      MarketItem item) async {
+    try {
+      //오늘의 시세가 조회되지 않은 경우
+      var url = Uri.parse('${K.lostArkAPI.base}markets/items/${item.itemId}');
+      var client = http.Client();
+
+      var response = await client.get(url,
+          headers: {'Authorization': 'Bearer ${dotenv.env["API_KEY"]}'});
+
+      if (response.statusCode == 200) {
+        final responseJson = jsonDecode(response.body);
+
+        return Success(ItemPrice.fromJson(responseJson[0]));
+      }
+      return Result.failure(Exception("HTTP 응답 오류"));
     } catch (e) {
       return Failure(Exception(e));
     }

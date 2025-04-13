@@ -11,6 +11,11 @@ class AssignmentViewModel extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
+  int get weeklyTotalGold => _getWeeklyTotalGold();
+  int get weeklyEarnedGold => _getWeeklyEarnedGold();
+  double get weeklyProgress =>
+      weeklyTotalGold == 0 ? 0 : weeklyEarnedGold / weeklyTotalGold;
+
   AssignmentViewModel() {
     onLoad();
   }
@@ -80,5 +85,35 @@ class AssignmentViewModel extends ChangeNotifier {
     await DIController.services.assignmentService.removeCharacter(character);
 
     _fetchAssignmentCharacters();
+  }
+
+  void onClickResetAllAssignmentButton() async {
+    for (AssignmentCharacter character in assignmentCharacters) {
+      await DIController.services.assignmentService
+          .resetAssignmentCompleteStatus(character);
+    }
+
+    _fetchAssignmentCharacters();
+  }
+
+  int _getWeeklyTotalGold() {
+    int value = 0;
+
+    for (AssignmentCharacter character in assignmentCharacters) {
+      character.assignments.forEach((a) => {value += int.parse(a.gold)});
+    }
+
+    return value;
+  }
+
+  int _getWeeklyEarnedGold() {
+    int value = 0;
+
+    for (AssignmentCharacter character in assignmentCharacters) {
+      character.assignments
+          .forEach((a) => {if (a.isCompleted) value += int.parse(a.gold)});
+    }
+
+    return value;
   }
 }

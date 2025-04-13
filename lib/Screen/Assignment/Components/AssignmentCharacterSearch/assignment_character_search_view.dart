@@ -5,6 +5,7 @@ import 'package:sample_project/Constant/constant.dart';
 import 'package:sample_project/Model/assignment_character.dart';
 import 'package:sample_project/Screen/Assignment/Components/AssignmentCharacterSearch/assignment_character_search_view_model.dart';
 import 'package:sample_project/Screen/Components/character_image_view.dart';
+import 'package:sample_project/Screen/Components/loading_view.dart';
 
 class AssignmentCharacterSearchView extends StatelessWidget {
   @override
@@ -19,7 +20,8 @@ class AssignmentCharacterSearchView extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            TextField(
+            TextFormField(
+              keyboardAppearance: MediaQuery.of(context).platformBrightness,
               onChanged: (value) {
                 viewModel.setNickname(value);
               },
@@ -39,71 +41,87 @@ class AssignmentCharacterSearchView extends StatelessWidget {
                   },
                 ),
               ),
+              onFieldSubmitted: (e) {
+                viewModel.searchCharacter();
+              },
             ),
-            if (viewModel.characterInfo != null) // 검색한 캐릭터 정보가 있으면
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: AssignmentCharacterItem(
-                  character: AssignmentCharacter(
-                    serverName:
-                        viewModel.characterInfo!.armoryProfile.serverName,
-                    characterName:
-                        viewModel.characterInfo!.armoryProfile.characterName,
-                    characterLevel:
-                        viewModel.characterInfo!.armoryProfile.characterLevel,
-                    characterClassName: viewModel
-                        .characterInfo!.armoryProfile.characterClassName,
-                    itemAvgLevel:
-                        viewModel.characterInfo!.armoryProfile.itemAvgLevel,
-                    itemMaxLevel:
-                        viewModel.characterInfo!.armoryProfile.itemMaxLevel,
-                    assignments: [],
-                  ),
-                ),
-              ),
-            if (viewModel.siblings != null &&
-                viewModel.siblings!.isNotEmpty) // 숙제 기록중인 캐릭터가 있으면
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  children: [
-                    Divider(
-                      color: K.appColor.gray,
-                      thickness: 1,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          '원정대 캐릭터',
-                          style: TextStyle(
-                            color: K.appColor.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const Spacer()
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ...viewModel.siblings!.map((character) => Padding(
+            viewModel.isLoading
+                ? Column(
+                    children: [
+                      const SizedBox(
+                        height: 100,
+                      ),
+                      const LoadingView(title: "캐릭터 정보를 조회중입니다.")
+                    ],
+                  )
+                : Column(
+                    children: [
+                      if (viewModel.characterInfo != null) // 검색한 캐릭터 정보가 있으면
+                        Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 5, horizontal: 10),
+                              vertical: 20, horizontal: 10),
                           child: AssignmentCharacterItem(
-                            character: character,
+                            character: AssignmentCharacter(
+                              serverName: viewModel
+                                  .characterInfo!.armoryProfile.serverName,
+                              characterName: viewModel
+                                  .characterInfo!.armoryProfile.characterName,
+                              characterLevel: viewModel
+                                  .characterInfo!.armoryProfile.characterLevel,
+                              characterClassName: viewModel.characterInfo!
+                                  .armoryProfile.characterClassName,
+                              itemAvgLevel: viewModel
+                                  .characterInfo!.armoryProfile.itemAvgLevel,
+                              itemMaxLevel: viewModel
+                                  .characterInfo!.armoryProfile.itemMaxLevel,
+                              assignments: [],
+                            ),
                           ),
-                        )),
-                  ],
-                ),
-              ),
+                        ),
+                      if (viewModel.siblings != null &&
+                          viewModel.siblings!.isNotEmpty) // 숙제 기록중인 캐릭터가 있으면
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                          child: Column(
+                            children: [
+                              Divider(
+                                color: K.appColor.gray,
+                                thickness: 1,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  Text(
+                                    '원정대 캐릭터',
+                                    style: TextStyle(
+                                      color: K.appColor.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const Spacer()
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              ...viewModel.siblings!.map((character) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 10),
+                                    child: AssignmentCharacterItem(
+                                      character: character,
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
+                    ],
+                  )
           ],
         ),
       ),
