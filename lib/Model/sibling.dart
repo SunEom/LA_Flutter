@@ -61,7 +61,7 @@ class Sibling {
         characterLevel: json["CharacterLevel"],
         characterClassName: json['CharacterClassName'],
         itemAvgLevel: json["ItemAvgLevel"],
-        itemMaxLevel: json["ItemMaxLevel"]);
+        itemMaxLevel: json["ItemMaxLevel"] ?? '');
   }
 
   AssignmentCharacter toAssignmentCharacter(

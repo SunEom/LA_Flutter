@@ -76,7 +76,7 @@ class Tripod {
   final int slot;
   final String name;
   final String icon;
-  final int level;
+  final int? level;
   final bool isSelected;
 
   Tripod(
@@ -93,7 +93,7 @@ class Tripod {
         slot: json["Slot"],
         name: json["Name"],
         icon: json["Icon"],
-        level: json["Level"],
+        level: json["Level"] ?? 0,
         isSelected: json["IsSelected"]);
   }
 

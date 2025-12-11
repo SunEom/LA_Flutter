@@ -1,7 +1,6 @@
 class ArmoryProfile {
   final String? characterImage;
   final int expeditionLevel;
-  final String pvpGradeName;
   final int? townLevel;
   final String townName;
   final String? title;
@@ -13,7 +12,7 @@ class ArmoryProfile {
   final int characterLevel;
   final String characterClassName;
   final String itemAvgLevel;
-  final String itemMaxLevel;
+  final String? itemMaxLevel;
   final String serverName;
   final List<Stats> stats;
 
@@ -40,7 +39,6 @@ class ArmoryProfile {
   ArmoryProfile({
     this.characterImage,
     required this.expeditionLevel,
-    required this.pvpGradeName,
     this.townLevel,
     required this.townName,
     this.title,
@@ -74,7 +72,6 @@ class ArmoryProfile {
     return ArmoryProfile(
       characterImage: json['CharacterImage'],
       expeditionLevel: json['ExpeditionLevel'],
-      pvpGradeName: json['PvpGradeName'],
       townLevel: json['TownLevel'],
       townName: json['TownName'],
       title: json['Title'],
@@ -86,7 +83,7 @@ class ArmoryProfile {
       characterLevel: json['CharacterLevel'],
       characterClassName: json['CharacterClassName'],
       itemAvgLevel: json['ItemAvgLevel'],
-      itemMaxLevel: json['ItemMaxLevel'],
+      itemMaxLevel: '',
       serverName: json['ServerName'],
       stats: statList,
     );
@@ -96,7 +93,6 @@ class ArmoryProfile {
     return {
       'CharacterImage': characterImage,
       'ExpeditionLevel': expeditionLevel,
-      'PvpGradeName': pvpGradeName,
       'TownLevel': townLevel,
       'TownName': townName,
       'Title': title,

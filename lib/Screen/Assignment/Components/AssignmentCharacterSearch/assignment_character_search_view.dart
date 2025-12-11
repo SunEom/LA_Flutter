@@ -73,7 +73,7 @@ class AssignmentCharacterSearchView extends StatelessWidget {
                               itemAvgLevel: viewModel
                                   .characterInfo!.armoryProfile.itemAvgLevel,
                               itemMaxLevel: viewModel
-                                  .characterInfo!.armoryProfile.itemMaxLevel,
+                                  .characterInfo!.armoryProfile.itemAvgLevel,
                               assignments: [],
                             ),
                           ),

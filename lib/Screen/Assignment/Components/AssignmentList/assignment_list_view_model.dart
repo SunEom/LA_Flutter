@@ -59,7 +59,6 @@ class AssignmentListViewModel extends ChangeNotifier {
         .fetchCharacterAssignments(character);
 
     fetchAssignments.fold((assignments) {
-      print(assignments);
       character.assignments = assignments;
       notifyListeners();
     }, (e) {});
