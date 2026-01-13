@@ -98,6 +98,10 @@ class ProfileInfo extends StatelessWidget {
             content: "${viewModel.info?.armoryProfile.itemAvgLevel}"),
         const SizedBox(height: 5),
         ProfileItem(
+            title: "전투력",
+            content: "${viewModel.info?.armoryProfile.combatPower}"),
+        const SizedBox(height: 5),
+        ProfileItem(
             title: "원정대 Lv",
             content: "${viewModel.info?.armoryProfile.expeditionLevel}"),
       ],

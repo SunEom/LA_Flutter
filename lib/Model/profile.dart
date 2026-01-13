@@ -15,6 +15,7 @@ class ArmoryProfile {
   final String? itemMaxLevel;
   final String serverName;
   final List<Stats> stats;
+  final String? combatPower;
 
   List<Stats> get mainStats {
     return stats
@@ -36,24 +37,24 @@ class ArmoryProfile {
         .toList();
   }
 
-  ArmoryProfile({
-    this.characterImage,
-    required this.expeditionLevel,
-    this.townLevel,
-    required this.townName,
-    this.title,
-    this.guildMemberGrade,
-    this.guildName,
-    required this.usingSkillPoint,
-    required this.totalSkillPoint,
-    required this.characterName,
-    required this.characterLevel,
-    required this.characterClassName,
-    required this.itemAvgLevel,
-    required this.itemMaxLevel,
-    required this.serverName,
-    required this.stats,
-  });
+  ArmoryProfile(
+      {this.characterImage,
+      required this.expeditionLevel,
+      this.townLevel,
+      required this.townName,
+      this.title,
+      this.guildMemberGrade,
+      this.guildName,
+      required this.usingSkillPoint,
+      required this.totalSkillPoint,
+      required this.characterName,
+      required this.characterLevel,
+      required this.characterClassName,
+      required this.itemAvgLevel,
+      required this.itemMaxLevel,
+      required this.serverName,
+      required this.stats,
+      this.combatPower});
 
   factory ArmoryProfile.fromJson(Map<String, dynamic> json) {
     //스텟을 수치에 따라 정렬
@@ -70,23 +71,23 @@ class ArmoryProfile {
     });
 
     return ArmoryProfile(
-      characterImage: json['CharacterImage'],
-      expeditionLevel: json['ExpeditionLevel'],
-      townLevel: json['TownLevel'],
-      townName: json['TownName'],
-      title: json['Title'],
-      guildMemberGrade: json['GuildMemberGrade'],
-      guildName: json['GuildName'],
-      usingSkillPoint: json['UsingSkillPoint'],
-      totalSkillPoint: json['TotalSkillPoint'],
-      characterName: json['CharacterName'],
-      characterLevel: json['CharacterLevel'],
-      characterClassName: json['CharacterClassName'],
-      itemAvgLevel: json['ItemAvgLevel'],
-      itemMaxLevel: '',
-      serverName: json['ServerName'],
-      stats: statList,
-    );
+        characterImage: json['CharacterImage'],
+        expeditionLevel: json['ExpeditionLevel'],
+        townLevel: json['TownLevel'],
+        townName: json['TownName'],
+        title: json['Title'],
+        guildMemberGrade: json['GuildMemberGrade'],
+        guildName: json['GuildName'],
+        usingSkillPoint: json['UsingSkillPoint'],
+        totalSkillPoint: json['TotalSkillPoint'],
+        characterName: json['CharacterName'],
+        characterLevel: json['CharacterLevel'],
+        characterClassName: json['CharacterClassName'],
+        itemAvgLevel: json['ItemAvgLevel'],
+        itemMaxLevel: '',
+        serverName: json['ServerName'],
+        stats: statList,
+        combatPower: json["CombatPower"]);
   }
 
   Map<String, dynamic> toJson() {

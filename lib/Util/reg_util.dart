@@ -107,13 +107,12 @@ class RegUtil {
   }
 
   static List<String> getAccessoryGrindingEffect(String input) {
-    // 정규표현식 패턴
-    RegExp regExp =
-        RegExp(r"[\uAC00-\uD7A3A-Za-z0-9 ,]+ \+[0-9]+(\.[0-9]+)?%?");
+    List<String> results = [];
 
-    // 패턴에 맞는 모든 부분을 찾기
-    Iterable<RegExpMatch> matches = regExp.allMatches(input);
+    for (String line in input.split('<br>')) {
+      results.add(line.replaceAll(RegExp(r'<[^>]+>'), '').trim());
+    }
 
-    return matches.map((m) => m.group(0)!).toList();
+    return results;
   }
 }
