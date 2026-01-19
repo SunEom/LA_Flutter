@@ -374,7 +374,6 @@ class Tooltip {
       if (ipb.value != null &&
           ipb.value!["Element_000"] != null &&
           ipb.value!["Element_000"]!.contains("연마 효과")) {
-        print(RegUtil.getAccessoryGrindingEffect(ipb.value!["Element_001"]!));
         return RegUtil.getAccessoryGrindingEffect(ipb.value!["Element_001"]!)
             .map((e) => AccessoryGrindingEffectOption(optionStr: e))
             .toList();

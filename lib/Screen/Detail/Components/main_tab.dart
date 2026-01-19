@@ -18,6 +18,10 @@ class MainInfoContents extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
+        ArkGridContents(),
+        const SizedBox(
+          height: 10,
+        ),
         EquipmentContent(),
         const SizedBox(
           height: 10,
@@ -301,6 +305,75 @@ class StatsContent extends StatelessWidget {
             ],
           )),
     );
+  }
+}
+
+// ArkGrid
+
+class ArkGridContents extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+
+    return viewModel.info?.arkGrid?.slots == null
+        ? Container()
+        : Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(color: K.appColor.gray, width: 2),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Padding(
+                padding: const EdgeInsets.all(30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "아크 그리드",
+                      style: TextStyle(
+                          color: K.appColor.white,
+                          fontSize: 20,
+                          fontWeight: K.appFont.heavy),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    for (var slot in viewModel.info!.arkGrid!.slots!)
+                      Row(
+                        children: [
+                          NImage(
+                            url: slot.icon,
+                            width: 40,
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    slot.name,
+                                    style: TextStyle(
+                                        color: K.appColor
+                                            .getGradeColor(slot.grade),
+                                        fontSize: 16,
+                                        fontWeight: K.appFont.heavy),
+                                  ),
+                                  Text(
+                                    "포인트: ${slot.point}",
+                                    style: TextStyle(
+                                        color: K.appColor.white,
+                                        fontSize: 14,
+                                        fontWeight: K.appFont.heavy),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      )
+                  ],
+                )));
   }
 }
 

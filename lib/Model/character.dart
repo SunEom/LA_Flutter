@@ -1,3 +1,4 @@
+import 'package:sample_project/Model/arkgrid.dart';
 import 'package:sample_project/Model/card.dart';
 import 'package:sample_project/Model/Engraving.dart';
 import 'package:sample_project/Model/Equipment.dart';
@@ -15,6 +16,7 @@ class CharacterInfo {
   final ArmoryGem armoryGem;
   final List<Collectible> collectibles;
   final ArkPassive arkPassive;
+  final ArkGrid? arkGrid;
 
   CharacterInfo(
       {required this.armoryProfile,
@@ -24,7 +26,8 @@ class CharacterInfo {
       this.armorySkills,
       required this.armoryGem,
       required this.collectibles,
-      required this.arkPassive});
+      required this.arkPassive,
+      this.arkGrid});
 
   factory CharacterInfo.fromJson(Map<String, dynamic> json) {
     return CharacterInfo(
@@ -45,7 +48,9 @@ class CharacterInfo {
         collectibles: (json["Collectibles"] as List)
             .map((e) => Collectible.fromJson(e))
             .toList(),
-        arkPassive: ArkPassive.fromJSON(json["ArkPassive"]));
+        arkPassive: ArkPassive.fromJSON(json["ArkPassive"]),
+        arkGrid:
+            json["ArkGrid"] == null ? null : ArkGrid.fromJSON(json["ArkGrid"]));
   }
 
   Map<String, dynamic> toJson() {
