@@ -1,4 +1,6 @@
 // Main Tab
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
@@ -370,6 +372,52 @@ class ArkGridContents extends StatelessWidget {
                                   ),
                                 ],
                               )),
+                          const Expanded(
+                            child: SizedBox(),
+                          ),
+                          IconButton(
+                              onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 51, 51, 51),
+                                      content: SizedBox(
+                                        width: min(
+                                            MediaQuery.of(context).size.width -
+                                                50,
+                                            400),
+                                        child: SingleChildScrollView(
+                                          child: HtmlWidget(
+                                            slot.tooltip?.itemPartBox?[2]
+                                                    .value?["Element_001"]
+                                                    ?.toString() ??
+                                                "",
+                                            textStyle: TextStyle(
+                                                color: K.appColor.white,
+                                                fontSize: 14,
+                                                fontWeight: K.appFont.heavy),
+                                          ),
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          child: Text(
+                                            '닫기',
+                                            style: TextStyle(
+                                                color: K.appColor.white,
+                                                fontSize: 14,
+                                                fontWeight: K.appFont.heavy),
+                                          ),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  }),
+                              icon: Icon(Icons.arrow_forward_ios,
+                                  size: 12, color: K.appColor.white)),
                         ],
                       )
                   ],

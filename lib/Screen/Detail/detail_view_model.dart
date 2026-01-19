@@ -82,6 +82,7 @@ class DetailViewModel extends ChangeNotifier {
             .fetchCharacterInfo(nickname);
     fetchCharacterInfoResult.fold((info) {
       _info = info.toNullable();
+      print(_info?.arkGrid?.slots?[0].tooltip?.itemPartBox?[2].value);
 
       if (isFavCharacter) {
         // 즐겨찾기 캐릭터 정보 갱신
