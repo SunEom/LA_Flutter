@@ -24,6 +24,10 @@ class MainInfoContents extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
+        ArkPassiveContents(),
+        const SizedBox(
+          height: 10,
+        ),
         EquipmentContent(),
         const SizedBox(
           height: 10,
@@ -188,7 +192,7 @@ class StatsContent extends StatelessWidget {
                                         children: viewModel
                                             .info!.arkPassive.points
                                             .map((e) => Text(
-                                                  "- ${e.name} : ${e.value}",
+                                                  "- ${e.name} : ${e.rankLevel}",
                                                   style: TextStyle(
                                                     color: K.appColor.white,
                                                     fontSize: 13,
@@ -418,6 +422,85 @@ class ArkGridContents extends StatelessWidget {
                                   }),
                               icon: Icon(Icons.arrow_forward_ios,
                                   size: 12, color: K.appColor.white)),
+                        ],
+                      )
+                  ],
+                )));
+  }
+}
+
+class ArkPassiveContents extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final viewModel = Provider.of<DetailViewModel>(context);
+
+    final List<String> arkPassiveEffectTypes = ["진화", "깨달음", "도약"];
+
+    return viewModel.info?.arkPassive?.effects == null
+        ? Container()
+        : Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(color: K.appColor.gray, width: 2),
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: Padding(
+                padding: const EdgeInsets.all(30),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "아크 패시브",
+                      style: TextStyle(
+                          color: K.appColor.white,
+                          fontSize: 20,
+                          fontWeight: K.appFont.heavy),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    for (var type in arkPassiveEffectTypes)
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            type,
+                            style: TextStyle(
+                                color: K.appColor.white,
+                                fontSize: 15,
+                                fontWeight: K.appFont.heavy),
+                          ),
+                          for (var effect in viewModel.info!.arkPassive!.effects
+                              .where((e) => e.name! == type))
+                            Row(
+                              children: [
+                                NImage(
+                                  url: effect.icon!,
+                                  width: 20,
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 5),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        HtmlWidget(
+                                          effect.description!,
+                                          textStyle: TextStyle(
+                                              color: K.appColor.white,
+                                              fontSize: 14,
+                                              fontWeight: K.appFont.heavy),
+                                        )
+                                      ],
+                                    )),
+                              ],
+                            ),
+                          const SizedBox(
+                            height: 20,
+                          )
                         ],
                       )
                   ],

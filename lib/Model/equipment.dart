@@ -346,7 +346,7 @@ class Tooltip {
   }
 
   // 아크패시브 포인트 효과
-  ArkPassiveItem? get arkPassivePoint {
+  ArkPassivePointItem? get arkPassivePoint {
     if (itemPartBox == null) {
       return null;
     }
@@ -357,7 +357,8 @@ class Tooltip {
           ipb.value!["Element_000"]!.contains("아크 패시브 포인트 효과")) {
         String arkPassvieData = ipb.value!["Element_001"]!;
         List<String> li = arkPassvieData.split(" ");
-        return ArkPassiveItem(name: li[0], value: int.parse(li[1]));
+        return ArkPassivePointItem(
+            name: li[0], value: int.parse(li[1]), rankLevel: "");
       }
     }
 

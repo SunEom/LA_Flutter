@@ -204,24 +204,60 @@ enum StatsType {
 
 class ArkPassive {
   final bool isArkpassive;
-  final List<ArkPassiveItem> points;
-  const ArkPassive({required this.isArkpassive, required this.points});
+  final List<ArkPassivePointItem> points;
+  final List<ArkPassiveEffectItem> effects;
+  const ArkPassive(
+      {required this.isArkpassive,
+      required this.points,
+      required this.effects});
 
   factory ArkPassive.fromJSON(Map<String, dynamic> json) {
-    List<ArkPassiveItem> points = (json["Points"] as List)
-        .map((e) => ArkPassiveItem.fromJSON(e))
+    List<ArkPassivePointItem> points = (json["Points"] as List)
+        .map((e) => ArkPassivePointItem.fromJSON(e))
         .toList();
-    return ArkPassive(isArkpassive: json["IsArkPassive"], points: points);
+
+    List<ArkPassiveEffectItem> effects = (json["Effects"] as List)
+        .map((e) => ArkPassiveEffectItem.fromJSON(e))
+        .toList();
+
+    return ArkPassive(
+        isArkpassive: json["IsArkPassive"], points: points, effects: effects);
   }
 }
 
-class ArkPassiveItem {
+class ArkPassivePointItem {
   final String name;
   final int value;
+  final String rankLevel;
 
-  const ArkPassiveItem({required this.name, required this.value});
+  const ArkPassivePointItem(
+      {required this.name, required this.value, required this.rankLevel});
 
-  factory ArkPassiveItem.fromJSON(Map<String, dynamic> json) {
-    return ArkPassiveItem(name: json["Name"], value: json["Value"]);
+  factory ArkPassivePointItem.fromJSON(Map<String, dynamic> json) {
+    return ArkPassivePointItem(
+        name: json["Name"],
+        value: json["Value"],
+        rankLevel: json["Description"]);
+  }
+}
+
+class ArkPassiveEffectItem {
+  final String? name;
+  final String? description;
+  final String? icon;
+  final String? tooltip;
+
+  const ArkPassiveEffectItem(
+      {required this.name,
+      required this.description,
+      required this.icon,
+      required this.tooltip});
+
+  factory ArkPassiveEffectItem.fromJSON(Map<String, dynamic> json) {
+    return ArkPassiveEffectItem(
+        name: json["Name"],
+        description: json["Description"],
+        icon: json["Icon"],
+        tooltip: json["Tooltip"]);
   }
 }
